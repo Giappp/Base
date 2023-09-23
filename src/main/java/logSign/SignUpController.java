@@ -29,7 +29,6 @@ public class SignUpController implements Initializable {
     private TextField tf_email;
     @FXML
     private  Label lbl_error_pass;
-    protected boolean flag = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -56,6 +55,7 @@ public class SignUpController implements Initializable {
                 }
             }
         });
+        // Add listener on focus action
         pf_confirm_password.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -73,13 +73,22 @@ public class SignUpController implements Initializable {
             }
         });
     }
+
+    //
     private boolean validatePasswords(String password, String confirmPassword, Label lbl_error_pass) {
+        // Check if confirmed password matches with password
         if (!password.isBlank() && !confirmPassword.isBlank() && !password.equals(confirmPassword)) {
             Platform.runLater(() -> {
                 lbl_error_pass.setText("Confirm password does not match");
             });
             return false;
-        }else{
+        }
+        // Check if password is blank
+        else if(password.isBlank() || confirmPassword.isBlank()){
+            return false;
+        }
+        //
+        else{
             lbl_error_pass.setText("");
             return true;
         }
