@@ -1,6 +1,6 @@
-package dao;
+package db.dao;
 
-import config.IDBConfig;
+import db.config.IDBConfig;
 
 import java.sql.*;
 

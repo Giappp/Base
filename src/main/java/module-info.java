@@ -3,9 +3,9 @@ module org.example {
     requires javafx.fxml;
     requires java.sql;
 
-    opens org.example to javafx.fxml;
-    exports org.example;
+    opens ui.logSign to javafx.fxml;
+    exports ui.logSign;
 
-    opens logSign to javafx.fxml;
-    exports logSign;
+    opens ui.dashboard to javafx.fxml;
+    exports ui.dashboard;
 }

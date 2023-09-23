@@ -1,4 +1,4 @@
-package logSign;
+package ui.logSign;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.application.Platform;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package config;
+package db.config;
 
 public interface IDBConfig {
     public static final String HOSTNAME = "localhost";

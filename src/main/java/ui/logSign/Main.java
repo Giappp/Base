@@ -1,4 +1,4 @@
-package logSign;
+package ui.logSign;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

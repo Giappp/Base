@@ -1,4 +1,4 @@
-package logSign;
+package ui.logSign;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

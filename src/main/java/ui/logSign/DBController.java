@@ -1,6 +1,6 @@
-package logSign;
+package ui.logSign;
 
-import dao.JDBCConnect;
+import db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
