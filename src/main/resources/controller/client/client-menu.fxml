@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="720.0" prefWidth="200.0" style="-fx-background-color: #00a7d5;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <Pane prefHeight="110.0" prefWidth="350.0">
+      <ImageView fitHeight="120.0" fitWidth="134.0" layoutX="33.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@../images/logo-scm.png" />
+      </ImageView>
+   </Pane>
+   <Button fx:id="home_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Dashboard" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/dash.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+   </Button>
+   <Button fx:id="account_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Account" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/user1.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+   </Button>
+   <Button fx:id="storage_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Storage" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/data.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+   </Button>
+   <Button fx:id="orders_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Orders" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/order1.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+   </Button>
+   <Button fx:id="messages_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Messages" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/message1.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+   </Button>
+   <Button fx:id="setting_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Setting" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/setting1.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+   </Button>
+   <Button fx:id="sign_out_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Sign out" textFill="WHITE">
+      <graphic>
+         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/logout1.png" />
+         </ImageView>
+      </graphic>
+      <font>
+         <Font name="Segoe UI" size="14.0" />
+      </font>
+   </Button>
+</VBox>

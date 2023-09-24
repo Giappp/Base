@@ -1,6 +1,6 @@
-package ui.logSign;
+package com.controller.logSign;
 
-import db.dao.JDBCConnect;
+import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -61,7 +61,7 @@ public class DBController {
                 ps.setString(3, email);
                 ps.executeUpdate();
 
-                changeScene(event, "log-in.fxml", "Welcome!", username);
+                changeScene(event, "/controller/logSign/log-in.fxml", "Welcome!", username);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class DBController {
                     String retrievedPass = rs.getString("password");
                     String retrievedEmail = rs.getString("email");
                     if (retrievedPass.equals(password)) {
-                        changeScene(event, "logged-in.fxml", "Welcome!", username);
+                        changeScene(event, "/controller/logSign/logged-in.fxml", "Welcome!", username);
                     } else {
                         System.out.println("Password incorrect!");
                         Alert alert = new Alert(Alert.AlertType.ERROR);

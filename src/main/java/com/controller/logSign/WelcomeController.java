@@ -1,4 +1,4 @@
-package ui.logSign;
+package com.controller.logSign;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,7 +21,7 @@ public class WelcomeController implements Initializable {
         btn_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DBController.changeScene(event, "log-in.fxml", "Log in!", null);
+                DBController.changeScene(event, "/controller/logSign/log-in.fxml", "Log in!", null);
             }
         });
     }

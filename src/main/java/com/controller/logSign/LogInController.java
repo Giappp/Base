@@ -1,4 +1,4 @@
-package ui.logSign;
+package com.controller.logSign;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,7 +33,7 @@ public class LogInController implements Initializable {
         btn_signup.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DBController.changeScene(event, "sign-up.fxml", "Sign Up!", null);
+                DBController.changeScene(event, "/controller/logSign/sign-up.fxml", "Sign Up!", null);
             }
         });
     }
