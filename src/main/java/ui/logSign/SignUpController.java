@@ -43,7 +43,7 @@ public class SignUpController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 if (!tf_username.getText().trim().isEmpty()
-                        && !validatePasswords(pf_password.getText(), pf_confirm_password.getText(),lbl_error_pass)
+                        && validatePasswords(pf_password.getText(), pf_confirm_password.getText(),lbl_error_pass)
                         && !tf_email.getText().trim().isEmpty()) {
                     DBController.signUpUser(event, tf_username.getText(), pf_password.getText(), pf_confirm_password.getText(),tf_email.getText());
                 } else {
