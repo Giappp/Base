@@ -4,9 +4,12 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import javax.xml.transform.Transformer;
@@ -15,10 +18,24 @@ import java.util.ResourceBundle;
 
 public class DashBoardController implements Initializable {
     @FXML
+    private ChoiceBox<String> EarningChoiceBox;
+
+    private String[] earningDate = {"Today, Yesterday, Last 7 day, Last week, Last month, Last year"};
+
+    @FXML
     private Label Menu;
 
     @FXML
     private Label MenuClose;
+
+    @FXML
+    private ChoiceBox<String> ProductChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> deliveryChoiceBox;
+
+    @FXML
+    private VBox main_side;
 
     @FXML
     private AnchorPane slider;
@@ -58,5 +75,7 @@ public class DashBoardController implements Initializable {
                 MenuClose.setVisible(false);
             });
         });
+
+
     }
 }
