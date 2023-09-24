@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logSign.SignUpController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.logSign.SignUpController">
     <children>
         <AnchorPane prefHeight="400.0" prefWidth="260.0" style="-fx-background-color: silver;">
             <children>
                 <ImageView fitHeight="127.0" fitWidth="183.0" layoutX="52.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/pngkit_republican-logo-png_2270759.png" />
+                        <Image url="@/images/pngkit_republican-logo-png_2270759.png" />
                     </image>
                 </ImageView>
                 <Label layoutX="70.0" layoutY="200.0" text="0912-345-678">
