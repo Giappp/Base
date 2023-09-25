@@ -1,5 +1,5 @@
 CREATE SCHEMA logistics;
-
+USE logistics;
 CREATE  TABLE logistics.product_type ( 
 	product_type_id      INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
 	name                 VARCHAR(100)       ,

@@ -7,71 +7,71 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.logSign.LogInController">
-    <AnchorPane prefHeight="400.0" prefWidth="260.0" style="-fx-background-color: #00A7D5;">
-        <Label layoutX="74.0" layoutY="309.0" text="0912-345-678" textFill="WHITE">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.logSign.LogInController">
+    <AnchorPane prefHeight="500.0" prefWidth="302.0" style="-fx-background-color: #00A7D5;">
+        <Label layoutX="79.0" layoutY="335.0" text="0912-345-678" textFill="WHITE">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="20.0" layoutY="347.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
+        <Label layoutX="33.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="18.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
+      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="24.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
          <font>
-            <Font name="System Bold" size="40.0" />
+            <Font name="Segoe UI Bold" size="40.0" />
          </font>
       </Text>
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="13.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Energizing Your Supply Chain">
+      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="13.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Energizing Your Supply Chain">
          <font>
-            <Font size="18.0" />
+            <Font name="Segoe UI" size="20.0" />
          </font>
       </Text>
+      <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="85.0" layoutY="100.0" size="100" text="" />
     </AnchorPane>
-    <AnchorPane prefHeight="500.0" prefWidth="400.0">
-      <Line endX="170.800048828125" layoutX="159.0" layoutY="387.0" startX="-126.4000244140625" stroke="#00a7d5" />
-        <TextField fx:id="tf_username" layoutX="62.0" layoutY="176.0" prefHeight="31.0" prefWidth="260.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0px 0px 1px 0px;">
+    <AnchorPane prefHeight="438.0" prefWidth="361.0">
+        <TextField fx:id="tf_username" layoutX="62.0" layoutY="163.0" prefHeight="31.0" prefWidth="260.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0px 0px 1px 0px;">
             <font>
                 <Font name="Segoe UI" size="13.0" />
             </font>
         </TextField>
-        <PasswordField fx:id="pf_password" layoutX="64.0" layoutY="221.0" prefHeight="31.0" prefWidth="260.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0px 0px 1px 0px;">
+        <PasswordField fx:id="pf_password" layoutX="64.0" layoutY="208.0" prefHeight="31.0" prefWidth="260.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0px 0px 1px 0px;">
             <font>
                 <Font name="Segoe UI" size="13.0" />
             </font>
         </PasswordField>
-        <Button fx:id="btn_login" layoutX="90.0" layoutY="283.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="177.0" style="-fx-background-color: #00A7D5; -fx-cursor: hand; -fx-border-radius: 100px;" text="Login" textFill="WHITE">
+        <Button fx:id="btn_login" alignment="CENTER" layoutX="153.0" layoutY="274.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="149.0" style="-fx-background-color: #00A7D5; -fx-cursor: hand; -fx-border-radius: 100px;" text="Login" textFill="WHITE">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Button>
-        <Label layoutX="69.0" layoutY="351.0" text="Don't have an account ?">
+        <Label layoutX="69.0" layoutY="354.0" text="Don't have an account ?">
             <font>
                 <Font name="Segoe UI" size="14.0" />
             </font>
         </Label>
-        <Button fx:id="btn_signup" layoutX="218.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Register" textFill="#0000ffd8" underline="true">
+        <Button fx:id="btn_signup" layoutX="218.0" layoutY="349.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Register" textFill="#0000ffd8" underline="true">
             <font>
                 <Font name="Segoe UI Bold" size="14.0" />
             </font>
         </Button>
-      <FontAwesomeIconView fill="#007ad5" glyphName="USER" layoutX="35.0" layoutY="203.0" selectionFill="#007ad5" size="28" text="" wrappingWidth="18.112554931640602">
+      <FontAwesomeIconView fill="#007ad5" glyphName="USER" layoutX="35.0" layoutY="190.0" selectionFill="#007ad5" size="28" text="" wrappingWidth="18.112554931640602">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>
       </FontAwesomeIconView>
-      <FontAwesomeIconView fill="#007ad5" glyphName="LOCK" layoutX="36.0" layoutY="251.0" size="28" />
-      <FontAwesomeIconView fill="#00a7d5" glyphName="TRUCK" layoutX="123.0" layoutY="150.0" size="100" text="" />
-      <Text layoutX="94.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" wrappingWidth="177.60000000000014">
+      <FontAwesomeIconView fill="#007ad5" glyphName="LOCK" layoutX="36.0" layoutY="238.0" size="28" />
+      <Text layoutX="94.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" wrappingWidth="177.60000000000014">
          <font>
-            <Font name="System Bold" size="40.0" />
+            <Font name="Segoe UI Bold" size="40.0" />
          </font>
       </Text>
+      <FontAwesomeIconView fill="WHITE" layoutX="176.0" layoutY="305.0" size="24" text="" wrappingWidth="24.800018310546875" />
+      <FontAwesomeIconView fill="#00a7d5" layoutX="155.0" layoutY="122.0" size="52" text="" />
     </AnchorPane>
 </HBox>

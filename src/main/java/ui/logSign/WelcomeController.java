@@ -21,7 +21,7 @@ public class WelcomeController implements Initializable {
         btn_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DBController.changeScene(event, "log-in.fxml", "Log in!", null);
+                DBController.changeScene(event, "log-in.fxml");
             }
         });
     }

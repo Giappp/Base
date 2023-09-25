@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("log-in.fxml")));
         primaryStage.setTitle("SCM");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root, 650, 500));
         primaryStage.show();
     }
 }
