@@ -109,6 +109,7 @@ public class SignUpController implements Initializable {
         }
         // Check if password is blank
         else if (password.isBlank() || confirmPassword.isBlank()) {
+            lbl_error_pass.setText("");
             return false;
         }
         //
@@ -117,7 +118,7 @@ public class SignUpController implements Initializable {
             return true;
         }
     }
-    public static void signUpUser(ActionEvent event, String username, String password, String confirmPass,
+    public void signUpUser(ActionEvent event, String username, String password, String confirmPass,
                                   String email,String phone) {
         try(Connection con = JDBCConnect.getJDBCConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE username = ?");

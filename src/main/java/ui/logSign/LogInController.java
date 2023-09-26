@@ -43,7 +43,7 @@ public class LogInController implements Initializable {
             }
         });
     }
-    public static void logInUser(ActionEvent event, String username, String password) {
+    public void logInUser(ActionEvent event, String username, String password) {
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = con.prepareStatement("SELECT password FROM users WHERE username = ?");
              ){
@@ -58,7 +58,7 @@ public class LogInController implements Initializable {
                 while (rs.next()) {
                     String retrievedPass = rs.getString("password");
                     if (retrievedPass.equals(password)) {
-                        DBController.changeScene(event,"dashboard.fxml");
+                        DBController.showDashboardScene(event,username);
                     } else {
                         System.out.println("Password incorrect!");
                         Alert alert = new Alert(Alert.AlertType.ERROR);
