@@ -43,7 +43,7 @@
                   </LinearGradient>
                </textFill>
                 </Label>
-                <Button fx:id="btn_signup" layoutX="399.0" layoutY="347.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="173.0" style="-fx-background-color: #00a7d5;" text="Sign Up" textFill="WHITE">
+                <Button fx:id="btn_signup" layoutX="399.0" layoutY="347.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="173.0" style="-fx-background-color: #00a7d5; -fx-cursor: hand;" text="Sign Up" textFill="WHITE">
                     <font>
                         <Font name="Segoe UI Bold" size="18.0" />
                     </font>
