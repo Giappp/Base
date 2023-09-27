@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import ui.dashboard.DashBoardController;
+import com.controller.client.ClientController;
 
 import java.io.IOException;
 import java.sql.*;
@@ -29,10 +29,10 @@ public class DBController {
     }
     public static void showDashboardScene(ActionEvent event,String username){
         try{
-            FXMLLoader loader = new FXMLLoader(DBController.class.getResource("/ui/dashboard/dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(DBController.class.getResource("/controller/client/client.fxml"));
             root = loader.load();
 
-            DashBoardController dashBoardController = loader.getController();
+            ClientController clientController = loader.getController();
         }catch (IOException e){
             e.printStackTrace();
         }

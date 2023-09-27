@@ -1,6 +1,6 @@
 package com.controller.logSign;
 
-import db.dao.JDBCConnect;
+import com.db.dao.JDBCConnect;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -42,7 +42,7 @@ public class SignUpController implements Initializable {
         btn_login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DBController.changeScene(event, "log-in.fxml");
+                DBController.changeScene(event, "/controller/logSign/log-in.fxml");
             }
         });
 
@@ -137,7 +137,7 @@ public class SignUpController implements Initializable {
                 ps2.setString(3, email);
                 ps2.setString(4,phone);
                 ps2.executeUpdate();
-                DBController.changeScene(event,"log-in.fxml");
+                DBController.changeScene(event,"controller/logSign/log-in.fxml");
             }
         } catch (SQLException e) {
             e.printStackTrace();
