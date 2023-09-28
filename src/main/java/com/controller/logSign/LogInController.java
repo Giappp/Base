@@ -50,7 +50,7 @@ public class LogInController implements Initializable {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if (!rs.isBeforeFirst()) {
-                System.out.println("User not found in database!");
+                System.out.println("Invalid username or password!");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Provided credentials are incorrect!");
                 alert.show();
@@ -58,12 +58,16 @@ public class LogInController implements Initializable {
                 while (rs.next()) {
                     String retrievedPass = rs.getString("password");
                     if (retrievedPass.equals(password)) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setHeaderText(null);
+                        alert.setContentText("Login Successfully!");
+                        alert.showAndWait();
                         DBController.showDashboardScene(event,username);
                     } else {
                         System.out.println("Password incorrect!");
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setContentText("Provided credentials are incorrect!");
-                        alert.show();
+                        alert.showAndWait();
                     }
                 }
             }
