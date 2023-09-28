@@ -12,6 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+
 <AnchorPane prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.logSign.SignUpController">
     <children>
         <AnchorPane prefHeight="500.0" prefWidth="650.0">
@@ -87,27 +88,27 @@
         </AnchorPane>
       <AnchorPane prefHeight="506.0" prefWidth="300.0" style="-fx-background-color: #00A7D5;">
          <children>
-            <Label layoutX="79.0" layoutY="335.0" text="0912-345-678" textFill="WHITE">
+            <Label layoutX="94.0" layoutY="333.0" text="0912-345-678" textFill="WHITE">
                <font>
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="35.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
+            <Label layoutX="40.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
                <font>
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Label>
-            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="34.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
+            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="38.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
                <font>
                   <Font name="Segoe UI Bold" size="40.0" />
                </font>
             </Text>
-            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="84.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Join Us!">
+            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="83.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Join Us!">
                <font>
                   <Font name="Segoe UI" size="36.0" />
                </font>
             </Text>
-            <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="88.0" layoutY="101.0" size="100" text="" />
+            <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="100.0" layoutY="100.0" size="100" text="" />
          </children>
       </AnchorPane>
     </children>

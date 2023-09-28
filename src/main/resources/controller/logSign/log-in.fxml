@@ -15,29 +15,29 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.logSign.LogInController">
     <AnchorPane prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: #00A7D5;">
-        <Label layoutX="79.0" layoutY="335.0" text="0912-345-678" textFill="WHITE">
+        <Label layoutX="94.0" layoutY="333.0" text="0912-345-678" textFill="WHITE">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="33.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
+        <Label layoutX="40.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="28.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
-         <font>
-            <Font name="Segoe UI Bold" size="40.0" />
-         </font>
-      </Text>
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="13.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Energizing Your Supply Chain">
-         <font>
-            <Font name="Segoe UI" size="20.0" />
-         </font>
-      </Text>
-      <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="85.0" layoutY="100.0" size="100" text="" />
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="38.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
+            <font>
+                <Font name="Segoe UI Bold" size="40.0" />
+            </font>
+        </Text>
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="20.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Energizing Your Supply Chain">
+            <font>
+                <Font name="Segoe UI" size="20.0" />
+            </font>
+        </Text>
+        <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="100.0" layoutY="100.0" size="100" text="" />
     </AnchorPane>
-    <AnchorPane prefHeight="438.0" prefWidth="361.0">
+    <AnchorPane prefHeight="500.0" prefWidth="350.0">
         <TextField fx:id="tf_username" layoutX="66.0" layoutY="202.0" prefHeight="31.0" prefWidth="248.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0px 0px 1px 0px;">
             <font>
                 <Font name="Segoe UI" size="16.0" />
@@ -52,9 +52,9 @@
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
-         <graphic>
-            <FontAwesomeIconView fill="WHITE" size="24" text="" wrappingWidth="24.800018310546875" />
-         </graphic>
+            <graphic>
+                <FontAwesomeIconView fill="WHITE" size="24" text="" wrappingWidth="24.800018310546875" />
+            </graphic>
         </Button>
         <Label layoutX="79.0" layoutY="380.0" text="Don't have an account ?">
             <font>
@@ -66,33 +66,33 @@
                 <Font name="Segoe UI Bold" size="14.0" />
             </font>
         </Button>
-      <FontAwesomeIconView fill="#007ad5" glyphName="USER" layoutX="39.0" layoutY="229.0" selectionFill="#007ad5" size="28" text="" wrappingWidth="18.112554931640602">
-         <font>
-            <Font name="Segoe UI" size="14.0" />
-         </font>
-      </FontAwesomeIconView>
-      <FontAwesomeIconView fill="#007ad5" glyphName="LOCK" layoutX="40.0" layoutY="278.0" size="28" />
-      <Text layoutX="91.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" wrappingWidth="177.60000000000014">
-         <font>
-            <Font name="Segoe UI Bold" size="40.0" />
-         </font>
-         <fill>
-            <LinearGradient endX="0.5303029725045868" endY="0.7575757449323479" startX="0.534090900963003" startY="0.3409090240796407">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color green="0.6552631855010986" blue="0.8736842274665833" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="0.13333334028720856" blue="1.0" />
-                     </color>
-                  </Stop>
-               </stops>
-            </LinearGradient>
-         </fill>
-      </Text>
-      <FontAwesomeIconView fill="#00a7d5" layoutX="152.0" layoutY="162.0" size="52" text="" />
+        <FontAwesomeIconView fill="#007ad5" glyphName="USER" layoutX="39.0" layoutY="229.0" selectionFill="#007ad5" size="28" text="" wrappingWidth="18.112554931640602">
+            <font>
+                <Font name="Segoe UI" size="14.0" />
+            </font>
+        </FontAwesomeIconView>
+        <FontAwesomeIconView fill="#007ad5" glyphName="LOCK" layoutX="40.0" layoutY="278.0" size="28" />
+        <Text layoutX="91.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" wrappingWidth="177.60000000000014">
+            <font>
+                <Font name="Segoe UI Bold" size="40.0" />
+            </font>
+            <fill>
+                <LinearGradient endX="0.5303029725045868" endY="0.7575757449323479" startX="0.534090900963003" startY="0.3409090240796407">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color green="0.6552631855010986" blue="0.8736842274665833" />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="0.13333334028720856" blue="1.0" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </LinearGradient>
+            </fill>
+        </Text>
+        <FontAwesomeIconView fill="#00a7d5" layoutX="152.0" layoutY="162.0" size="52" text="" />
     </AnchorPane>
 </HBox>
