@@ -163,7 +163,7 @@
       </HBox>
    </HBox>
    <StackPane layoutX="200.0" layoutY="60.0" prefHeight="660.0" prefWidth="1000.0">
-      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" visible="false">
+      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
          <Pane layoutX="20.0" layoutY="62.0" prefHeight="120.0" prefWidth="220.0" style="-fx-border-color: white; -fx-border-radius: 25; -fx-background-color: white;">
             <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Earnings">
                <font>
@@ -322,7 +322,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text fx:id="title_text1" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -335,7 +335,7 @@
                </font>
             </TextField>
             <FontAwesomeIconView glyphName="SEARCH" layoutX="214.0" layoutY="34.0" />
-            <TableView layoutX="12.0" layoutY="62.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="947.0">
+            <TableView fx:id="tblv_productView" layoutX="12.0" layoutY="62.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="947.0">
                <columns>
                   <TableColumn fx:id="product_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" visible="false" />
                   <TableColumn fx:id="product_col_name" prefWidth="111.99996948242188" text="Name" />
