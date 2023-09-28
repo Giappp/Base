@@ -65,7 +65,7 @@ CREATE  TABLE logistics.order_item (
  ) engine=InnoDB;
 
 CREATE  TABLE logistics.transportation ( 
-	trasport_id          INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	transport_id          INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
 	order_id             INT       ,
 	order_item_id        INT       ,
 	`status`             CHAR(1)       ,
