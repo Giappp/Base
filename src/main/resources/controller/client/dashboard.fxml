@@ -8,20 +8,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.DashBoardController">
-   <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="1000.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.DashBoardController">
+   <HBox alignment="TOP_RIGHT" layoutX="200.0" prefHeight="50.0" prefWidth="1000.0">
       <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
          <HBox.margin>
-            <Insets bottom="20.0" left="30.0" right="10.0" top="20.0" />
+            <Insets left="30.0" right="10.0" top="20.0" />
          </HBox.margin>
          <Image url="@../images/search.png" />
       </ImageView>
       <TextField prefHeight="26.0" prefWidth="288.0" promptText="Search">
          <HBox.margin>
-            <Insets bottom="20.0" top="20.0" />
+            <Insets top="20.0" />
          </HBox.margin>
          <font>
             <Font name="Segoe UI" size="14.0" />
@@ -29,7 +30,7 @@
       </TextField>
       <Button fx:id="notify_btn" mnemonicParsing="false" style="-fx-background-color: transparent;">
          <HBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets left="20.0" right="20.0" top="20.0" />
          </HBox.margin>
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -39,7 +40,7 @@
       </Button>
       <Button fx:id="message_btn" mnemonicParsing="false" style="-fx-background-color: transparent;">
          <HBox.margin>
-            <Insets bottom="20.0" right="20.0" top="20.0" />
+            <Insets right="20.0" top="20.0" />
          </HBox.margin>
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -50,7 +51,7 @@
       <HBox prefHeight="50.0" prefWidth="200.0">
          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
             <HBox.margin>
-               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               <Insets left="15.0" right="15.0" top="15.0" />
             </HBox.margin>
             <Image url="@../images/user.png" />
          </ImageView>
@@ -59,12 +60,12 @@
                <Font name="Segoe UI" size="20.0" />
             </font>
             <HBox.margin>
-               <Insets bottom="20.0" right="20.0" top="20.0" />
+               <Insets right="20.0" top="20.0" />
             </HBox.margin>
          </Text>
       </HBox>
    </HBox>
-   <HBox layoutY="70.0" prefHeight="50.0" prefWidth="1000.0">
+   <HBox layoutX="200.0" layoutY="55.0" prefHeight="50.0" prefWidth="1000.0">
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
          <HBox.margin>
             <Insets bottom="12.0" left="25.0" right="12.0" top="12.0" />
@@ -74,7 +75,7 @@
          </font>
       </Text>
    </HBox>
-   <AnchorPane layoutY="120.0" prefHeight="620.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
+   <AnchorPane layoutX="200.0" layoutY="100.0" prefHeight="620.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
       <Pane layoutX="20.0" layoutY="22.0" prefHeight="120.0" prefWidth="220.0" style="-fx-border-color: white; -fx-border-radius: 25; -fx-background-color: white;">
          <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Earnings">
             <font>
@@ -164,4 +165,143 @@
          </Text>
       </Pane>
    </AnchorPane>
+   <VBox prefHeight="720.0" prefWidth="198.0" style="-fx-background-color: #00a7d5;">
+      <children>
+         <Pane prefHeight="110.0" prefWidth="350.0">
+            <children>
+               <ImageView fitHeight="120.0" fitWidth="134.0" layoutX="33.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/logo-scm.png" />
+                  </image>
+               </ImageView>
+            </children>
+         </Pane>
+         <Button fx:id="home_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="193.0" style="-fx-background-color: transparent;" text="Dashboard" textAlignment="CENTER" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/dash.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Button>
+         <Button fx:id="account_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Account" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/user1.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Button>
+         <Button fx:id="storage_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Storage" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/data.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Button>
+         <Button fx:id="orders_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Orders" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/order1.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Button>
+         <Button fx:id="messages_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Messages" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/message1.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Button>
+         <Button fx:id="setting_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Setting" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/setting1.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+            <padding>
+               <Insets right="5.0" />
+            </padding>
+         </Button>
+         <Button fx:id="sign_out_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Sign out" textFill="WHITE">
+            <graphic>
+               <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/logout1.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            <font>
+               <Font name="Segoe UI" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+            <padding>
+               <Insets left="4.0" />
+            </padding>
+         </Button>
+      </children>
+   </VBox>
 </AnchorPane>
