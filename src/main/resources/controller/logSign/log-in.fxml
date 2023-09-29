@@ -77,7 +77,7 @@
                 <Font name="Segoe UI Bold" size="40.0" />
             </font>
             <fill>
-                <LinearGradient endX="0.5303029725045868" endY="0.7575757449323479" startX="0.534090900963003" startY="0.3409090240796407">
+                <LinearGradient cycleMethod="REFLECT" endX="0.5303029725045868" endY="0.7575757449323479" startX="0.534090900963003" startY="0.3409090240796407">
                     <stops>
                         <Stop>
                             <color>

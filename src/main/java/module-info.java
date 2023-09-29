@@ -1,4 +1,4 @@
-module org.example {
+module Base {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;

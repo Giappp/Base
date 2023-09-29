@@ -163,7 +163,7 @@
       </HBox>
    </HBox>
    <StackPane layoutX="200.0" layoutY="60.0" prefHeight="660.0" prefWidth="1000.0">
-      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
+      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" visible="false">
          <Pane layoutX="20.0" layoutY="62.0" prefHeight="120.0" prefWidth="220.0" style="-fx-border-color: white; -fx-border-radius: 25; -fx-background-color: white;">
             <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Earnings">
                <font>
@@ -322,7 +322,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
          <Text fx:id="title_text1" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -335,16 +335,16 @@
                </font>
             </TextField>
             <FontAwesomeIconView glyphName="SEARCH" layoutX="214.0" layoutY="34.0" />
-            <TableView fx:id="tblv_productView" layoutX="12.0" layoutY="62.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="947.0">
+            <TableView fx:id="tblv_productView" layoutX="-1.0" layoutY="57.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="860.0" style="-fx-background-color: transparent;" stylesheets="@table.css">
                <columns>
                   <TableColumn fx:id="product_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" visible="false" />
-                  <TableColumn fx:id="product_col_name" prefWidth="111.99996948242188" text="Name" />
-                  <TableColumn fx:id="product_col_type" maxWidth="116.0" prefWidth="116.0" text="Type" />
-                  <TableColumn fx:id="product_col_brand" prefWidth="122.39993286132812" text="Brand" />
-                  <TableColumn fx:id="product_col_date" minWidth="0.0" prefWidth="134.39996337890625" text="Date" />
-                  <TableColumn fx:id="product_col_status" maxWidth="105.60003662109375" minWidth="0.0" prefWidth="90.4000244140625" text="Status" />
-                  <TableColumn fx:id="product_col_price" minWidth="0.0" prefWidth="112.0" text="Price" />
-                  <TableColumn fx:id="product_col_amount" prefWidth="258.4000122070313" text="Amount" />
+                  <TableColumn fx:id="product_col_name" editable="false" maxWidth="200.0" prefWidth="100.0" styleClass="column-header" text="Name" />
+                  <TableColumn fx:id="product_col_type" editable="false" maxWidth="250.0" prefWidth="200.0" styleClass="column-header" text="Type" />
+                  <TableColumn fx:id="product_col_brand" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="100.0" styleClass="column-header" text="Brand" />
+                  <TableColumn fx:id="product_col_date" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="100.0" styleClass="column-header" text="Date" />
+                  <TableColumn fx:id="product_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="100.0" styleClass="column-header" text="Status" />
+                  <TableColumn fx:id="product_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="100.0" styleClass="column-header" text="Price" />
+                  <TableColumn fx:id="product_col_amount" editable="false" maxWidth="200.0" prefWidth="150.0" styleClass="column-header" text="Amount" />
                </columns>
             </TableView>
          </AnchorPane>
