@@ -178,6 +178,11 @@
    </HBox>
    <StackPane layoutX="200.0" layoutY="60.0" prefHeight="660.0" prefWidth="1000.0">
       <AnchorPane fx:id="dashboard_home" onMouseClicked="#handle" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" visible="false">
+         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
+            <font>
+               <Font name="Segoe UI" size="24.0" />
+            </font>
+         </Text>
          <Pane layoutX="20.0" layoutY="62.0" prefHeight="120.0" prefWidth="220.0" style="-fx-border-color: white; -fx-border-radius: 25; -fx-background-color: white;">
             <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Earnings">
                <font>
@@ -272,11 +277,6 @@
                </yAxis>
             </BarChart>
          </Pane>
-         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
-            <font>
-               <Font name="Segoe UI" size="24.0" />
-            </font>
-         </Text>
       </AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add products">
@@ -352,7 +352,7 @@
          </AnchorPane>
       </AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <Text fx:id="title_text11" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
+         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
             <font>
                <Font name="Segoe UI" size="24.0" />
             </font>
@@ -413,7 +413,7 @@
          </AnchorPane>
       </AnchorPane>
       <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
-         <Text fx:id="title_text111" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
+         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
             </font>
