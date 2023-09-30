@@ -2,6 +2,7 @@ package com.controller.client;
 
 import com.controller.logSign.DBController;
 import com.entities.Product;
+import com.entities.Supplier;
 import com.model.ProductModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -24,9 +25,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DashBoardController implements Initializable {
     @FXML
@@ -133,10 +132,21 @@ public class DashBoardController implements Initializable {
     @FXML
     private Label username_label;
     private ObservableList<Product> observableList;
+    @FXML
+    private ComboBox<?> cb_listproduct;
+
+    @FXML
+    private ComboBox<?> cb_listproducttype;
+
+    @FXML
+    private ComboBox<?> cb_listsupplier;
+    @FXML
+    private Spinner<?> sp_quantity;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addProductShowListData();
+        home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
         sign_out_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -161,6 +171,10 @@ public class DashBoardController implements Initializable {
                 dashboard_home.setVisible(true);
                 dashboard_order.setVisible(false);
                 dashboard_storage.setVisible(false);
+
+                home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
+                storage_btn.setStyle("-fx-background-color: transparent");
+                orders_btn.setStyle("-fx-background-color: transparent");
             }
         });
         storage_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -170,6 +184,10 @@ public class DashBoardController implements Initializable {
                 dashboard_order.setVisible(false);
                 dashboard_storage.setVisible(true);
                 addProductShowListData();
+
+                storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+                home_btn.setStyle("-fx-background-color: transparent");
+                orders_btn.setStyle("-fx-background-color: transparent");
             }
         });
         orders_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -178,9 +196,13 @@ public class DashBoardController implements Initializable {
                 dashboard_home.setVisible(false);
                 dashboard_order.setVisible(true);
                 dashboard_storage.setVisible(false);
+
+                orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+                home_btn.setStyle("-fx-background-color: transparent");
+                storage_btn.setStyle("-fx-background-color: transparent");
             }
         });
-        tblv_productView.setItems(observableList);
+        addProductShowListData();
         observableList.addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
@@ -198,5 +220,10 @@ public class DashBoardController implements Initializable {
         product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tblv_productView.setItems(observableList);
+    }
+
+    public void getBrandName(){
+        List<String> listT = new ArrayList<>();
     }
 }
