@@ -102,7 +102,7 @@ public class SignUpController implements Initializable {
     public void signUpUser(ActionEvent event, String username, String password, String confirmPass,
                                   String email,String phone) {
         try(Connection con = JDBCConnect.getJDBCConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE username = ?")
+            PreparedStatement ps = Objects.requireNonNull(con).prepareStatement("SELECT * FROM users WHERE username = ?")
         ) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();

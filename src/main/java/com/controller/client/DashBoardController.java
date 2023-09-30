@@ -1,8 +1,8 @@
 package com.controller.client;
 
 import com.controller.logSign.DBController;
+import com.db.dao.JDBCConnect;
 import com.entities.Product;
-import com.entities.Supplier;
 import com.model.ProductModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -10,15 +10,16 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -26,7 +27,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
-import java.sql.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.*;
 import java.util.ResourceBundle;
 
@@ -48,14 +51,18 @@ public class DashBoardController implements Initializable {
     public javafx.scene.text.Text total_delivery_text;
 
     public Button total_order_btn;
+
     @FXML
     private AnchorPane main_form;
     @FXML
     private AnchorPane dashboard_home;
+
     @FXML
     private AnchorPane dashboard_addproduct;
+
     @FXML
     private AnchorPane dashboard_order;
+
     @FXML
     private AnchorPane dashboard_storage;
 
@@ -70,6 +77,7 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TableView<Product> tblv_productView;
+
     @FXML
     private TableColumn<Product, Integer> product_col_amount;
 
@@ -106,6 +114,7 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Button storage_btn;
+
     @FXML
     private Button add_btn;
     @FXML
@@ -118,103 +127,115 @@ public class DashBoardController implements Initializable {
     private Text total_order_text;
     @FXML
     private Label username_label;
+
     private ObservableList<Product> observableList;
+
     @FXML
     private ComboBox<?> cb_listproduct;
     @FXML
     private ComboBox<?> cb_listproducttype;
     @FXML
     private ComboBox<?> cb_listsupplier;
+
     @FXML
     private Spinner<?> sp_quantity;
     // Image
     private Image image;
 
+    @FXML
+    private AnchorPane main_form;
+
+    @FXML
+    private BarChart<?, ?> sale_revenue_chart;
+
+    public void chart() throws Exception {
+        String sql = "SELECT total_price, date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+        PreparedStatement ps = con.prepareStatement(sql)) {
+            XYChart.Series chartData = new XYChart.Series<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
+            }
+
+            sale_revenue_chart.getData().add(chartData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            chart();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         addProductShowListData();
         home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
-        sign_out_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Are you sure want to logout?");
-                    Optional<ButtonType> option = alert.showAndWait();
+        sign_out_btn.setOnAction(event -> {
+            try {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure want to logout?");
+                Optional<ButtonType> option = alert.showAndWait();
 
-                    if (option.get().equals(ButtonType.OK)) {
-                        DBController.changeScene(event, "/controller/logSign/log-in.fxml");
-                    } else return;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                if (option.get().equals(ButtonType.OK)) {
+                    DBController.changeScene(event, "/controller/logSign/log-in.fxml");
+                } else return;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-        home_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dashboard_home.setVisible(true);
-                dashboard_order.setVisible(false);
-                dashboard_storage.setVisible(false);
-                dashboard_addproduct.setVisible(false);
+        home_btn.setOnAction(event -> {
+            dashboard_home.setVisible(true);
+            dashboard_order.setVisible(false);
+            dashboard_storage.setVisible(false);
+            dashboard_addproduct.setVisible(false);
 
-                home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
-                storage_btn.setStyle("-fx-background-color: transparent");
-                orders_btn.setStyle("-fx-background-color: transparent");
-                add_btn.setStyle("-fx-background-color: transparent");
-            }
+            home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
+            storage_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: transparent");
+            add_btn.setStyle("-fx-background-color: transparent");
         });
-        storage_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dashboard_home.setVisible(false);
-                dashboard_order.setVisible(false);
-                dashboard_storage.setVisible(true);
-                dashboard_addproduct.setVisible(false);
-                addProductShowListData();
+        storage_btn.setOnAction(event -> {
+            dashboard_home.setVisible(false);
+            dashboard_order.setVisible(false);
+            dashboard_storage.setVisible(true);
+            dashboard_addproduct.setVisible(false);
+            addProductShowListData();
 
-                storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-                home_btn.setStyle("-fx-background-color: transparent");
-                orders_btn.setStyle("-fx-background-color: transparent");
-                add_btn.setStyle("-fx-background-color: transparent");
-            }
+            storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            home_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: transparent");
+            add_btn.setStyle("-fx-background-color: transparent");
         });
-        orders_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dashboard_home.setVisible(false);
-                dashboard_order.setVisible(true);
-                dashboard_storage.setVisible(false);
-                dashboard_addproduct.setVisible(false);
+        orders_btn.setOnAction(event -> {
+            dashboard_home.setVisible(false);
+            dashboard_order.setVisible(true);
+            dashboard_storage.setVisible(false);
+            dashboard_addproduct.setVisible(false);
 
-                orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-                home_btn.setStyle("-fx-background-color: transparent");
-                storage_btn.setStyle("-fx-background-color: transparent");
-                add_btn.setStyle("-fx-background-color: transparent");
-            }
+            orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            home_btn.setStyle("-fx-background-color: transparent");
+            storage_btn.setStyle("-fx-background-color: transparent");
+            add_btn.setStyle("-fx-background-color: transparent");
         });
-        add_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dashboard_home.setVisible(false);
-                dashboard_order.setVisible(false);
-                dashboard_storage.setVisible(false);
-                dashboard_addproduct.setVisible(true);
+        add_btn.setOnAction(event -> {
+            dashboard_home.setVisible(false);
+            dashboard_order.setVisible(false);
+            dashboard_storage.setVisible(false);
+            dashboard_addproduct.setVisible(true);
 
-                orders_btn.setStyle("-fx-background-color: transparent");
-                home_btn.setStyle("-fx-background-color: transparent");
-                storage_btn.setStyle("-fx-background-color: transparent");
-                add_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-            }
+            orders_btn.setStyle("-fx-background-color: transparent");
+            home_btn.setStyle("-fx-background-color: transparent");
+            storage_btn.setStyle("-fx-background-color: transparent");
+            add_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
         });
-        observableList.addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                addProductShowListData();
-            }
-        });
+        observableList.addListener((InvalidationListener) observable -> addProductShowListData());
     }
     public void addProductShowListData(){
         observableList = new ProductModel().getProductList();
@@ -253,4 +274,6 @@ public class DashBoardController implements Initializable {
             addproduct_imageview.setImage(image);
         }
     }
+
+
 }
