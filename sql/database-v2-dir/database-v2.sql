@@ -82,7 +82,7 @@ ALTER TABLE `product` ADD FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`id
 
 ALTER TABLE `order` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
 
-ALTER TABLE `order` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `order` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `product_in_order` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
 
@@ -90,10 +90,10 @@ ALTER TABLE `product_in_order` ADD FOREIGN KEY (`product_id`) REFERENCES `produc
 
 ALTER TABLE `invoice` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
 
-ALTER TABLE `invoice` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `invoice` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `invoice` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
 
 ALTER TABLE `goods_import` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-ALTER TABLE `goods_import` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `goods_import` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

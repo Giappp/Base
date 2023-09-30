@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
@@ -34,7 +35,7 @@ public class LogInController implements Initializable {
     }
     public void logInUser(ActionEvent event, String username, String password) {
         try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = con.prepareStatement("SELECT password FROM users WHERE username = ?")
+             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement("SELECT password FROM users WHERE username = ?")
              ){
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
