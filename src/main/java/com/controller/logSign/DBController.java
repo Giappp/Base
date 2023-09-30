@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import com.controller.client.ClientController;
 
 import java.io.IOException;
 import java.util.Objects;

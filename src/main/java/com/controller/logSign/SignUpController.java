@@ -1,10 +1,7 @@
 package com.controller.logSign;
 
 import com.db.dao.JDBCConnect;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -39,45 +36,31 @@ public class SignUpController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        btn_login.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBController.changeScene(event, "/controller/logSign/log-in.fxml");
-            }
-        });
+        btn_login.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/log-in.fxml"));
 
 
-        btn_signup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (!tf_username.getText().trim().isEmpty()
-                        && validatePasswords(pf_password.getText(), pf_confirm_password.getText(), lbl_error_pass)
-                        && validateEmail(tf_email.getText()) && validatePhone(tf_phone.getText())) {
-                    signUpUser(event, tf_username.getText(), pf_password.getText(), pf_confirm_password.getText(),
-                            tf_email.getText(), tf_phone.getText());
-                } else {
-                    System.out.println("Please fill all information");
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Please fill all information to sign up.");
-                    alert.show();
-                }
+        btn_signup.setOnAction(event -> {
+            if (!tf_username.getText().trim().isEmpty()
+                    && validatePasswords(pf_password.getText(), pf_confirm_password.getText(), lbl_error_pass)
+                    && validateEmail(tf_email.getText()) && validatePhone(tf_phone.getText())) {
+                signUpUser(event, tf_username.getText(), pf_password.getText(), pf_confirm_password.getText(),
+                        tf_email.getText(), tf_phone.getText());
+            } else {
+                System.out.println("Please fill all information");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Please fill all information to sign up.");
+                alert.show();
             }
         });
         // Add listener on focus action
-        pf_confirm_password.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (!newValue) {
-                    validatePasswords(pf_password.getText(), pf_confirm_password.getText(), lbl_error_pass);
-                }
+        pf_confirm_password.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                validatePasswords(pf_password.getText(), pf_confirm_password.getText(), lbl_error_pass);
             }
         });
-        pf_password.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (!newValue) {
-                    validatePasswords(Objects.requireNonNull(pf_password.getText()), Objects.requireNonNull(pf_confirm_password.getText()), lbl_error_pass);
-                }
+        pf_password.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                validatePasswords(Objects.requireNonNull(pf_password.getText()), Objects.requireNonNull(pf_confirm_password.getText()), lbl_error_pass);
             }
         });
     }
@@ -102,9 +85,7 @@ public class SignUpController implements Initializable {
     private boolean validatePasswords(String password, String confirmPassword, Label lbl_error_pass) {
         // Check if confirmed password matches with password
         if (!password.isBlank() && !confirmPassword.isBlank() && !password.equals(confirmPassword)) {
-            Platform.runLater(() -> {
-                lbl_error_pass.setText("Confirm password does not match");
-            });
+            Platform.runLater(() -> lbl_error_pass.setText("Confirm password does not match"));
             return false;
         }
         // Check if password is blank
@@ -121,7 +102,7 @@ public class SignUpController implements Initializable {
     public void signUpUser(ActionEvent event, String username, String password, String confirmPass,
                                   String email,String phone) {
         try(Connection con = JDBCConnect.getJDBCConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE username = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE username = ?")
         ) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();

@@ -2,7 +2,6 @@ package com.controller.logSign;
 
 import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -29,23 +28,13 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        btn_login.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                logInUser(event, tf_username.getText(), pf_password.getText());
-            }
-        });
+        btn_login.setOnAction(event -> logInUser(event, tf_username.getText(), pf_password.getText()));
 
-        btn_signup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBController.changeScene(event, "/controller/logSign/sign-up.fxml");
-            }
-        });
+        btn_signup.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/sign-up.fxml"));
     }
     public void logInUser(ActionEvent event, String username, String password) {
         try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = con.prepareStatement("SELECT password FROM users WHERE username = ?");
+             PreparedStatement ps = con.prepareStatement("SELECT password FROM users WHERE username = ?")
              ){
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();

@@ -12,48 +12,32 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Date;
 import java.util.*;
+import java.util.ResourceBundle;
 
 public class DashBoardController implements Initializable {
-    @FXML
-    private Button account_btn;
+    public Button earning_info_btn;
 
-    @FXML
-    private AnchorPane dashboard_home;
+    public javafx.scene.text.Text earning_text;
 
-    @FXML
-    private AnchorPane dashboard_order;
+    public Button message_btn;
 
-    @FXML
-    private AnchorPane dashboard_storage;
+    public Button notify_btn;
 
-    @FXML
-    private AnchorPane dashboardscene;
+    public Button product_sold_btn;
 
-    @FXML
-    private Button earning_info_btn;
+    public javafx.scene.text.Text product_sold_text;
 
-    @FXML
-    private Text earning_text;
+    public Button total_delivery_btn;
 
-    @FXML
-    private Button home_btn;
+    public javafx.scene.text.Text total_delivery_text;
 
-    @FXML
-    private Button message_btn;
+    public Button total_order_btn;
 
     @FXML
     private Button messages_btn;
