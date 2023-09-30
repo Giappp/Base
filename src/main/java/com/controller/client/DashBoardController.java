@@ -12,8 +12,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.Date;
@@ -38,12 +43,20 @@ public class DashBoardController implements Initializable {
     public javafx.scene.text.Text total_delivery_text;
 
     public Button total_order_btn;
+    @FXML
+    private AnchorPane dashboard_home;
+    @FXML
+    private AnchorPane dashboard_addproduct;
+    @FXML
+    private AnchorPane dashboard_order;
+    @FXML
+    private AnchorPane dashboard_storage;
+
+    @FXML
+    private Button home_btn;
 
     @FXML
     private Button messages_btn;
-
-    @FXML
-    private Button notify_btn;
 
     @FXML
     private Button orders_btn;
@@ -57,7 +70,7 @@ public class DashBoardController implements Initializable {
     private TableColumn<Product, String> product_col_brand;
 
     @FXML
-    private TableColumn<Product, Date> product_col_date;
+    private TableColumn<Product, ImageView> product_col_image;
 
     @FXML
     private TableColumn<Product, Integer> product_col_id;
@@ -77,11 +90,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private TextField product_field_search;
 
-    @FXML
-    private Button product_sold_btn;
-
-    @FXML
-    private Text product_sold_text;
 
     @FXML
     private Button setting_btn;
@@ -91,6 +99,8 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Button storage_btn;
+    @FXML
+    private Button add_btn;
 
     @FXML
     private Text title_text;
@@ -101,14 +111,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private Text title_text11;
 
-    @FXML
-    private Button total_delivery_btn;
-
-    @FXML
-    private Text total_delivery_text;
-
-    @FXML
-    private Button total_order_btn;
 
     @FXML
     private Text total_order_text;
@@ -155,10 +157,12 @@ public class DashBoardController implements Initializable {
                 dashboard_home.setVisible(true);
                 dashboard_order.setVisible(false);
                 dashboard_storage.setVisible(false);
+                dashboard_addproduct.setVisible(false);
 
                 home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
                 storage_btn.setStyle("-fx-background-color: transparent");
                 orders_btn.setStyle("-fx-background-color: transparent");
+                add_btn.setStyle("-fx-background-color: transparent");
             }
         });
         storage_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -167,11 +171,13 @@ public class DashBoardController implements Initializable {
                 dashboard_home.setVisible(false);
                 dashboard_order.setVisible(false);
                 dashboard_storage.setVisible(true);
+                dashboard_addproduct.setVisible(false);
                 addProductShowListData();
 
                 storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
                 home_btn.setStyle("-fx-background-color: transparent");
                 orders_btn.setStyle("-fx-background-color: transparent");
+                add_btn.setStyle("-fx-background-color: transparent");
             }
         });
         orders_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -180,13 +186,28 @@ public class DashBoardController implements Initializable {
                 dashboard_home.setVisible(false);
                 dashboard_order.setVisible(true);
                 dashboard_storage.setVisible(false);
+                dashboard_addproduct.setVisible(false);
 
                 orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
                 home_btn.setStyle("-fx-background-color: transparent");
                 storage_btn.setStyle("-fx-background-color: transparent");
+                add_btn.setStyle("-fx-background-color: transparent");
             }
         });
-        addProductShowListData();
+        add_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dashboard_home.setVisible(false);
+                dashboard_order.setVisible(false);
+                dashboard_storage.setVisible(false);
+                dashboard_addproduct.setVisible(true);
+
+                orders_btn.setStyle("-fx-background-color: transparent");
+                home_btn.setStyle("-fx-background-color: transparent");
+                storage_btn.setStyle("-fx-background-color: transparent");
+                add_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            }
+        });
         observableList.addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
@@ -197,12 +218,33 @@ public class DashBoardController implements Initializable {
     public void addProductShowListData(){
         observableList = new ProductModel().getProductList();
         product_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        product_col_image.setCellValueFactory(param -> {
+            // Create an imageView based on the image URL in the data
+            ImageView imageView = new ImageView();
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+
+            String imageUrl = param.getValue().getImage();
+            Image image = new Image(imageUrl);
+            imageView.setImage(image);
+
+            return new TableCell<Product, ImageView>(){
+                @Override
+                protected void updateItem(ImageView item, boolean empty){
+                    super.updateItem(item,empty);
+                    if(item == null || empty){
+                        setGraphic(null);
+                    }else{
+                        setGraphic(item);
+                    }
+                }
+            }.itemProperty();
+        });
         product_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
-        product_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         product_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
-        product_col_price.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_productView.setItems(observableList);
     }

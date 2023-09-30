@@ -8,11 +8,11 @@ public class Product {
     private String supplierName;
     private String productType;
     private Integer quantityInStock;
-    private Double unitPrice;
+    private Double salePrice;
     private Double discountPercentage;
     private String description;
     private String status;
-    private Date date;
+    private String image;
 
     public Product() {
     }
@@ -57,12 +57,12 @@ public class Product {
         this.quantityInStock = quantityInStock;
     }
 
-    public Double getUnitPrice() {
-        return unitPrice;
+    public Double getSalePrice() {
+        return salePrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setSalePrice(Double unitPrice) {
+        this.salePrice = unitPrice;
     }
 
     public Double getDiscountPercentage() {
@@ -89,11 +89,12 @@ public class Product {
         this.status = status;
     }
 
-    public Date getDate() {
-        return date;
+
+    public String getImage() {
+        return image;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

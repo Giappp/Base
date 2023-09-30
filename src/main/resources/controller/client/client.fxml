@@ -6,7 +6,6 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
@@ -279,13 +278,13 @@
             </BarChart>
          </Pane>
       </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_addproduct" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add products">
             <font>
                <Font name="Segoe UI" size="24.0" />
             </font>
          </Text>
-         <AnchorPane layoutX="162.0" layoutY="60.0" prefHeight="586.0" prefWidth="500.0" style="-fx-background-color: white;">
+         <AnchorPane layoutX="58.0" layoutY="60.0" prefHeight="586.0" prefWidth="650.0" style="-fx-background-color: white;">
             <TextField layoutX="236.0" layoutY="255.0" />
             <Text layoutX="207.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Products">
                <font>
@@ -352,7 +351,7 @@
             </Pane>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_order" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -413,7 +412,7 @@
             </children>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -429,13 +428,13 @@
             <TableView fx:id="tblv_productView" layoutX="21.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="958.0" stylesheets="@table.css">
                <columns>
                   <TableColumn fx:id="product_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" visible="false" />
-                  <TableColumn fx:id="product_col_name" editable="false" maxWidth="200.0" prefWidth="119.19998168945312" styleClass="column-header" text="Name" />
-                  <TableColumn fx:id="product_col_type" editable="false" maxWidth="250.0" prefWidth="124.80001831054688" styleClass="column-header" text="Type" />
-                  <TableColumn fx:id="product_col_brand" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="132.0" styleClass="column-header" text="Brand" />
-                  <TableColumn fx:id="product_col_date" editable="false" maxWidth="218.39996337890625" minWidth="0.0" prefWidth="218.39996337890625" styleClass="column-header" text="Date" />
-                  <TableColumn fx:id="product_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="127.99993896484375" styleClass="column-header" text="Price" />
-                  <TableColumn fx:id="product_col_amount" editable="false" maxWidth="200.0" prefWidth="108.0" styleClass="column-header" text="Amount" />
-                  <TableColumn fx:id="product_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="83.2000732421875" styleClass="column-header" text="Status" />
+                  <TableColumn fx:id="product_col_image" prefWidth="123.19998168945312" text="Image" />
+                  <TableColumn fx:id="product_col_name" editable="false" maxWidth="200.0" prefWidth="117.60000610351562" styleClass="column-header" text="Name" />
+                  <TableColumn fx:id="product_col_type" editable="false" maxWidth="250.0" prefWidth="149.5999755859375" styleClass="column-header" text="Type" />
+                  <TableColumn fx:id="product_col_brand" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="152.79998779296875" styleClass="column-header" text="Brand" />
+                  <TableColumn fx:id="product_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="107.20001220703125" styleClass="column-header" text="Price" />
+                  <TableColumn fx:id="product_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="118.39996337890625" styleClass="column-header" text="Status" />
+                  <TableColumn fx:id="product_col_amount" editable="false" maxWidth="212.00003662109373" prefWidth="188.79998779296875" styleClass="column-header" text="Amount" />
                </columns>
             </TableView>
          </AnchorPane>
