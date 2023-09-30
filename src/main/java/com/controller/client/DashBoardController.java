@@ -6,6 +6,8 @@ import com.entities.Supplier;
 import com.model.ProductModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,8 +20,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.Date;
 import java.util.*;
@@ -43,6 +48,8 @@ public class DashBoardController implements Initializable {
     public javafx.scene.text.Text total_delivery_text;
 
     public Button total_order_btn;
+    @FXML
+    private AnchorPane main_form;
     @FXML
     private AnchorPane dashboard_home;
     @FXML
@@ -89,8 +96,8 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TextField product_field_search;
-
-
+    @FXML
+    private ImageView addproduct_imageview;
     @FXML
     private Button setting_btn;
 
@@ -101,33 +108,27 @@ public class DashBoardController implements Initializable {
     private Button storage_btn;
     @FXML
     private Button add_btn;
-
     @FXML
     private Text title_text;
-
     @FXML
     private Text title_text1;
-
     @FXML
     private Text title_text11;
-
-
     @FXML
     private Text total_order_text;
-
     @FXML
     private Label username_label;
     private ObservableList<Product> observableList;
     @FXML
     private ComboBox<?> cb_listproduct;
-
     @FXML
     private ComboBox<?> cb_listproducttype;
-
     @FXML
     private ComboBox<?> cb_listsupplier;
     @FXML
     private Spinner<?> sp_quantity;
+    // Image
+    private Image image;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -221,24 +222,13 @@ public class DashBoardController implements Initializable {
         product_col_image.setCellValueFactory(param -> {
             // Create an imageView based on the image URL in the data
             ImageView imageView = new ImageView();
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
+            imageView.setFitHeight(50);
+            imageView.setFitWidth(50);
 
             String imageUrl = param.getValue().getImage();
             Image image = new Image(imageUrl);
             imageView.setImage(image);
-
-            return new TableCell<Product, ImageView>(){
-                @Override
-                protected void updateItem(ImageView item, boolean empty){
-                    super.updateItem(item,empty);
-                    if(item == null || empty){
-                        setGraphic(null);
-                    }else{
-                        setGraphic(item);
-                    }
-                }
-            }.itemProperty();
+            return new SimpleObjectProperty<>(imageView);
         });
         product_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
@@ -249,7 +239,18 @@ public class DashBoardController implements Initializable {
         tblv_productView.setItems(observableList);
     }
 
-    public void getBrandName(){
-        List<String> listT = new ArrayList<>();
+    public void addProductImportImage(){
+        String currentPath = System.getProperty("user.dir");
+        FileChooser open = new FileChooser();
+        open.setTitle("Open image file");
+        open.setInitialDirectory(new File(currentPath + "\\src\\main\\resources\\controller\\images"));
+        open.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File","*jpg","*png"));
+
+        File file = open.showOpenDialog(main_form.getScene().getWindow());
+
+        if(file != null){
+            image = new Image(file.toURI().toString(), 150 ,130, false, true);
+            addproduct_imageview.setImage(image);
+        }
     }
 }

@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="dashboardscene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.DashBoardController">
+<AnchorPane fx:id="main_form" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.DashBoardController">
    <VBox prefHeight="720.0" prefWidth="200.0" style="-fx-background-color: #00a7d5;">
       <Pane prefHeight="110.0" prefWidth="350.0">
          <Text fill="WHITE" layoutX="11.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -278,7 +278,7 @@
             </BarChart>
          </Pane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_addproduct" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_addproduct" prefHeight="200.0" prefWidth="200.0">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add products">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -286,7 +286,7 @@
          </Text>
          <AnchorPane layoutX="58.0" layoutY="60.0" prefHeight="586.0" prefWidth="650.0" style="-fx-background-color: white;">
             <TextField layoutX="236.0" layoutY="255.0" />
-            <Text layoutX="207.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Products">
+            <Text layoutX="222.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Products">
                <font>
                   <Font name="Segoe UI" size="22.0" />
                </font>
@@ -335,18 +335,14 @@
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Text>
-            <Button layoutX="192.0" layoutY="205.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="116.0" text="Add photo">
+            <Button layoutX="207.0" layoutY="214.0" mnemonicParsing="false" onAction="#addProductImportImage" prefHeight="26.0" prefWidth="116.0" text="Add photo">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Button>
-            <Pane layoutX="170.0" layoutY="60.0" prefHeight="129.0" prefWidth="159.0">
+            <Pane layoutX="165.0" layoutY="44.0" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="129.0" fitWidth="159.0" layoutX="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/product.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="addproduct_imageview" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
          </AnchorPane>
@@ -412,7 +408,7 @@
             </children>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -433,8 +429,8 @@
                   <TableColumn fx:id="product_col_type" editable="false" maxWidth="250.0" prefWidth="149.5999755859375" styleClass="column-header" text="Type" />
                   <TableColumn fx:id="product_col_brand" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="152.79998779296875" styleClass="column-header" text="Brand" />
                   <TableColumn fx:id="product_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="107.20001220703125" styleClass="column-header" text="Price" />
-                  <TableColumn fx:id="product_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="118.39996337890625" styleClass="column-header" text="Status" />
-                  <TableColumn fx:id="product_col_amount" editable="false" maxWidth="212.00003662109373" prefWidth="188.79998779296875" styleClass="column-header" text="Amount" />
+                  <TableColumn fx:id="product_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="112.79998779296875" styleClass="column-header" text="Status" />
+                  <TableColumn fx:id="product_col_amount" editable="false" maxWidth="218.4000244140625" prefWidth="194.4000244140625" styleClass="column-header" text="Amount" />
                </columns>
             </TableView>
          </AnchorPane>

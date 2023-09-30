@@ -51,7 +51,9 @@ public class ProductModel {
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
 
             }
-        }catch (SQLException e){ e.printStackTrace(); }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
         return false;
     }
 }
