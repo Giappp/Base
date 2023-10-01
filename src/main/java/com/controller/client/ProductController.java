@@ -1,7 +1,17 @@
 package com.controller.client;
 
+import com.entities.Product;
+import com.entities.ProductCategory;
+import com.entities.Supplier;
+import com.model.ProductCategoryModel;
+import com.model.ProductModel;
+import com.model.SupplierModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -11,8 +21,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ProductController {
+public class ProductController implements Initializable {
 
     @FXML
     private AnchorPane addProductScene;
@@ -21,7 +33,7 @@ public class ProductController {
     private Button addProduct_addBtn;
 
     @FXML
-    private ComboBox<?> addProduct_brand_cb;
+    private ComboBox<String> addProduct_brand_cb;
 
     @FXML
     private TextField addProduct_name_tf;
@@ -36,7 +48,7 @@ public class ProductController {
     private TextField addProduct_price_tf;
 
     @FXML
-    private ComboBox<?> addProduct_type_cb;
+    private ComboBox<String> addProduct_type_cb;
 
     @FXML
     private ImageView addproduct_imageview;
@@ -44,6 +56,28 @@ public class ProductController {
     @FXML
     private AnchorPane dashboard_addproduct;
     private Image image;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<String> listbrands= FXCollections.observableArrayList(new SupplierModel().getBrands());
+        ObservableList<String> listtypes = FXCollections.observableArrayList(new ProductCategoryModel().getType());
+        addProduct_brand_cb.setItems(listbrands);
+        addProduct_type_cb.setItems(listtypes);
+        addProduct_addBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
+                String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
+                String name= addProduct_name_tf.getText();
+                Double price = Double.parseDouble(addProduct_price_tf.getText());
+                int brandId = new SupplierModel().getIdSupplier(brand);
+                int typeId = new ProductCategoryModel().getProductCategoryId(type);
+                Product product = new Product(name,brandId,typeId,price,"0",image.getUrl());
+                boolean check = new ProductModel().addProduct(product);
+                System.out.println(check);
+            }
+        });
+    }
 
     @FXML
     public void addProductImportImage(){

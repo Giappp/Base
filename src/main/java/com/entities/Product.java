@@ -6,7 +6,9 @@ public class Product {
     private Integer id;
     private String name;
     private String supplierName;
+    private Integer supplierId;
     private String productType;
+    private Integer productTypeId;
     private Integer quantityInStock;
     private Double salePrice;
     private Double discountPercentage;
@@ -15,6 +17,15 @@ public class Product {
     private String image;
 
     public Product() {
+    }
+
+    public Product(String name, Integer supplierId, Integer productTypeId, Double salePrice, String status,String image) {
+        this.name = name;
+        this.supplierId = supplierId;
+        this.productTypeId = productTypeId;
+        this.salePrice = salePrice;
+        this.status = status;
+        this.image = image;
     }
 
     public Integer getId() {
@@ -96,5 +107,21 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public Integer getProductTypeId() {
+        return productTypeId;
+    }
+
+    public void setProductTypeId(Integer productTypeId) {
+        this.productTypeId = productTypeId;
     }
 }

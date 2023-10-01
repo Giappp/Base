@@ -12,13 +12,7 @@ import java.sql.SQLException;
 
 public class ProductModel {
     public ObservableList<Product> getProductList(){
-        String sql = "SELECT product.id, product.name, s.name AS supplier_name, " +
-                "product.quantity_in_stock, product.sale_price, " +
-                "product.status, product.image, product.supplier_id, pc.name " +
-                "FROM product " +
-                "INNER JOIN product_category AS pc ON product.id = pc.id " +
-                "INNER JOIN supplier AS s ON product.supplier_id = s.id " +
-                "ORDER BY product.id";
+        String sql = "SELECT * from product";
         ObservableList<Product> productObservableList = FXCollections.observableArrayList();
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;
@@ -26,14 +20,14 @@ public class ProductModel {
                 ResultSet resultSet = preparedStatement.executeQuery()){
                 while (resultSet.next()){
                     Product product = new Product();
-                    product.setId(resultSet.getInt("product.id"));
-                    product.setName(resultSet.getString("product.name"));
-                    product.setSupplierName(resultSet.getString("supplier_name"));
-                    product.setQuantityInStock(resultSet.getInt("product.quantity_in_stock"));
-                    product.setSalePrice(resultSet.getDouble("product.sale_price"));
-                    product.setStatus(resultSet.getString("product.status"));
-                    product.setProductType(resultSet.getString("pc.name"));
-                    product.setImage(resultSet.getString("product.image"));
+                    product.setId(resultSet.getInt("id"));
+                    product.setName(resultSet.getString("name"));
+                    product.setSupplierId(resultSet.getInt("supplier_id"));
+                    product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
+                    product.setSalePrice(resultSet.getDouble("sale_price"));
+                    product.setStatus(resultSet.getString("status"));
+                    product.setProductType(resultSet.getString("product_type_id"));
+                    product.setImage(resultSet.getString("image"));
                     productObservableList.add(product);
                 }
             }
@@ -43,14 +37,19 @@ public class ProductModel {
         return productObservableList;
     }
     public boolean addProduct(Product product){
-        String sql = "INSERT into `pos`.`goods_import` " +
-                "(`product_id`, `quantity`, `unit_price`, `total_price`, `date_imported`, `user_id`) " +
+        String sql = "INSERT into product" +
+                "(`name`,`supplier_id`,`product_type_id`,`sale_price`,`status`,`image`) " +
                 "VALUES(?,?,?,?,?,?) ";
-        String productSql = "Insert into `pos`.`product`";
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-
+                preparedStatement.setString(1,product.getName());
+                preparedStatement.setInt(2,product.getSupplierId());
+                preparedStatement.setInt(3,product.getProductTypeId());
+                preparedStatement.setDouble(4,product.getSalePrice());
+                preparedStatement.setString(5,product.getStatus());
+                preparedStatement.setString(6,product.getImage());
+                return preparedStatement.executeUpdate() > 0;
             }
         }catch (SQLException e){
             e.printStackTrace();

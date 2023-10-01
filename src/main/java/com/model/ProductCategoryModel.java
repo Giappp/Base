@@ -2,40 +2,37 @@ package com.model;
 
 import com.db.dao.JDBCConnect;
 import com.entities.ProductCategory;
-import com.entities.Supplier;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierModel {
-    public List<String> getBrands(){
-        String sql = "SELECT `name` FROM supplier";
-        List<String> brands = new ArrayList<>();
-        try(Connection connection = JDBCConnect.getJDBCConnection()) {
+public class ProductCategoryModel {
+    public List<String> getType(){
+        String sql = "SELECT `name` FROM product_category";
+        List<String> types = new ArrayList<>();
+        try(Connection connection =JDBCConnect.getJDBCConnection()) {
             assert connection != null;
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()){
-                    brands.add(resultSet.getString("name"));
-                }
+                    while (resultSet.next()){
+                        types.add(resultSet.getString("name"));
+                    }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return brands;
+        return types;
     }
-    public Integer getIdSupplier(String name){
-        String sql = "Select `id` from supplier where name = ?";
+    public Integer getProductCategoryId(String name){
+        String sql = "Select `id` from product_category where name = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1,name);
-                ResultSet resultSet = preparedStatement.executeQuery();
+                ResultSet resultSet= preparedStatement.executeQuery();
                 if(resultSet.next()){
                     return resultSet.getInt("id");
                 }

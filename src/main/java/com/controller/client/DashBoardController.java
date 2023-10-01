@@ -159,11 +159,11 @@ public class DashBoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            chart();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            chart();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
         addProductShowListData();
         home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
         sign_out_btn.setOnAction(event -> {
