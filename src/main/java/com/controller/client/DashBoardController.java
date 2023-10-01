@@ -5,33 +5,24 @@ import com.db.dao.JDBCConnect;
 import com.entities.Product;
 import com.model.ProductModel;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -41,9 +32,13 @@ import java.util.*;
 import java.util.ResourceBundle;
 
 public class DashBoardController implements Initializable {
+
     Scene fxmlFile;
+
     Parent root;
+
     Stage window;
+
     public Button earning_info_btn;
 
     public javafx.scene.text.Text earning_text;
@@ -64,8 +59,12 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane main_form;
+
     @FXML
     private AnchorPane dashboard_home;
+
+    @FXML
+    private AnchorPane dashboard_account;
 
     @FXML
     private AnchorPane dashboard_order;
@@ -111,6 +110,7 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TextField product_field_search;
+
     @FXML
     private Button setting_btn;
 
@@ -122,28 +122,35 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Button addProduct_btn;
+
     @FXML
     private Button importProduct_btn;
-    @FXML
-    private Text title_text;
-    @FXML
-    private Text title_text1;
-    @FXML
-    private Text title_text11;
+
     @FXML
     private Text total_order_text;
+
     @FXML
     private Label username_label;
 
     private ObservableList<Product> observableList;
+
     @FXML
     private BarChart<?, ?> sale_revenue_chart;
+
+    @FXML
+    private Button change_pass_btn;
+
+    @FXML
+    private Button update_account_info;
+
+    @FXML
+    private Button account_btn;
 
     public void chart() throws Exception {
         String sql = "SELECT total_price, date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
-        PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
             XYChart.Series chartData = new XYChart.Series<>();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -183,43 +190,70 @@ public class DashBoardController implements Initializable {
         });
         home_btn.setOnAction(event -> {
             dashboard_home.setVisible(true);
+            dashboard_account.setVisible(false);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(false);
 
             home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
+            account_btn.setStyle("-fx-background-color: transparent");
+            storage_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: transparent");
+        });
+        account_btn.setOnAction(event -> {
+            dashboard_home.setVisible(false);
+            dashboard_account.setVisible(true);
+            dashboard_order.setVisible(false);
+            dashboard_storage.setVisible(false);
+
+            home_btn.setStyle("-fx-background-color: transparent");
+            account_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
             storage_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
         });
         storage_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
+            dashboard_account.setVisible(false);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(true);
             addProductShowListData();
 
             storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            account_btn.setStyle("-fx-background-color: transparent");
             home_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
         });
         orders_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
+            dashboard_account.setVisible(false);
             dashboard_order.setVisible(true);
             dashboard_storage.setVisible(false);
 
             orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            account_btn.setStyle("-fx-background-color: transparent");
             home_btn.setStyle("-fx-background-color: transparent");
             storage_btn.setStyle("-fx-background-color: transparent");
         });
         observableList.addListener((InvalidationListener) observable -> addProductShowListData());
 
         addProduct_btn.setOnAction(event -> {
-            try{
-                openModalWindow("/controller/client/addProduct.fxml","add Product");
-            }catch (IOException e) {
+            try {
+                openModalWindow("/controller/client/add-product.fxml", "Add Product");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        change_pass_btn.setOnAction(event -> {
+            try {
+                openModalWindow("/controller/client/change-pass.fxml", "Change Password");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
-    public void addProductShowListData(){
+
+    public void addProductShowListData() {
         observableList = new ProductModel().getProductList();
         product_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         product_col_image.setCellValueFactory(param -> {
@@ -241,7 +275,8 @@ public class DashBoardController implements Initializable {
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_productView.setItems(observableList);
     }
-    private void openModalWindow(String resource, String title) throws IOException{
+
+    private void openModalWindow(String resource, String title) throws IOException {
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
         fxmlFile = new Scene(root);
         window = new Stage();
@@ -252,5 +287,15 @@ public class DashBoardController implements Initializable {
 //        window.initStyle(StageStyle.UNDECORATED);
         window.setTitle(title);
         window.showAndWait();
+    }
+
+    public void viewAccountDetail() throws Exception {
+        try (Connection con = JDBCConnect.getJDBCConnection();
+             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement("SELECT username, email, phone, detail FROM users")) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+            }
+        }
     }
 }

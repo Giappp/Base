@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="addProductScene" prefHeight="646.0" prefWidth="639.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.ProductController">
+   <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add products">
+      <font>
+         <Font name="Segoe UI" size="24.0"/>
+      </font>
+   </Text>
+   <AnchorPane layoutY="72.0" prefHeight="574.0" prefWidth="673.0" style="-fx-background-color: white;">
+      <Text layoutX="269.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Products">
+         <font>
+            <Font name="Segoe UI" size="22.0"/>
+         </font>
+      </Text>
+      <TextField fx:id="addProduct_name_tf" layoutX="236.0" layoutY="335.0"/>
+      <Text layoutX="114.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT"
+            wrappingWidth="102.19726562500011">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Text>
+      <Text layoutX="114.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brand:"
+            textAlignment="RIGHT" wrappingWidth="102.19726562500011">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Text>
+      <Text layoutX="114.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:"
+            textAlignment="RIGHT" wrappingWidth="102.19726562500011">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Text>
+      <Button fx:id="addProduct_addBtn" layoutX="202.0" layoutY="470.0" mnemonicParsing="false" prefHeight="50.0"
+              prefWidth="70.0" text="Add">
+         <font>
+            <Font name="Segoe UI" size="13.0"/>
+         </font>
+      </Button>
+      <Button layoutX="350.0" layoutY="470.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0"
+              text="Cancel">
+         <font>
+            <Font name="Segoe UI" size="13.0"/>
+         </font>
+      </Button>
+      <TextField fx:id="addProduct_price_tf" layoutX="236.0" layoutY="375.0"/>
+      <Text layoutX="114.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" textAlignment="RIGHT"
+            wrappingWidth="102.19726562500011">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Text>
+      <Button layoutX="253.0" layoutY="200.0" mnemonicParsing="false" onAction="#addProductImportImage"
+              prefHeight="26.0" prefWidth="116.0" text="Add photo">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Button>
+      <Pane layoutX="211.0" layoutY="36.0" prefHeight="150.0" prefWidth="200.0">
+         <ImageView fx:id="addproduct_imageview" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                    preserveRatio="true"/>
+      </Pane>
+      <ComboBox fx:id="addProduct_brand_cb" layoutX="236.0" layoutY="295.0" prefWidth="150.0"/>
+      <Button fx:id="addProduct_newBrand_btn" layoutX="393.0" layoutY="295.0" mnemonicParsing="false"
+              prefHeight="26.0" prefWidth="39.0">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS" size="14.0"/>
+         </graphic>
+      </Button>
+      <ComboBox fx:id="addProduct_type_cb" layoutX="236.0" layoutY="251.0" prefWidth="150.0"/>
+      <Button fx:id="addProduct_newType_btn" layoutX="393.0" layoutY="251.0" mnemonicParsing="false"
+              prefHeight="26.0" prefWidth="38.0">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS" size="14.0" wrappingWidth="11.0"/>
+         </graphic>
+      </Button>
+   </AnchorPane>
+</AnchorPane>
