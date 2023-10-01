@@ -46,6 +46,7 @@ public class ProductModel {
         String sql = "INSERT into `pos`.`goods_import` " +
                 "(`product_id`, `quantity`, `unit_price`, `total_price`, `date_imported`, `user_id`) " +
                 "VALUES(?,?,?,?,?,?) ";
+        String productSql = "Insert into `pos`.`product`";
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){

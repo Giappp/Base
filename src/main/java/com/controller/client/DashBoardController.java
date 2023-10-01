@@ -11,7 +11,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -24,8 +27,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,6 +41,9 @@ import java.util.*;
 import java.util.ResourceBundle;
 
 public class DashBoardController implements Initializable {
+    Scene fxmlFile;
+    Parent root;
+    Stage window;
     public Button earning_info_btn;
 
     public javafx.scene.text.Text earning_text;
@@ -56,9 +66,6 @@ public class DashBoardController implements Initializable {
     private AnchorPane main_form;
     @FXML
     private AnchorPane dashboard_home;
-
-    @FXML
-    private AnchorPane dashboard_addproduct;
 
     @FXML
     private AnchorPane dashboard_order;
@@ -105,8 +112,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private TextField product_field_search;
     @FXML
-    private ImageView addproduct_imageview;
-    @FXML
     private Button setting_btn;
 
     @FXML
@@ -116,7 +121,9 @@ public class DashBoardController implements Initializable {
     private Button storage_btn;
 
     @FXML
-    private Button add_btn;
+    private Button addProduct_btn;
+    @FXML
+    private Button importProduct_btn;
     @FXML
     private Text title_text;
     @FXML
@@ -129,22 +136,6 @@ public class DashBoardController implements Initializable {
     private Label username_label;
 
     private ObservableList<Product> observableList;
-
-    @FXML
-    private ComboBox<?> cb_listproduct;
-    @FXML
-    private ComboBox<?> cb_listproducttype;
-    @FXML
-    private ComboBox<?> cb_listsupplier;
-
-    @FXML
-    private Spinner<?> sp_quantity;
-    // Image
-    private Image image;
-
-    @FXML
-    private AnchorPane main_form;
-
     @FXML
     private BarChart<?, ?> sale_revenue_chart;
 
@@ -194,48 +185,39 @@ public class DashBoardController implements Initializable {
             dashboard_home.setVisible(true);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(false);
-            dashboard_addproduct.setVisible(false);
 
             home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
             storage_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
-            add_btn.setStyle("-fx-background-color: transparent");
         });
         storage_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(true);
-            dashboard_addproduct.setVisible(false);
             addProductShowListData();
 
             storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
             home_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
-            add_btn.setStyle("-fx-background-color: transparent");
         });
         orders_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
             dashboard_order.setVisible(true);
             dashboard_storage.setVisible(false);
-            dashboard_addproduct.setVisible(false);
 
             orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
             home_btn.setStyle("-fx-background-color: transparent");
             storage_btn.setStyle("-fx-background-color: transparent");
-            add_btn.setStyle("-fx-background-color: transparent");
-        });
-        add_btn.setOnAction(event -> {
-            dashboard_home.setVisible(false);
-            dashboard_order.setVisible(false);
-            dashboard_storage.setVisible(false);
-            dashboard_addproduct.setVisible(true);
-
-            orders_btn.setStyle("-fx-background-color: transparent");
-            home_btn.setStyle("-fx-background-color: transparent");
-            storage_btn.setStyle("-fx-background-color: transparent");
-            add_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
         });
         observableList.addListener((InvalidationListener) observable -> addProductShowListData());
+
+        addProduct_btn.setOnAction(event -> {
+            try{
+                openModalWindow("/controller/client/addProduct.fxml","add Product");
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
     public void addProductShowListData(){
         observableList = new ProductModel().getProductList();
@@ -259,21 +241,16 @@ public class DashBoardController implements Initializable {
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_productView.setItems(observableList);
     }
-
-    public void addProductImportImage(){
-        String currentPath = System.getProperty("user.dir");
-        FileChooser open = new FileChooser();
-        open.setTitle("Open image file");
-        open.setInitialDirectory(new File(currentPath + "\\src\\main\\resources\\controller\\images"));
-        open.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File","*jpg","*png"));
-
-        File file = open.showOpenDialog(main_form.getScene().getWindow());
-
-        if(file != null){
-            image = new Image(file.toURI().toString(), 150 ,130, false, true);
-            addproduct_imageview.setImage(image);
-        }
+    private void openModalWindow(String resource, String title) throws IOException{
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
+        fxmlFile = new Scene(root);
+        window = new Stage();
+        window.setScene(fxmlFile);
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setAlwaysOnTop(true);
+        window.setIconified(false);
+//        window.initStyle(StageStyle.UNDECORATED);
+        window.setTitle(title);
+        window.showAndWait();
     }
-
-
 }

@@ -22,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="main_form" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.DashBoardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.DashBoardController">
    <VBox prefHeight="720.0" prefWidth="200.0" style="-fx-background-color: #00a7d5;">
       <Pane prefHeight="110.0" prefWidth="350.0">
          <Text fill="WHITE" layoutX="11.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -68,17 +68,6 @@
          <graphic>
             <FontAwesomeIconView fill="WHITE" glyphName="DATABASE" size="24" wrappingWidth="24.0" />
          </graphic>
-      </Button>
-      <Button fx:id="add_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Add" textFill="WHITE">
-         <font>
-            <Font name="Segoe UI" size="14.0" />
-         </font>
-         <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="24" wrappingWidth="24.0" />
-         </graphic>
-         <VBox.margin>
-            <Insets left="10.0" />
-         </VBox.margin>
       </Button>
       <Button fx:id="orders_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Orders" textFill="WHITE">
          <font>
@@ -177,7 +166,7 @@
       </padding>
    </HBox>
    <StackPane layoutX="200.0" layoutY="60.0" prefHeight="660.0" prefWidth="1000.0">
-      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
+      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -280,7 +269,7 @@
             </children>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -305,79 +294,8 @@
                   <TableColumn fx:id="product_col_amount" editable="false" maxWidth="212.00003662109373" prefWidth="188.79998779296875" styleClass="column-header" text="Amount" />
                </columns>
             </TableView>
-         </AnchorPane>
-      </AnchorPane>
-      <AnchorPane fx:id="dashboard_addproduct" prefHeight="200.0" prefWidth="200.0">
-         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add products">
-            <font>
-               <Font name="Segoe UI" size="24.0" />
-            </font>
-         </Text>
-         <AnchorPane layoutX="58.0" layoutY="60.0" prefHeight="586.0" prefWidth="650.0" style="-fx-background-color: white;">
-            <TextField layoutX="236.0" layoutY="255.0" />
-            <Text layoutX="222.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Products">
-               <font>
-                  <Font name="Segoe UI" size="22.0" />
-               </font>
-            </Text>
-            <TextField layoutX="236.0" layoutY="295.0" />
-            <TextField layoutX="236.0" layoutY="335.0" />
-            <Text layoutX="114.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="102.19726562500011">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="114.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brand:" textAlignment="RIGHT" wrappingWidth="102.19726562500011">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="114.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" textAlignment="RIGHT" wrappingWidth="102.19726562500011">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Text>
-            <Button layoutX="120.0" layoutY="489.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Add">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
-            <Button layoutX="312.0" layoutY="489.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Update">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
-            <Button layoutX="215.0" layoutY="489.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Delete">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
-            <Spinner layoutX="237.0" layoutY="415.0" />
-            <TextField layoutX="236.0" layoutY="375.0" />
-            <Text layoutX="114.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount:" textAlignment="RIGHT" wrappingWidth="102.19726562500011">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="114.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" textAlignment="RIGHT" wrappingWidth="102.19726562500011">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Text>
-            <Button layoutX="207.0" layoutY="214.0" mnemonicParsing="false" onAction="#addProductImportImage" prefHeight="26.0" prefWidth="116.0" text="Add photo">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Button>
-            <Pane layoutX="170.0" layoutY="60.0" prefHeight="129.0" prefWidth="159.0">
-               <ImageView fitHeight="129.0" fitWidth="159.0" layoutX="15.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@../images/product.png" />
-               </ImageView>
-            <Pane layoutX="165.0" layoutY="44.0" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <ImageView fx:id="addproduct_imageview" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </Pane>
+            <Button fx:id="importProduct_btn" layoutX="740.0" layoutY="17.0" mnemonicParsing="false" text="Import Product" />
+            <Button fx:id="addProduct_btn" layoutX="859.0" layoutY="17.0" mnemonicParsing="false" text="Add Product" />
          </AnchorPane>
       </AnchorPane>
       <AnchorPane fx:id="dashboard_order" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -479,33 +397,6 @@
                   </font>
                </Button>
             </children>
-         </AnchorPane>
-      </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
-         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
-            <font>
-               <Font name="Segoe UI" size="24.0" />
-            </font>
-         </Text>
-         <AnchorPane layoutY="60.0" prefHeight="600.0" prefWidth="1000.0">
-            <TextField fx:id="product_field_search" layoutX="14.0" layoutY="15.0" prefHeight="28.0" prefWidth="220.0" promptText="Search">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </TextField>
-            <FontAwesomeIconView glyphName="SEARCH" layoutX="214.0" layoutY="34.0" />
-            <TableView fx:id="tblv_productView" layoutX="21.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="958.0" stylesheets="@table.css">
-               <columns>
-                  <TableColumn fx:id="product_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" visible="false" />
-                  <TableColumn fx:id="product_col_image" prefWidth="123.19998168945312" text="Image" />
-                  <TableColumn fx:id="product_col_name" editable="false" maxWidth="200.0" prefWidth="117.60000610351562" styleClass="column-header" text="Name" />
-                  <TableColumn fx:id="product_col_type" editable="false" maxWidth="250.0" prefWidth="149.5999755859375" styleClass="column-header" text="Type" />
-                  <TableColumn fx:id="product_col_brand" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="152.79998779296875" styleClass="column-header" text="Brand" />
-                  <TableColumn fx:id="product_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="107.20001220703125" styleClass="column-header" text="Price" />
-                  <TableColumn fx:id="product_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="112.79998779296875" styleClass="column-header" text="Status" />
-                  <TableColumn fx:id="product_col_amount" editable="false" maxWidth="218.4000244140625" prefWidth="194.4000244140625" styleClass="column-header" text="Amount" />
-               </columns>
-            </TableView>
          </AnchorPane>
       </AnchorPane>
    </StackPane>
