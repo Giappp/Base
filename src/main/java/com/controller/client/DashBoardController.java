@@ -39,23 +39,65 @@ public class DashBoardController implements Initializable {
 
     Stage window;
 
-    public Button earning_info_btn;
+    @FXML
+    private Spinner<?> sp_choice_amount;
 
-    public javafx.scene.text.Text earning_text;
+    @FXML
+    private Text display_price_all;
 
-    public Button message_btn;
+    @FXML
+    private Button accept_order_btn;
 
-    public Button notify_btn;
+    @FXML
+    private Button start_order_btn;
 
-    public Button product_sold_btn;
+    @FXML
+    private Label display_username;
 
-    public javafx.scene.text.Text product_sold_text;
+    @FXML
+    private Label display_email;
 
-    public Button total_delivery_btn;
+    @FXML
+    private Label display_phone;
 
-    public javafx.scene.text.Text total_delivery_text;
+    @FXML
+    private Label display_pass;
 
-    public Button total_order_btn;
+    @FXML
+    private TextField tf_type_choice;
+
+    @FXML
+    private TextField tf_choice_brand;
+
+    @FXML
+    private TextField tf_choice_name;
+
+    @FXML
+    private Button earning_info_btn;
+
+    @FXML
+    private javafx.scene.text.Text earning_text;
+
+    @FXML
+    private Button message_btn;
+
+    @FXML
+    private Button notify_btn;
+
+    @FXML
+    private Button product_sold_btn;
+
+    @FXML
+    private javafx.scene.text.Text product_sold_text;
+
+    @FXML
+    private Button total_delivery_btn;
+
+    @FXML
+    private javafx.scene.text.Text total_delivery_text;
+
+    @FXML
+    private Button total_order_btn;
 
     @FXML
     private AnchorPane main_form;
