@@ -6,7 +6,6 @@ module Base {
 
     opens com.entities to javafx.base;
     exports com.controller.client to javafx.fxml;
-
     opens com.controller.logSign to javafx.fxml;
     exports com.controller.logSign;
     opens com.controller.client to javafx.fxml;

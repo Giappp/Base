@@ -279,11 +279,27 @@ public class DashBoardController implements Initializable {
 
         addProduct_btn.setOnAction(event -> {
             try {
-                openModalWindow("/controller/client/add-product.fxml", "Add Product");
-
+                openModalWindow("/controller/client/addProduct.fxml", "Add Product");
+                System.out.println("Add Product on progress...");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println("reset table");
+            addProductShowListData();
+        });
+        importProduct_btn.setOnAction(event -> {
+            try {
+                openModalWindow("/controller/client/importProduct.fxml", "Import Product");
+                System.out.println("Import Product on progress...");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("reset table");
+            addProductShowListData();
+        });
+
+        tblv_productView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
         });
 
         change_pass_btn.setOnAction(event -> {
@@ -310,9 +326,9 @@ public class DashBoardController implements Initializable {
             return new SimpleObjectProperty<>(imageView);
         });
         product_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
-        product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+        product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         product_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
+        product_col_type.setCellValueFactory(new PropertyValueFactory<>("productTypeId"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_productView.setItems(observableList);
@@ -324,7 +340,6 @@ public class DashBoardController implements Initializable {
         window = new Stage();
         window.setScene(fxmlFile);
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setAlwaysOnTop(true);
         window.setIconified(false);
 //        window.initStyle(StageStyle.UNDECORATED);
         window.setTitle(title);

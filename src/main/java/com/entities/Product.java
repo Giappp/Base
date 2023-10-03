@@ -11,6 +11,7 @@ public class Product {
     private Integer productTypeId;
     private Integer quantityInStock;
     private Double salePrice;
+    private Double importedPrice;
     private Double discountPercentage;
     private String description;
     private String status;
@@ -19,13 +20,22 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, Integer supplierId, Integer productTypeId, Double salePrice, String status,String image) {
+    public Product(String name, Integer supplierId, Integer productTypeId, Double salePrice, String status,String image,Double importedPrice) {
         this.name = name;
         this.supplierId = supplierId;
         this.productTypeId = productTypeId;
         this.salePrice = salePrice;
         this.status = status;
         this.image = image;
+        this.importedPrice = importedPrice;
+    }
+
+    public Double getImportedPrice() {
+        return importedPrice;
+    }
+
+    public void setImportedPrice(Double importedPrice) {
+        this.importedPrice = importedPrice;
     }
 
     public Integer getId() {
