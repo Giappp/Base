@@ -1,5 +1,8 @@
 package com.controller.client;
 
+import com.entities.GoodsImport;
+import com.entities.Product;
+import com.model.GoodsImportModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
 import javafx.beans.InvalidationListener;
@@ -16,6 +19,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ImportProduct implements Initializable {
@@ -123,7 +129,7 @@ public class ImportProduct implements Initializable {
                         double price = Double.parseDouble(importedPrice_tf.getText());
 
                         double totalValue = amount * price;
-                        total_lb.setText(String.valueOf(totalValue) + "$");
+                        total_lb.setText(String.valueOf(totalValue));
                         total_lb.setStyle("-fx-text-fill: red;" +
                                 "-fx-font-weight: bold");
 
@@ -133,6 +139,50 @@ public class ImportProduct implements Initializable {
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input for price.");
                     }
+                }
+            }
+        });
+        import_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String supplierName = supplier_cb.getValue();
+                String productName = product_cb.getValue();
+                Double importedPrice = Double.valueOf(importedPrice_tf.getText());
+                Integer amount = amount_sp.getValue();
+                Double totalPrice = Double.valueOf(total_lb.getText());
+                if(supplierName != null && productName != null){
+                    Integer productId = new ProductModel().getIdProduct(productName);
+                    Date date = Date.valueOf(LocalDate.now());
+                    try {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Import " + amount + " " + productName +" from " + supplierName
+                        + " with total of " + totalPrice + "$");
+                        Optional<ButtonType> option = alert.showAndWait();
+
+                        if (option.get().equals(ButtonType.OK)) {
+                            GoodsImport goodsImport = new GoodsImport(productId,amount,importedPrice,totalPrice,date,1);
+                            boolean check = new GoodsImportModel().importGoods(goodsImport);
+                            System.out.println(check);
+
+                            if (check) {
+                                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                                success.setContentText("Import product successfully");
+                                success.showAndWait();
+                            } else {
+                                Alert failed = new Alert(Alert.AlertType.INFORMATION);
+                                failed.setContentText("Something went wrong. Please try again");
+                                failed.showAndWait();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Alert inValid = new Alert(Alert.AlertType.ERROR);
+                    inValid.setContentText("Please fill all the information correctly");
+                    inValid.showAndWait();
                 }
             }
         });

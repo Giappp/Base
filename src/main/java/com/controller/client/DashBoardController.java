@@ -45,9 +45,9 @@ public class DashBoardController implements Initializable {
 
     Stage window;
 
-    private Connection con = null;
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     private ObservableList<Product> observableList = FXCollections.observableArrayList();
 
@@ -223,18 +223,16 @@ public class DashBoardController implements Initializable {
     private Button account_btn;
 
     public void chart() throws Exception {
-        String sql = "SELECT total_price, date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
+        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
             XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
             }
-
-            boolean add = sale_revenue_chart.getData().add(chartData);
-
+            sale_revenue_chart.getData().
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -419,7 +417,15 @@ public class DashBoardController implements Initializable {
     public void handleOrder(ActionEvent event) {
         int quantityInStock = Integer.parseInt(sp_choice_amount.getPromptText());
         if (quantityInStock != 0) {
-            observableList.add(new Product(id, name, ));
+            observableList.add(new Product());
+            tblv_orderView.setItems(observableList);
         }
+    }
+
+    private void clearText() {
+        tf_id_choice.clear();
+        tf_type_choice.clear();
+        tf_choice_brand.clear();
+        tf_choice_name.clear();
     }
 }
