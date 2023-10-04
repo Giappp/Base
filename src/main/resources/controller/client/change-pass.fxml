@@ -22,8 +22,8 @@
           <Font name="Segoe UI" size="14.0" />
         </font>
     </Label>
-    <PasswordField layoutX="300.0" layoutY="137.0" />
-    <PasswordField layoutX="300.0" layoutY="187.0" />
+    <PasswordField fx:id="pf_recent_pass" layoutX="300.0" layoutY="137.0" />
+    <PasswordField fx:id="pf_change_new_pass" layoutX="300.0" layoutY="187.0" />
     <Label layoutX="150.0" layoutY="237.0" prefHeight="30.0" prefWidth="128.0" text="Confirm Password">
         <font>
           <Font name="Segoe UI" size="14.0" />
@@ -34,5 +34,5 @@
           <Font name="Segoe UI" size="14.0" />
         </font>
     </Button>
-    <PasswordField layoutX="300.0" layoutY="237.0" />
+    <PasswordField fx:id="pf_confirm_new_pass" layoutX="300.0" layoutY="237.0" />
 </AnchorPane>

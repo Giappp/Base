@@ -93,7 +93,7 @@ public class ProductController implements Initializable {
                         Optional<ButtonType> option = alert.showAndWait();
 
                         if (option.get().equals(ButtonType.OK)) {
-                            Product product = new Product(name, brandId, typeId, Double.parseDouble(price), "0", imageUrl,Double.parseDouble(importedPrice),0);
+                            Product product = new Product(name, brandId, typeId, Double.parseDouble(price), "0", imageUrl,Double.parseDouble(importedPrice));
                             boolean check = new ProductModel().addProduct(product);
                             System.out.println(check);
 

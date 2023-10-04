@@ -6,7 +6,9 @@ import com.entities.Product;
 import com.model.ProductModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,29 +37,100 @@ import java.util.ResourceBundle;
 
 public class DashBoardController implements Initializable {
 
+    @FXML
+    private TextField tf_id_choice;
     Scene fxmlFile;
 
     Parent root;
 
     Stage window;
 
-    public Button earning_info_btn;
+    private Connection con;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
-    public javafx.scene.text.Text earning_text;
+    private ObservableList<Product> observableList = FXCollections.observableArrayList();
 
-    public Button message_btn;
+    @FXML
+    private TableColumn<Product, Integer> order_col_id;
 
-    public Button notify_btn;
+    @FXML
+    private TableColumn<Product, String> order_col_type;
 
-    public Button product_sold_btn;
+    @FXML
+    private TableColumn<Product, String> order_col_brand;
 
-    public javafx.scene.text.Text product_sold_text;
+    @FXML
+    private TableColumn<Product, String> order_col_name;
 
-    public Button total_delivery_btn;
+    @FXML
+    private TableColumn<Product, Integer> order_col_amount;
 
-    public javafx.scene.text.Text total_delivery_text;
+    @FXML
+    private TableColumn<Product, Double> order_col_price;
 
-    public Button total_order_btn;
+    @FXML
+    private TableColumn<Product, Integer> order_col_status;
+
+    @FXML
+    private Spinner<?> sp_choice_amount;
+
+    @FXML
+    private Text display_price_all;
+
+    @FXML
+    private Button accept_order_btn;
+
+    @FXML
+    private Button start_order_btn;
+
+    @FXML
+    private Label display_username;
+
+    @FXML
+    private Label display_email;
+
+    @FXML
+    private Label display_phone;
+
+    @FXML
+    private Label display_pass;
+
+    @FXML
+    private TextField tf_type_choice;
+
+    @FXML
+    private TextField tf_choice_brand;
+
+    @FXML
+    private TextField tf_choice_name;
+
+    @FXML
+    private Button earning_info_btn;
+
+    @FXML
+    private javafx.scene.text.Text earning_text;
+
+    @FXML
+    private Button message_btn;
+
+    @FXML
+    private Button notify_btn;
+
+    @FXML
+    private Button product_sold_btn;
+
+    @FXML
+    private javafx.scene.text.Text product_sold_text;
+
+    @FXML
+    private Button total_delivery_btn;
+
+    @FXML
+    private javafx.scene.text.Text total_delivery_text;
+
+    @FXML
+    private Button total_order_btn;
 
     @FXML
     private AnchorPane main_form;
@@ -83,6 +158,9 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TableView<Product> tblv_productView;
+
+    @FXML
+    private TableView<Product> tblv_orderView;
 
     @FXML
     private TableColumn<Product, Integer> product_col_amount;
@@ -132,8 +210,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private Label username_label;
 
-    private ObservableList<Product> observableList;
-
     @FXML
     private BarChart<?, ?> sale_revenue_chart;
 
@@ -147,18 +223,16 @@ public class DashBoardController implements Initializable {
     private Button account_btn;
 
     public void chart() throws Exception {
-        String sql = "SELECT total_price, date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
+        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            XYChart.Series chartData = new XYChart.Series<>();
-            ResultSet rs = ps.executeQuery();
+             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
+            XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
             }
-
-            sale_revenue_chart.getData().add(chartData);
-
+            sale_revenue_chart.getData().
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -269,6 +343,15 @@ public class DashBoardController implements Initializable {
                 e.printStackTrace();
             }
         });
+
+        order_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        order_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
+        order_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        order_col_type.setCellValueFactory(new PropertyValueFactory<>("productTypeId"));
+        order_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
+        order_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+        order_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tblv_orderView.setItems(observableList);
     }
 
     public void addProductShowListData() {
@@ -294,7 +377,6 @@ public class DashBoardController implements Initializable {
         product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblv_productView.setItems(observableList);
     }
 
     private void openModalWindow(String resource, String title) throws IOException {
@@ -310,12 +392,45 @@ public class DashBoardController implements Initializable {
     }
 
     public void viewAccountDetail() throws Exception {
+        String viewAccountSql = "SELECT username, email, phone, detail FROM users";
         try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement("SELECT username, email, phone, detail FROM users")) {
+             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(viewAccountSql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
             }
         }
+    }
+
+    public void handleScanProduct(KeyEvent event) throws Exception {
+        ps = con.prepareStatement("SELECT * FROM Product WHERE id = ?");
+        ps.setString(1, tf_id_choice.getText());
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            String name = rs.getString(2);
+            String productType = rs.getString(3);
+            String supplierName = rs.getString(5);
+            tf_choice_name.setText(name);
+            tf_choice_brand.setText(supplierName);
+            tf_type_choice.setText(productType);
+            sp_choice_amount.requestFocus();
+        }
+        rs.close();
+    }
+
+    public void handleOrder(ActionEvent event) {
+        int quantityInStock = Integer.parseInt(sp_choice_amount.getPromptText());
+        if (quantityInStock != 0) {
+            observableList.add(new Product());
+            tblv_orderView.setItems(observableList);
+        }
+    }
+
+    private void clearText() {
+        tf_id_choice.clear();
+        tf_type_choice.clear();
+        tf_choice_brand.clear();
+        tf_choice_name.clear();
     }
 }
