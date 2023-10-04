@@ -25,10 +25,12 @@ public class ProductModel {
                     product.setId(resultSet.getInt("id"));
                     product.setName(resultSet.getString("name"));
                     product.setSupplierId(resultSet.getInt("supplier_id"));
+                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
                     product.setStatus(resultSet.getString("status"));
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
+                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
                     product.setImage(resultSet.getString("image"));
                     productObservableList.add(product);
                 }

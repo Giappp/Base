@@ -257,7 +257,9 @@ public class DashBoardController implements Initializable {
         });
 
         tblv_productView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-
+            if(newValue != null){
+                
+            }
         });
 
         change_pass_btn.setOnAction(event -> {
@@ -279,14 +281,17 @@ public class DashBoardController implements Initializable {
             imageView.setFitWidth(50);
 
             String imageUrl = param.getValue().getImage();
-            Image image = new Image(imageUrl);
-            imageView.setImage(image);
-            return new SimpleObjectProperty<>(imageView);
+            if(imageUrl != null){
+                Image image = new Image(imageUrl);
+                imageView.setImage(image);
+                return new SimpleObjectProperty<>(imageView);
+            }
+            return null;
         });
         product_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
-        product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
+        product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         product_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        product_col_type.setCellValueFactory(new PropertyValueFactory<>("productTypeId"));
+        product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_productView.setItems(observableList);
