@@ -20,7 +20,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, Integer supplierId, Integer productTypeId, Double salePrice, String status,String image,Double importedPrice) {
+    public Product(String name, Integer supplierId, Integer productTypeId, Double salePrice, String status,String image,Double importedPrice,Integer quantityInStock) {
         this.name = name;
         this.supplierId = supplierId;
         this.productTypeId = productTypeId;
@@ -28,6 +28,7 @@ public class Product {
         this.status = status;
         this.image = image;
         this.importedPrice = importedPrice;
+        this.quantityInStock = quantityInStock;
     }
 
     public Double getImportedPrice() {

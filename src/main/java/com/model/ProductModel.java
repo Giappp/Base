@@ -40,18 +40,19 @@ public class ProductModel {
     }
     public boolean addProduct(Product product){
         String sql = "INSERT into product" +
-                "(`name`,`supplier_id`,`product_type_id`,`sale_price`,`imported_price`,`status`,`image`) " +
-                "VALUES(?,?,?,?,?,?,?) ";
+                "(`name`,`supplier_id`,`product_type_id`,`quantity_in_stock`,`sale_price`,`imported_price`,`status`,`image`) " +
+                "VALUES(?,?,?,?,?,?,?,?) ";
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1,product.getName());
                 preparedStatement.setInt(2,product.getSupplierId());
                 preparedStatement.setInt(3,product.getProductTypeId());
-                preparedStatement.setDouble(4,product.getSalePrice());
-                preparedStatement.setDouble(5,product.getImportedPrice());
-                preparedStatement.setString(6,product.getStatus());
-                preparedStatement.setString(7,product.getImage());
+                preparedStatement.setDouble(4,product.getQuantityInStock());
+                preparedStatement.setDouble(5,product.getSalePrice());
+                preparedStatement.setDouble(6,product.getImportedPrice());
+                preparedStatement.setString(7,product.getStatus());
+                preparedStatement.setString(8,product.getImage());
                 return preparedStatement.executeUpdate() > 0;
             }
         }catch (SQLException e){

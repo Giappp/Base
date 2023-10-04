@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SupplierModel {
     public List<String> getBrands(){
-        String sql = "SELECT `name` FROM supplier";
+        String sql = "SELECT `id`,`name` FROM supplier";
         List<String> brands = new ArrayList<>();
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;

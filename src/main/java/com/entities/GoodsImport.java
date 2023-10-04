@@ -14,6 +14,15 @@ public class GoodsImport {
     public GoodsImport() {
     }
 
+    public GoodsImport(Integer productId, Integer quantity, Double unitPrice, Double totalPrice, Date dateImported,Integer userId) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.totalPrice = totalPrice;
+        this.dateImported = dateImported;
+        this.userId = userId;
+    }
+
     public Integer getId() {
         return id;
     }
