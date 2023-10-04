@@ -1,10 +1,10 @@
-package model;
+package com.model;
 
 import java.sql.*;
 
-import mysql_database.DBConnect;
-import entity.Order;
-import entity.Product;
+import com.db.dao.JDBCConnect;
+import com.entities.Order;
+import com.entities.Product;
 import java.util.ArrayList;
 
 public class OrderManage {
@@ -18,7 +18,8 @@ public class OrderManage {
         boolean result = false;
         String sql = "SELECT * FROM `order` WHERE `id` = ?;";
         try {
-            conn = DBConnect.getConnection();
+            conn = JDBCConnect.getJDBCConnection();
+            assert conn != null;
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -30,26 +31,26 @@ public class OrderManage {
                 orderResult.setDateRecorded(rs.getDate("date_recorded"));
                 orderResult.setStatus(rs.getInt("status"));
                 sql = "SELECT * FROM `product_in_order` WHERE `order_id` = ?;";
-                DBConnect.closeResultSet(rs);
-                DBConnect.closePreparedStatement(ps);
+                JDBCConnect.closeResultSet(rs);
+                JDBCConnect.closePreparedStatement(ps);
                 ps = conn.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ArrayList<Product> productList = new ArrayList<Product>();
-                ProductManage pm = new ProductManage();
-                while (rs.next()) productList.add(pm.getProduct(rs.getInt("product_id")));
+                ProductModel productModel = new ProductModel();
+                while (rs.next()) productList.add(productModel.getProduct(rs.getInt("product_id")));
                 orderResult.setProductInOrder(productList);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnect.closeResultSet(rs);
-            DBConnect.closePreparedStatement(ps);
-            DBConnect.closeConnection(conn);
+            JDBCConnect.closeResultSet(rs);
+            JDBCConnect.closePreparedStatement(ps);
+            JDBCConnect.closeConnection(conn);
         }
         return result ? orderResult : null;
     }
 
     private boolean add(Order order) {
-
+        return false;
     }
 }

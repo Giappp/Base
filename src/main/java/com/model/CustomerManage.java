@@ -1,8 +1,9 @@
-package model;
+package com.model;
 
 import java.sql.*;
-import mysql_database.DBConnect;
-import entity.Customer;
+
+import com.db.dao.JDBCConnect;
+import com.entities.Customer;
 
 public class CustomerManage {
 
@@ -17,7 +18,8 @@ public class CustomerManage {
         boolean result = false;
         String sql = "SELECT * FROM `customer` WHERE `id` = ?;";
         try {
-            conn = DBConnect.getConnection();
+            conn = JDBCConnect.getJDBCConnection();
+            assert conn != null;
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -32,9 +34,9 @@ public class CustomerManage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnect.closeResultSet(rs);
-            DBConnect.closePreparedStatement(ps);
-            DBConnect.closeConnection(conn);
+            JDBCConnect.closeResultSet(rs);
+            JDBCConnect.closePreparedStatement(ps);
+            JDBCConnect.closeConnection(conn);
         }
         return result ? customerResult : null;
     }
@@ -43,7 +45,7 @@ public class CustomerManage {
         boolean result = false;
         String sql = "INSERT INTO `customer` VALUES (?, ?, ?, ?, ?);";
         try {
-            conn = DBConnect.getConnection();
+            conn = JDBCConnect.getJDBCConnection();
             ps = conn.prepareStatement(sql);
             ps.setInt(1, customer.getId());
             ps.setString(2, customer.getName());
@@ -58,24 +60,23 @@ public class CustomerManage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnect.closePreparedStatement(ps);
-            DBConnect.closeConnection(conn);
+            JDBCConnect.closePreparedStatement(ps);
+            JDBCConnect.closeConnection(conn);
         }
         return result;
     }
 
     public boolean update(Customer customer, int selectedId) {
-        String sql = "UPDATE `customer` SET `id` = ?, `name` = ?, `address` = ?, `phone` = ?, `email` = ? WHERE `id` = ?;";
+        String sql = "UPDATE `customer` SET  `name` = ?, `address` = ?, `phone` = ?, `email` = ? WHERE `id` = ?;";
         boolean result = false;
         try {
-            conn = DBConnect.getConnection();
+            conn = JDBCConnect.getJDBCConnection();
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, customer.getId());
-            ps.setString(2, customer.getName());
-            ps.setString(3, customer.getAddress());
-            ps.setString(4, customer.getPhone());
-            ps.setString(5, customer.getEmail());
-            ps.setInt(6, selectedId);
+            ps.setString(1, customer.getName());
+            ps.setString(2, customer.getAddress());
+            ps.setString(3, customer.getPhone());
+            ps.setString(4, customer.getEmail());
+            ps.setInt(5, selectedId);
             int executeResult = ps.executeUpdate();
             if (executeResult != 0) {
                 System.out.println("Successfully updated!");
@@ -84,8 +85,8 @@ public class CustomerManage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnect.closePreparedStatement(ps);
-            DBConnect.closeConnection(conn);
+            JDBCConnect.closePreparedStatement(ps);
+            JDBCConnect.closeConnection(conn);
         }
         return result;
     }
@@ -94,7 +95,7 @@ public class CustomerManage {
         String sql = "DELETE `customer` WHERE `id` = ?;";
         boolean result = false;
         try {
-            conn = DBConnect.getConnection();
+            conn = JDBCConnect.getJDBCConnection();
             ps = conn.prepareStatement(sql);
             ps.setInt(1, selectedId);
             int executeResult = ps.executeUpdate();
@@ -105,8 +106,8 @@ public class CustomerManage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnect.closePreparedStatement(ps);
-            DBConnect.closeConnection(conn);
+            JDBCConnect.closePreparedStatement(ps);
+            JDBCConnect.closeConnection(conn);
         }
         return result;
     }

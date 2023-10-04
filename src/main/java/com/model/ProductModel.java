@@ -28,6 +28,7 @@ public class ProductModel {
                     product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
+                    product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setStatus(resultSet.getString("status"));
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
@@ -75,6 +76,7 @@ public class ProductModel {
                     product.setName(resultSet.getString("name"));
                     product.setSupplierId(resultSet.getInt("supplier_id"));
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
+                    product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
                     product.setStatus(resultSet.getString("status"));
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
@@ -150,5 +152,33 @@ public class ProductModel {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public Product getProduct(int productId) {
+        String sql = "Select * from product where id = ?";
+        Product product = new Product();
+        try(Connection connection = JDBCConnect.getJDBCConnection()) {
+            assert connection != null;
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1,productId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    product.setId(resultSet.getInt("id"));
+                    product.setName(resultSet.getString("name"));
+                    product.setSupplierId(resultSet.getInt("supplier_id"));
+                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
+                    product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
+                    product.setSalePrice(resultSet.getDouble("sale_price"));
+                    product.setStatus(resultSet.getString("status"));
+                    product.setProductTypeId(resultSet.getInt("product_type_id"));
+                    product.setImportedPrice(resultSet.getDouble("imported_price"));
+                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
+                    product.setImage(resultSet.getString("image"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return product;
     }
 }

@@ -151,7 +151,7 @@ public class DashBoardController implements Initializable {
     private Button home_btn;
 
     @FXML
-    private Button messages_btn;
+    private Button product_btn;
 
     @FXML
     private Button orders_btn;
@@ -185,6 +185,8 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TableColumn<Product, String> product_col_type;
+    @FXML
+    private TableColumn<Double, Double> product_col_value;
 
     @FXML
     private TextField product_field_search;
@@ -232,7 +234,7 @@ public class DashBoardController implements Initializable {
             while (rs.next()) {
                 chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
             }
-            sale_revenue_chart.getData().
+            sale_revenue_chart.getData();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -331,9 +333,7 @@ public class DashBoardController implements Initializable {
         });
 
         tblv_productView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
-                
-            }
+
         });
 
         change_pass_btn.setOnAction(event -> {
@@ -377,6 +377,8 @@ public class DashBoardController implements Initializable {
         product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        product_col_value.setCellValueFactory(new PropertyValueFactory<>("importedPriceValue"));
+        tblv_productView.setItems(observableList);
     }
 
     private void openModalWindow(String resource, String title) throws IOException {
