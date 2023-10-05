@@ -38,6 +38,9 @@ import java.util.ResourceBundle;
 public class DashBoardController implements Initializable {
 
     @FXML
+    private AnchorPane dashboard_product;
+
+    @FXML
     private TextField tf_id_choice;
     Scene fxmlFile;
 
@@ -224,22 +227,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private Button account_btn;
 
-    public void chart() throws Exception {
-        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
-
-        try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
-            XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
-            }
-            sale_revenue_chart.getData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        try {
@@ -247,7 +234,10 @@ public class DashBoardController implements Initializable {
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
+        displayUsername();
+
         addProductShowListData();
+
         home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
         sign_out_btn.setOnAction(event -> {
             try {
@@ -269,45 +259,66 @@ public class DashBoardController implements Initializable {
             dashboard_account.setVisible(false);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(false);
+            dashboard_product.setVisible(false);
 
             home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
             account_btn.setStyle("-fx-background-color: transparent");
             storage_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
+            product_btn.setStyle("-fx-background-color: transparent");
         });
         account_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
             dashboard_account.setVisible(true);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(false);
+            dashboard_product.setVisible(false);
 
             home_btn.setStyle("-fx-background-color: transparent");
             account_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
             storage_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
+            product_btn.setStyle("-fx-background-color: transparent");
         });
         storage_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
             dashboard_account.setVisible(false);
             dashboard_order.setVisible(false);
             dashboard_storage.setVisible(true);
+            dashboard_product.setVisible(false);
             addProductShowListData();
 
             storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
             account_btn.setStyle("-fx-background-color: transparent");
             home_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
+            product_btn.setStyle("-fx-background-color: transparent");
         });
         orders_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
             dashboard_account.setVisible(false);
             dashboard_order.setVisible(true);
             dashboard_storage.setVisible(false);
+            dashboard_product.setVisible(false);
 
             orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
             account_btn.setStyle("-fx-background-color: transparent");
             home_btn.setStyle("-fx-background-color: transparent");
             storage_btn.setStyle("-fx-background-color: transparent");
+            product_btn.setStyle("-fx-background-color: transparent");
+        });
+        product_btn.setOnAction(event -> {
+            dashboard_home.setVisible(false);
+            dashboard_account.setVisible(false);
+            dashboard_order.setVisible(false);
+            dashboard_storage.setVisible(false);
+            dashboard_product.setVisible(true);
+
+            product_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            account_btn.setStyle("-fx-background-color: transparent");
+            home_btn.setStyle("-fx-background-color: transparent");
+            storage_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: transparent");
         });
         observableList.addListener((InvalidationListener) observable -> addProductShowListData());
 
@@ -344,6 +355,14 @@ public class DashBoardController implements Initializable {
             }
         });
 
+        update_account_info.setOnAction(event -> {
+            try {
+                openModalWindow("/controller/client/update-info.fxml", "Update User Information");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         order_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         order_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         order_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -352,6 +371,28 @@ public class DashBoardController implements Initializable {
         order_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         order_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_orderView.setItems(observableList);
+    }
+
+    public void chart() throws Exception {
+        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
+            XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
+            }
+            sale_revenue_chart.getData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayUsername() {
+        String user = data.username;
+        user = user.substring(0, 1).toUpperCase() + user.substring(1);
+        username_label.setText(user);
     }
 
     public void addProductShowListData() {

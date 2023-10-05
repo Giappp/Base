@@ -6,22 +6,24 @@ import java.sql.*;
 
 public class JDBCConnect {
     public static Connection getJDBCConnection() {
-        Connection con;
+        Connection con = null;
         String connectionUrl = "jdbc:mysql://" + IDBConfig.HOSTNAME
                 + ":" + IDBConfig.PORT + "/"
                 + IDBConfig.DBNAME ;
+        System.out.println(connectionUrl);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             System.err.println("Where is your MySQL JDBC Driver?");
-            return null;
+            return con;
         }
+        System.out.println("MySQL JDBC Driver Registered!");
 
         try {
             con = DriverManager.getConnection(connectionUrl, IDBConfig.USERNAME, IDBConfig.PASSWORD);
         } catch (SQLException ex) {
             System.err.println("Connection Failed! Check output console");
-            return null;
+            return con;
         }
         return con;
     }
@@ -54,5 +56,11 @@ public class JDBCConnect {
         } catch (SQLException e) {
             System.out.println("Close PreparedStatement fails");
         }
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(JDBCConnect.getJDBCConnection());
+
     }
 }

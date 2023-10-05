@@ -141,32 +141,3 @@ CREATE TRIGGER pos.product_in_order_AFTER_INSERT AFTER INSERT ON product_in_orde
     )
     WHERE product_id = NEW.product_id;
 END;
-
-INSERT INTO pos.product_category( id, name, description ) VALUES ( 1, 'testValue', 'abc');
-INSERT INTO pos.supplier( id, name, address, phone, email, details ) VALUES ( 1, 'Test', null, null, null, null);
-INSERT INTO pos.users( id, username, password, phone, email, details ) VALUES ( 1, 'admin', 'admin', '0939306888', null, 'abc');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 1, 'testabc', 1, 1, 1600, 0.0, 0.0, null, null, null, 'F:/Workspace/Base/src/main/resources/controller/images/order1.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 2, 'abc', 1, 1, 1000, 0.0, 0.0, null, null, null, 'F:/Workspace/Base/src/main/resources/controller/images/order1.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 4, '123', 1, 1, 300, 5.0, 0.0, null, null, null, 'F:/Workspace/Base/src/main/resources/controller/images/order1.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 9, '123', 1, 1, 0, 2.0, 0.0, null, null, '0', 'F:/Workspace/Base/src/main/resources/controller/images/order1.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 10, '23', 1, 1, 0, 2.0, 0.0, null, null, '0', 'file:/F:/Workspace/Base/src/main/resources/controller/images/purchase.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 11, '12324', 1, 1, 0, 4.0, 0.0, null, null, '0', 'file:/F:/Workspace/Base/src/main/resources/controller/images/right-arrow.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 12, 'ImportedPriceTest', 1, 1, 0, 5.0, 3.0, null, null, '0', 'file:/F:/Workspace/Base/src/main/resources/controller/images/purchase.png');
-INSERT INTO pos.product( id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, discount_percentage, description, `status`, image ) VALUES ( 13, '2225', 1, 1, 1500, 2.0, 5.0, null, null, '0', 'file:/F:/Workspace/Base/src/main/resources/controller/images/order1.png');
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 1, 1, 200, 2.5, 500.0, '2023-09-30', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 6, 2, 100, 3.0, 300.0, '2023-09-30', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 7, 2, 200, 3.0, 600.0, '2023-09-30', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 8, 12, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 9, 12, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 10, 12, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 11, 12, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 12, 1, 200, 2.5, 500.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 13, 12, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 14, 12, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 15, 1, 200, 2.5, 500.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 16, 1, 200, 2.5, 500.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 17, 2, 200, 3.0, 600.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 18, 4, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 19, 4, 100, 3.0, 300.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 20, 13, 500, 5.0, 2500.0, '2023-10-03', 1);
-INSERT INTO pos.goods_import( id, product_id, quantity, unit_price, total_price, date_imported, user_id ) VALUES ( 21, 13, 500, 5.0, 2500.0, '2023-10-03', null);

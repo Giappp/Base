@@ -1,5 +1,6 @@
 package com.controller.logSign;
 
+import com.controller.client.data;
 import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,9 @@ public class LogInController implements Initializable {
                 alert.show();
             } else {
                 while (rs.next()) {
+
+                    data.username = tf_username.getText();
+
                     String retrievedPass = rs.getString("password");
                     if (retrievedPass.equals(password)) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
