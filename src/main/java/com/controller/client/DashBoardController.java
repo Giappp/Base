@@ -48,6 +48,9 @@ import java.util.regex.Pattern;
 
 public class DashBoardController implements Initializable {
     @FXML
+    private Label display_detail;
+
+    @FXML
     private AnchorPane dashboard_product;
 
     @FXML
@@ -163,6 +166,7 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane dashboard_storage;
+
 
     @FXML
     private Button home_btn;
@@ -290,7 +294,7 @@ public class DashBoardController implements Initializable {
 //            throw new RuntimeException(e);
 //        }
         displayUsername();
-
+        viewProfile();
         addProductShowListData();
 
         home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
@@ -395,39 +399,36 @@ public class DashBoardController implements Initializable {
             addProduct_type_cb.setItems(listCategory);
         });
 
-        addProduct_addBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
-                String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
-                String name = addProduct_name_tf.getText();
-                String price = addProduct_salesprice_tf.getText();
-                String status = cb_status.getSelectionModel().getSelectedItem();
+        addProduct_addBtn.setOnAction(event -> {
+            String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
+            String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
+            String name = addProduct_name_tf.getText();
+            String price = addProduct_salesprice_tf.getText();
+            String status = cb_status.getSelectionModel().getSelectedItem();
 
-                if (brand != null && type != null && name != null && price != null
-                        && imageUrl != null && status != null) {
-                    int brandId = new SupplierModel().getIdSupplier(brand);
-                    int typeId = new ProductCategoryModel().getProductCategoryId(type);
-                    try {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Confirmation Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Add " + name + " To Product lists?");
-                        Optional<ButtonType> option = alert.showAndWait();
+            if (brand != null && type != null && name != null && price != null
+                    && imageUrl != null && status != null) {
+                int brandId = new SupplierModel().getIdSupplier(brand);
+                int typeId = new ProductCategoryModel().getProductCategoryId(type);
+                try {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Add " + name + " To Product lists?");
+                    Optional<ButtonType> option = alert.showAndWait();
 
-                        if (option.get().equals(ButtonType.OK)) {
-                            Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), 0.0, imageUrl, status);
-                            DBAdd(product);
-                            addProductShowListData();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (option.get().equals(ButtonType.OK)) {
+                        Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), 0.0, imageUrl, status);
+                        DBAdd(product);
+                        addProductShowListData();
                     }
-                } else {
-                    Alert inValid = new Alert(Alert.AlertType.ERROR);
-                    inValid.setContentText("Please fill product information correctly");
-                    inValid.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            } else {
+                Alert inValid = new Alert(Alert.AlertType.ERROR);
+                inValid.setContentText("Please fill product information correctly");
+                inValid.showAndWait();
             }
         });
 
@@ -476,26 +477,24 @@ public class DashBoardController implements Initializable {
             }
         });
 
-        addProduct_updatebtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Integer id = Integer.valueOf(addProduct_id.getText());
-                String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
-                String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
-                String name = addProduct_name_tf.getText();
-                String price = addProduct_salesprice_tf.getText();
-                String status = cb_status.getSelectionModel().getSelectedItem();
-                imageUrl = addproduct_imageview.getImage().getUrl();
-                if (brand != null && type != null && name != null && price != null
-                        && imageUrl != null && status != null) {
-                    int brandId = new SupplierModel().getIdSupplier(brand);
-                    int typeId = new ProductCategoryModel().getProductCategoryId(type);
-                    try {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Confirmation Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Update " + name + " with id " + id);
-                        Optional<ButtonType> option = alert.showAndWait();
+        addProduct_updatebtn.setOnAction(event -> {
+            Integer id = Integer.valueOf(addProduct_id.getText());
+            String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
+            String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
+            String name = addProduct_name_tf.getText();
+            String price = addProduct_salesprice_tf.getText();
+            String status = cb_status.getSelectionModel().getSelectedItem();
+            imageUrl = addproduct_imageview.getImage().getUrl();
+            if (brand != null && type != null && name != null && price != null
+                    && imageUrl != null && status != null) {
+                int brandId = new SupplierModel().getIdSupplier(brand);
+                int typeId = new ProductCategoryModel().getProductCategoryId(type);
+                try {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Update " + name + " with id " + id);
+                    Optional<ButtonType> option = alert.showAndWait();
 
                         if (option.get().equals(ButtonType.OK)) {
                             Product product = new Product(id,name,brand, brandId, type,typeId, Double.parseDouble(price), status,imageUrl);
@@ -509,11 +508,13 @@ public class DashBoardController implements Initializable {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else {
-                    Alert inValid = new Alert(Alert.AlertType.ERROR);
-                    inValid.setContentText("Please fill product information correctly");
-                    inValid.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            } else {
+                Alert inValid = new Alert(Alert.AlertType.ERROR);
+                inValid.setContentText("Please fill product information correctly");
+                inValid.showAndWait();
             }
         });
 
@@ -579,9 +580,7 @@ public class DashBoardController implements Initializable {
     // General Controller functions
 
     void CancelAction(Button cancelBtn) {
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        cancelBtn.setOnAction(event -> {
 
                 // Get a reference to the cancel button's stage (window)
                 addProduct_addBtn.setDisable(false);
@@ -683,14 +682,20 @@ public class DashBoardController implements Initializable {
         window.showAndWait();
     }
 
-    public void viewAccountDetail() throws Exception {
-        String viewAccountSql = "SELECT username, email, phone, detail FROM users";
+    public void viewProfile() {
+        String viewAccountSql = "SELECT username, email, phone, details, password FROM users";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(viewAccountSql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
+            if (rs.next()) {
+                display_username.setText(rs.getString("username"));
+                display_email.setText(rs.getString("email"));
+                display_phone.setText(rs.getString("phone"));
+                display_pass.setText(rs.getString("password"));
+                display_detail.setText(rs.getString("details"));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -769,7 +774,7 @@ public class DashBoardController implements Initializable {
     }
     private boolean checkImageUrl(String url){
         String regex
-                = "([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)";
+                = "(\\S+(\\.(?i)(jpe?g|png|gif|bmp))$)";
 
         // Compile the ReGex
         Pattern p = Pattern.compile(regex);
