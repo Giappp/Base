@@ -50,17 +50,14 @@ public class ProductController implements Initializable {
 
     @FXML
     private TextField addProduct_salesprice_tf;
-    @FXML
-    private TextField addProduct_importedprice_tf;
 
     @FXML
     private ComboBox<String> addProduct_type_cb;
+    @FXML
+    private ComboBox<String> cb_status;
 
     @FXML
     private ImageView addproduct_imageview;
-
-    @FXML
-    private AnchorPane dashboard_addproduct;
 
     private String imageUrl;
 
@@ -78,10 +75,9 @@ public class ProductController implements Initializable {
                 String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
                 String name = addProduct_name_tf.getText();
                 String price = addProduct_salesprice_tf.getText();
-                String importedPrice = addProduct_importedprice_tf.getText();
 
                 if (brand != null && type != null && name != null && price != null
-                        && imageUrl != null && importedPrice != null) {
+                        && imageUrl != null) {
                     int brandId = new SupplierModel().getIdSupplier(brand);
                     int typeId = new ProductCategoryModel().getProductCategoryId(type);
 
@@ -93,19 +89,6 @@ public class ProductController implements Initializable {
                         Optional<ButtonType> option = alert.showAndWait();
 
                         if (option.get().equals(ButtonType.OK)) {
-                            Product product = new Product(name,brandId,typeId,0,Double.parseDouble(price), Double.parseDouble(importedPrice),imageUrl);
-                            boolean check = new ProductModel().addProduct(product);
-                            System.out.println(check);
-
-                            if (check) {
-                                Alert success = new Alert(Alert.AlertType.INFORMATION);
-                                success.setContentText("Add product successfully");
-                                success.showAndWait();
-                            } else {
-                                Alert failed = new Alert(Alert.AlertType.INFORMATION);
-                                failed.setContentText("Something went wrong. Please try again");
-                                failed.showAndWait();
-                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -118,26 +101,7 @@ public class ProductController implements Initializable {
             }
         });
 
-        cancel_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Are you sure you want to cancel the current product?");
-                    Optional<ButtonType> option = alert.showAndWait();
-
-                    if (option.get().equals(ButtonType.OK)) {
-                        // Get a reference to the cancel button's stage (window)
-                        Stage stage = (Stage) cancel_btn.getScene().getWindow();
-                        stage.close();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        new DashBoardController().CancelAction(cancel_btn);
     }
 
     @FXML

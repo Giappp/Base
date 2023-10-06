@@ -29,7 +29,7 @@ public class ProductModel {
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
                     product.setImportedPrice(resultSet.getDouble("imported_price"));
-                    product.setStatus(resultSet.getString("status"));
+                    product.setStatus(resultSet.getBoolean("status") ? "available" : "unavailable");
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
                     product.setImage(resultSet.getString("image"));
@@ -54,7 +54,7 @@ public class ProductModel {
                 preparedStatement.setDouble(4,product.getQuantityInStock());
                 preparedStatement.setDouble(5,product.getSalePrice());
                 preparedStatement.setDouble(6,product.getImportedPrice());
-                preparedStatement.setString(7,product.getStatus());
+                preparedStatement.setBoolean(7,product.getStatus().equalsIgnoreCase("available"));
                 preparedStatement.setString(8,product.getImage());
                 return preparedStatement.executeUpdate() > 0;
             }
@@ -63,6 +63,29 @@ public class ProductModel {
         }
         return false;
     }
+
+    public boolean updateProduct(Product product) {
+        String sql = "Update `product` SET `name` = ?, `product_type_id` = ?, `supplier_id` = ?, `sale_price` = ?" +
+                ", `status` = ?, `image` = ? " +
+                "WHERE id = ?";
+        try(Connection connection = JDBCConnect.getJDBCConnection()){
+            assert connection != null;
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1,product.getName());
+                preparedStatement.setInt(2,product.getProductTypeId());
+                preparedStatement.setInt(3,product.getSupplierId());
+                preparedStatement.setDouble(4,product.getSalePrice());
+                preparedStatement.setBoolean(5,product.getStatus().equalsIgnoreCase("available"));
+                preparedStatement.setString(6,product.getImage());
+                preparedStatement.setInt(7,product.getId());
+                return preparedStatement.executeUpdate() > 0;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public List<Product> getProductList2(){
         String sql = "SELECT * from product";
         List<Product> productList = new ArrayList<>();
@@ -78,7 +101,7 @@ public class ProductModel {
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setStatus(resultSet.getString("status"));
+                    product.setStatus(resultSet.getBoolean("status")  ? "available" : "unavailable" );
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setImage(resultSet.getString("image"));
                     productList.add(product);
@@ -169,7 +192,7 @@ public class ProductModel {
                     product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setStatus(resultSet.getString("status"));
+                    product.setStatus(resultSet.getBoolean("status")  ? "available" : "unavailable");
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
