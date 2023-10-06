@@ -38,6 +38,9 @@ import java.util.ResourceBundle;
 public class DashBoardController implements Initializable {
 
     @FXML
+    private Label display_detail;
+
+    @FXML
     private AnchorPane dashboard_product;
 
     @FXML
@@ -235,7 +238,7 @@ public class DashBoardController implements Initializable {
 //            throw new RuntimeException(e);
 //        }
         displayUsername();
-
+        viewProfile();
         addProductShowListData();
 
         home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
@@ -434,14 +437,20 @@ public class DashBoardController implements Initializable {
         window.showAndWait();
     }
 
-    public void viewAccountDetail() throws Exception {
-        String viewAccountSql = "SELECT username, email, phone, detail FROM users";
+    public void viewProfile() {
+        String viewAccountSql = "SELECT username, email, phone, details, password FROM users";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(viewAccountSql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
+            if (rs.next()) {
+                display_username.setText(rs.getString("username"));
+                display_email.setText(rs.getString("email"));
+                display_phone.setText(rs.getString("phone"));
+                display_pass.setText(rs.getString("password"));
+                display_detail.setText(rs.getString("details"));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

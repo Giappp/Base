@@ -166,7 +166,7 @@
       </padding>
    </HBox>
    <StackPane layoutX="200.0" layoutY="60.0" prefHeight="660.0" prefWidth="1000.0">
-      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
+      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -267,14 +267,14 @@
             </BarChart>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_account" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_account" prefHeight="200.0" prefWidth="200.0">
          <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account">
             <font>
                <Font name="Segoe UI" size="24.0" />
             </font>
          </Text>
          <AnchorPane layoutX="58.0" layoutY="59.0" prefHeight="586.0" prefWidth="432.0">
-            <Label layoutX="36.0" layoutY="101.0" text="Username:">
+            <Label layoutX="36.0" layoutY="100.0" text="Username:">
                <font>
                   <Font name="Segoe UI" size="16.0" />
                </font>
@@ -284,7 +284,7 @@
                   <Font name="Segoe UI" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="36.0" layoutY="141.0" text="Email:">
+            <Label layoutX="36.0" layoutY="140.0" text="Email:">
                <font>
                   <Font name="Segoe UI" size="16.0" />
                </font>
@@ -294,7 +294,7 @@
                   <Font name="Segoe UI" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="36.0" layoutY="181.0" text="Phone number:">
+            <Label layoutX="36.0" layoutY="180.0" text="Phone number:">
                <font>
                   <Font name="Segoe UI" size="16.0" />
                </font>
@@ -304,7 +304,7 @@
                   <Font name="Segoe UI" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="40.0" layoutY="222.0" text="Password:">
+            <Label layoutX="40.0" layoutY="220.0" text="Password:">
                <font>
                   <Font name="Segoe UI" size="16.0" />
                </font>
@@ -319,17 +319,27 @@
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Text>
-            <Button fx:id="update_account_info" layoutX="240.0" layoutY="279.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="150.0" text="Update information">
+            <Button fx:id="update_account_info" layoutX="241.0" layoutY="370.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="150.0" text="Update information">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="change_pass_btn" layoutX="40.0" layoutY="279.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="150.0" text="Change Password">
+            <Button fx:id="change_pass_btn" layoutX="41.0" layoutY="370.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="150.0" text="Change Password">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Button>
             <AnchorPane layoutX="-348.0" layoutY="13.0" prefHeight="200.0" prefWidth="200.0" />
+            <Label layoutX="40.0" layoutY="260.0" text="Detail:">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="display_detail" layoutX="173.0" layoutY="260.0" text="detail">
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Label>
          </AnchorPane>
       </AnchorPane>
       <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
