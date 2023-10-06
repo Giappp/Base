@@ -1,7 +1,7 @@
 # Base
 POS (Point of Sale) Project
 
-Cruicial Managements:
+Crucial Managements:
 
 - Storage Management
 - Product Management
