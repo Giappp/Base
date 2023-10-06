@@ -48,6 +48,9 @@ import java.util.regex.Pattern;
 
 public class DashBoardController implements Initializable {
     @FXML
+    private AnchorPane dashboard_product;
+
+    @FXML
     private AnchorPane updateScene;
     @FXML
     private TableView<Product> tblv_product;
@@ -276,22 +279,6 @@ public class DashBoardController implements Initializable {
 
     private String imageUrl;
 
-    public void chart() throws Exception {
-        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
-
-        try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
-            XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
-            }
-            sale_revenue_chart.getData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -302,7 +289,10 @@ public class DashBoardController implements Initializable {
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
+        displayUsername();
+
         addProductShowListData();
+
         home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
         sign_out_btn.setOnAction(event -> {
             try {
@@ -552,6 +542,22 @@ public class DashBoardController implements Initializable {
             }
         });
 
+        update_account_info.setOnAction(event -> {
+            try {
+                openModalWindow("/controller/client/update-info.fxml", "Update User Information");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        order_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        order_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
+        order_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        order_col_type.setCellValueFactory(new PropertyValueFactory<>("productTypeId"));
+        order_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
+        order_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+        order_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tblv_orderView.setItems(observableList);
 //        order_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
 //        order_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
 //        order_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -607,6 +613,28 @@ public class DashBoardController implements Initializable {
             failed.setContentText("Something went wrong. Please try again");
             failed.showAndWait();
         }
+    }
+
+    public void chart() throws Exception {
+        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
+            XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
+            }
+            sale_revenue_chart.getData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayUsername() {
+        String user = data.username;
+        user = user.substring(0, 1).toUpperCase() + user.substring(1);
+        username_label.setText(user);
     }
 
     public void addProductShowListData() {
