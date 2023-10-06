@@ -32,13 +32,29 @@ public class Product {
         this.quantityInStock = quantityInStock;
     }
 
-    public Product(String name, Integer supplierId, Integer productTypeId, Integer quantityInStock, Double salePrice, Double importedPrice, String image) {
+    public Product(String name, Integer supplierId, Integer productTypeId, Integer quantityInStock, Double salePrice, Double importedPrice, String image,String status) {
         this.name = name;
         this.supplierId = supplierId;
         this.productTypeId = productTypeId;
         this.quantityInStock = quantityInStock;
         this.salePrice = salePrice;
         this.importedPrice = importedPrice;
+        this.image = image;
+        this.status = status;
+    }
+
+    public Product(Integer id, String name,
+                   String supplierName, Integer supplierId,
+                   String productType, Integer productTypeId,
+                   Double salePrice, String status, String image) {
+        this.id = id;
+        this.name = name;
+        this.supplierName = supplierName;
+        this.supplierId = supplierId;
+        this.productType = productType;
+        this.productTypeId = productTypeId;
+        this.salePrice = salePrice;
+        this.status = status;
         this.image = image;
     }
 
