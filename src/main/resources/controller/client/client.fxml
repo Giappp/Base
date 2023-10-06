@@ -167,7 +167,7 @@
       </padding>
    </HBox>
    <StackPane layoutX="200.0" layoutY="60.0" prefHeight="660.0" prefWidth="1000.0">
-      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" visible="false">
+      <AnchorPane fx:id="dashboard_home" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -268,7 +268,7 @@
             </BarChart>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_account" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_account" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -330,7 +330,6 @@
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Button>
-            <AnchorPane layoutX="-348.0" layoutY="13.0" prefHeight="200.0" prefWidth="200.0" />
             <Label layoutX="40.0" layoutY="260.0" text="Detail:">
                <font>
                   <Font name="Segoe UI" size="16.0" />
@@ -372,7 +371,7 @@
             <Button fx:id="importProduct_btn" layoutX="740.0" layoutY="17.0" mnemonicParsing="false" text="Import Product" />
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0" visible="false">
          <AnchorPane fx:id="updateScene" layoutX="14.0" layoutY="46.0" prefHeight="660.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                <TableView fx:id="tblv_product" layoutX="309.0" prefHeight="646.0" prefWidth="662.0">

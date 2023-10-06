@@ -446,10 +446,10 @@ public class DashBoardController implements Initializable {
                 addProduct_addBtn.setDisable(true);
                 addProduct_updatebtn.setDisable(false);
                 productDelete_btn.setDisable(false);
-                if(checkImageUrl(newValue.getImage())){
-                    Image img = new Image(newValue.getImage(),154,100,true,false);
+                if (checkImageUrl(newValue.getImage())) {
+                    Image img = new Image(newValue.getImage(), 154, 100, true, false);
                     addproduct_imageview.setImage(img);
-                }else{
+                } else {
                     String currentPath = System.getProperty("user.dir");
                     addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
                 }
@@ -495,18 +495,14 @@ public class DashBoardController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Update " + name + " with id " + id);
                     Optional<ButtonType> option = alert.showAndWait();
-
-                        if (option.get().equals(ButtonType.OK)) {
-                            Product product = new Product(id,name,brand, brandId, type,typeId, Double.parseDouble(price), status,imageUrl);
-                            DBUpdate(product);
-                            addProduct_addBtn.setDisable(false);
-                            addProduct_updatebtn.setDisable(true);
-                            productDelete_btn.setDisable(true);
-                            addProductShowListData();
-                            clearTextFields(dashboard_product);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (option.get().equals(ButtonType.OK)) {
+                        Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl);
+                        DBUpdate(product);
+                        addProduct_addBtn.setDisable(false);
+                        addProduct_updatebtn.setDisable(true);
+                        productDelete_btn.setDisable(true);
+                        addProductShowListData();
+                        clearTextFields(dashboard_product);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -522,12 +518,13 @@ public class DashBoardController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Integer id = Integer.valueOf(addProduct_id.getText());
-                String name = add
-                try{
+                try {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Delete Confirmation");
                     alert.setHeaderText(null);
-                    alert.setContentText("Are you sure want to delete product " );
+                    alert.setContentText("Are you sure want to delete product ");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -565,6 +562,7 @@ public class DashBoardController implements Initializable {
                 e.printStackTrace();
             }
         });
+    }
 
 //        order_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
 //        order_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
@@ -574,13 +572,12 @@ public class DashBoardController implements Initializable {
 //        order_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
 //        order_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 //        tblv_orderView.setItems(observableList);
-    }
 
 
-    // General Controller functions
+        // General Controller functions
 
-    void CancelAction(Button cancelBtn) {
-        cancelBtn.setOnAction(event -> {
+        void CancelAction (Button cancelBtn){
+            cancelBtn.setOnAction(event -> {
 
                 // Get a reference to the cancel button's stage (window)
                 addProduct_addBtn.setDisable(false);
@@ -588,9 +585,8 @@ public class DashBoardController implements Initializable {
                 productDelete_btn.setDisable(true);
                 tblv_product.getSelectionModel().clearSelection();
                 clearTextFields(dashboard_product);
-            }
-        });
-    }
+            });
+        }
 
     static void DBAdd(Product product) {
         boolean check = new ProductModel().addProduct(product);
@@ -677,7 +673,6 @@ public class DashBoardController implements Initializable {
         window.setScene(fxmlFile);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setIconified(false);
-//        window.initStyle(StageStyle.UNDECORATED);
         window.setTitle(title);
         window.showAndWait();
     }
@@ -743,7 +738,7 @@ public class DashBoardController implements Initializable {
         File file = open.showOpenDialog(dashboard_product.getScene().getWindow());
 
         if (file != null) {
-            image = new Image(file.toURI().toString(),154,100,true,false);
+            image = new Image(file.toURI().toString());
             addproduct_imageview.setImage(image);
             imageUrl = image.getUrl();
         }else{
@@ -795,3 +790,4 @@ public class DashBoardController implements Initializable {
         return m.matches();
     }
 }
+
