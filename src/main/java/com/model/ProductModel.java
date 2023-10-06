@@ -29,7 +29,7 @@ public class ProductModel {
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
                     product.setImportedPrice(resultSet.getDouble("imported_price"));
-                    product.setStatus(resultSet.getBoolean("status") ? "available" : "unavailable");
+                    product.setStatus(resultSet.getBoolean("status") ? "Available" : "Unavailable");
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
                     product.setImage(resultSet.getString("image"));
@@ -86,6 +86,20 @@ public class ProductModel {
         return false;
     }
 
+    public boolean deleteProduct(Product product){
+        String sql = "Delete from `product` where `id` = ?";
+        try(Connection connection = JDBCConnect.getJDBCConnection()){
+            assert connection != null;
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setInt(1,product.getId());
+                return preparedStatement.executeUpdate() > 0;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public List<Product> getProductList2(){
         String sql = "SELECT * from product";
         List<Product> productList = new ArrayList<>();
@@ -101,7 +115,7 @@ public class ProductModel {
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setStatus(resultSet.getBoolean("status")  ? "available" : "unavailable" );
+                    product.setStatus(resultSet.getBoolean("status")  ? "Available" : "Unavailable" );
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setImage(resultSet.getString("image"));
                     productList.add(product);
@@ -192,7 +206,7 @@ public class ProductModel {
                     product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setStatus(resultSet.getBoolean("status")  ? "available" : "unavailable");
+                    product.setStatus(resultSet.getBoolean("status")  ? "Available" : "Unavailable");
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
                     product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
