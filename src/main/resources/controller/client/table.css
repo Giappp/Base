@@ -10,7 +10,6 @@
 }
 .table-row-cell:hover {
     -fx-background-color: #00a7d5;
-    -fx-text-background-color: #D52E00;
 }
 
 .table-view .cell{
@@ -28,13 +27,6 @@
 }
 .table-view .filler {
     -fx-border-insets: 20;
-}
-.table-view .column-header-background{
-    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
-}
-.table-view .column-header-background .label{
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
 }
 
 .table-row-cell:selected {

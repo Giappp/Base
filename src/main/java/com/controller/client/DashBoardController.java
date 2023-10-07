@@ -7,8 +7,6 @@ import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +14,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -26,8 +23,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -37,12 +32,13 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.security.KeyException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -281,7 +277,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private Text txt_product_id;
 
-    private String imageUrl;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -400,14 +395,20 @@ public class DashBoardController implements Initializable {
         });
 
         addProduct_addBtn.setOnAction(event -> {
+            String imageUrl = null;
+            if (addproduct_imageview != null && addproduct_imageview.getImage() != null) {
+                imageUrl = addproduct_imageview.getImage().getUrl();
+            } else {
+                String currentPath = System.getProperty("user.dir");
+                imageUrl = currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg";
+            }
             String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
             String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
             String name = addProduct_name_tf.getText();
             String price = addProduct_salesprice_tf.getText();
             String status = cb_status.getSelectionModel().getSelectedItem();
-
             if (brand != null && type != null && name != null && price != null
-                    && imageUrl != null && status != null) {
+                     && status != null) {
                 int brandId = new SupplierModel().getIdSupplier(brand);
                 int typeId = new ProductCategoryModel().getProductCategoryId(type);
                 try {
@@ -421,6 +422,10 @@ public class DashBoardController implements Initializable {
                         Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), 0.0, imageUrl, status);
                         DBAdd(product);
                         addProductShowListData();
+                        addProduct_addBtn.setDisable(false);
+                        addProduct_updatebtn.setDisable(true);
+                        productDelete_btn.setDisable(true);
+                        clearTextFields(dashboard_product);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -433,9 +438,8 @@ public class DashBoardController implements Initializable {
         });
 
         CancelAction(cancel_btn);
-
-        tblv_product.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+        tblv_product.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
                 ObservableList<String> listBrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
                 addProduct_brand_cb.setItems(listBrands);
                 List<String> status = Arrays.asList("Available", "Unavailable");
@@ -446,10 +450,11 @@ public class DashBoardController implements Initializable {
                 addProduct_addBtn.setDisable(true);
                 addProduct_updatebtn.setDisable(false);
                 productDelete_btn.setDisable(false);
+
                 if (checkImageUrl(newValue.getImage())) {
-                    Image img = new Image(newValue.getImage(), 154, 100, true, false);
+                    Image img = new Image(newValue.getImage());
                     addproduct_imageview.setImage(img);
-                } else {
+                } else if(newValue.getImage() == null) {
                     String currentPath = System.getProperty("user.dir");
                     addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
                 }
@@ -459,21 +464,13 @@ public class DashBoardController implements Initializable {
                 addProduct_salesprice_tf.setText(String.valueOf(newValue.getSalePrice()));
                 cb_status.getSelectionModel().select(newValue.getStatus());
                 addProduct_id.setText(String.valueOf(newValue.getId()));
-            } else {
+            }
+            else{
                 addProduct_addBtn.setDisable(false);
                 addProduct_updatebtn.setDisable(true);
                 productDelete_btn.setDisable(true);
                 tblv_product.getSelectionModel().clearSelection();
-            }
-        }));
-        tblv_product.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                // Check if the click was in an empty area of the table
-                if (tblv_product.getSelectionModel().isEmpty()) {
-                    // Handle the click on an empty row here
-                    System.out.println("Clicked on an empty row.");
-                    // Perform any actions you want for clicking on an empty row
-                }
+                clearTextFields(dashboard_product);
             }
         });
 
@@ -484,7 +481,7 @@ public class DashBoardController implements Initializable {
             String name = addProduct_name_tf.getText();
             String price = addProduct_salesprice_tf.getText();
             String status = cb_status.getSelectionModel().getSelectedItem();
-            imageUrl = addproduct_imageview.getImage().getUrl();
+            String imageUrl = addproduct_imageview.getImage().getUrl();
             if (brand != null && type != null && name != null && price != null
                     && imageUrl != null && status != null) {
                 int brandId = new SupplierModel().getIdSupplier(brand);
@@ -518,13 +515,34 @@ public class DashBoardController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Integer id = Integer.valueOf(addProduct_id.getText());
-                try {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Delete Confirmation");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Are you sure want to delete product ");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
+                String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
+                String name = addProduct_name_tf.getText();
+                String price = addProduct_salesprice_tf.getText();
+                String status = cb_status.getSelectionModel().getSelectedItem();
+                String imageUrl = addproduct_imageview.getImage().getUrl();
+                if(brand != null && type != null && name != null && price != null
+                        && imageUrl != null && status != null){
+                    int brandId = new SupplierModel().getIdSupplier(brand);
+                    int typeId = new ProductCategoryModel().getProductCategoryId(type);
+                    try {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Delete Confirmation");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Are you sure want to delete " + name + "\nId: " + id);
+                        Optional<ButtonType> option = alert.showAndWait();
+                        if(option.get().equals(ButtonType.OK)){
+                            Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl);
+                            DBDelete(product);
+                            addProduct_addBtn.setDisable(false);
+                            addProduct_updatebtn.setDisable(true);
+                            productDelete_btn.setDisable(true);
+                            addProductShowListData();
+                            clearTextFields(dashboard_product);
+                        }else return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -607,6 +625,18 @@ public class DashBoardController implements Initializable {
         System.out.println("Update Product: " + product.getName());
         System.out.println("Id: " + product.getId());
         System.out.println("Status: " + check);
+        if(check){
+            Alert success = new Alert(Alert.AlertType.INFORMATION);
+            success.setContentText("Update product successfully");
+            success.showAndWait();
+        }else{
+            Alert failed = new Alert(Alert.AlertType.INFORMATION);
+            failed.setContentText("Something went wrong. Please try again");
+            failed.showAndWait();
+        }
+    }
+    static void DBDelete(Product product){
+        boolean check = new ProductModel().deleteProduct(product);
         if(check){
             Alert success = new Alert(Alert.AlertType.INFORMATION);
             success.setContentText("Update product successfully");
@@ -740,12 +770,8 @@ public class DashBoardController implements Initializable {
         if (file != null) {
             image = new Image(file.toURI().toString());
             addproduct_imageview.setImage(image);
-            imageUrl = image.getUrl();
-        }else{
-            image = new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg");
-            addproduct_imageview.setImage(image);
-            imageUrl = image.getUrl();
         }
+        return;
     }
 
     private void clearTextFields(Parent parent) {
