@@ -670,6 +670,10 @@ public class DashBoardController implements Initializable {
         username_label.setText(user);
     }
 
+//    public void displaySalesInfo() {
+//        Double earnings = data.salePrice;
+//    }
+
     public void addProductShowListData() {
         observableList = new ProductModel().getProductList();
         product_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));

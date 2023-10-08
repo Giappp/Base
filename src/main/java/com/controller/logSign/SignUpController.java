@@ -1,5 +1,6 @@
 package com.controller.logSign;
 
+import com.controller.AlertMessages;
 import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +35,8 @@ public class SignUpController implements Initializable {
     @FXML
     private Label lbl_error_pass;
 
+    AlertMessages alert = new AlertMessages();
+
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         btn_login.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/log-in.fxml"));
@@ -47,9 +50,7 @@ public class SignUpController implements Initializable {
                         tf_email.getText(), tf_phone.getText());
             } else {
                 System.out.println("Please fill all information");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Please fill all information to sign up.");
-                alert.show();
+                alert.errorMessage("Please fill all information to sign up.");
             }
         });
         // Add listener on focus action
@@ -108,9 +109,7 @@ public class SignUpController implements Initializable {
             ResultSet rs = ps.executeQuery();
             if (rs.isBeforeFirst()) {
                 System.out.println("Username already exist!");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("You can't use this username. Please try again.");
-                alert.show();
+                alert.errorMessage("You can't use this username. Please try again.");
             } else {
                 PreparedStatement ps2 = con.prepareStatement("INSERT INTO users (username, password, email,phone) VALUES (?, ?, ?,?)");
                 ps2.setString(1, username);
@@ -119,6 +118,7 @@ public class SignUpController implements Initializable {
                 ps2.setString(4,phone);
                 ps2.executeUpdate();
                 DBController.changeScene(event,"controller/logSign/log-in.fxml");
+                alert.successMessage("Registered Successfully!");
             }
         } catch (SQLException e) {
             e.printStackTrace();

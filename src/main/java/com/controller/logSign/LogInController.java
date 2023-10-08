@@ -1,14 +1,12 @@
 package com.controller.logSign;
 
+import com.controller.AlertMessages;
 import com.controller.client.data;
 import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -19,6 +17,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
+
     @FXML
     private Button btn_login;
     @FXML
@@ -27,6 +26,8 @@ public class LogInController implements Initializable {
     private TextField tf_username;
     @FXML
     private PasswordField pf_password;
+
+    AlertMessages alert = new AlertMessages();
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -42,9 +43,7 @@ public class LogInController implements Initializable {
             ResultSet rs = ps.executeQuery();
             if (!rs.isBeforeFirst()) {
                 System.out.println("Invalid username or password!");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Provided credentials are incorrect!");
-                alert.show();
+                alert.errorMessage("Provided credentials are incorrect!");
             } else {
                 while (rs.next()) {
 
@@ -52,16 +51,11 @@ public class LogInController implements Initializable {
 
                     String retrievedPass = rs.getString("password");
                     if (retrievedPass.equals(password)) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setHeaderText(null);
-                        alert.setContentText("Login Successfully!");
-                        alert.showAndWait();
+                        alert.successMessage("Login Successfully!");
                         DBController.showDashboardScene(event,username);
                     } else {
                         System.out.println("Password incorrect!");
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setContentText("Provided credentials are incorrect!");
-                        alert.showAndWait();
+                        alert.errorMessage("Provided credentials are incorrect!");
                     }
                 }
             }
