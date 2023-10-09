@@ -248,9 +248,9 @@ INSERT INTO pos.customer (id, name, address, phone, email) VALUES
                                                                (3, ' urgot', '789 Oak St', '0369696969', 'urgotC@gmail.com');
 
 INSERT INTO pos.supplier (id, name, address, phone, email, details) VALUES
-                                                                        (1, 'Glasc Industies', '789 Supplier Rd', '0123456789', 'renata-glasc@gmail.com', 'Glasc Industries details'),
+                                                                        (1, 'Glasc Industries', '789 Supplier Rd', '0123456789', 'renata-glasc@gmail.com', 'Glasc Industries details'),
                                                                         (2, 'ZAIA Enterprise', '456 Supplier Ave', '0987654321', '1000percent@gmail.com', 'ZAIA Enterprise details'),
-                                                                        (3, 'Hiden Intellproductigence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
+                                                                        (3, 'Hiden Intelligence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
 
 INSERT INTO pos.`order` (id, customer_id, user_id, date_recorded, `status`)
 VALUES

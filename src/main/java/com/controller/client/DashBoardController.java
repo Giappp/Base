@@ -283,12 +283,13 @@ public class DashBoardController implements Initializable {
 
         // All the essentials initialization begin here
 
-//        try {
-//            chart();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            chart();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         displayUsername();
+        displaySalesInfo();
         viewProfile();
         addProductShowListData();
 
@@ -648,21 +649,29 @@ public class DashBoardController implements Initializable {
         }
     }
 
-    public void chart() throws Exception {
+    public void chart() {
+        sale_revenue_chart.getData().clear();
+
         String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
-            XYChart.Series<Object, Object> chartData = new XYChart.Series<>();
-            rs = ps.executeQuery();
+
+            XYChart.Series<String, Double> chartData = new XYChart.Series<>();
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                chartData.getData().add(new XYChart.Data<>(rs.getDouble(1), rs.getDate(2)));
+                chartData.getData().add(new XYChart.Data<>(rs.getString(2), rs.getDouble(1)));
             }
-            sale_revenue_chart.getData();
+
+            XYChart<String, Double> saleRevenueChart = (XYChart<String, Double>) sale_revenue_chart;
+            saleRevenueChart.getData().add(chartData);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public void displayUsername() {
         String user = data.username;
@@ -670,9 +679,21 @@ public class DashBoardController implements Initializable {
         username_label.setText(user);
     }
 
-//    public void displaySalesInfo() {
-//        Double earnings = data.salePrice;
-//    }
+    public void displaySalesInfo() {
+        String sql = "SELECT total_paid, COUNT(o.id) FROM invoice i INNER JOIN order o ON i.order_id = o.id";
+        try (Connection con = JDBCConnect.getJDBCConnection();
+        PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                earning_text.setText(rs.getString("total_paid"));
+
+                total_order_text.setText(rs.getString("o.id"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void addProductShowListData() {
         observableList = new ProductModel().getProductList();

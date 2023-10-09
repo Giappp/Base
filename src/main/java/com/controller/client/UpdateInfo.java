@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class UpdateInfo implements Initializable {
-
     @FXML
     private Button accept_new_info_btn;
 
