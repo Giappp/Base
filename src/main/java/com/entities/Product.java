@@ -46,7 +46,7 @@ public class Product {
     public Product(Integer id, String name,
                    String supplierName, Integer supplierId,
                    String productType, Integer productTypeId,
-                   Double salePrice, String status, String image) {
+                   Double salePrice, String status, String image,Double importedPrice) {
         this.id = id;
         this.name = name;
         this.supplierName = supplierName;
@@ -56,6 +56,7 @@ public class Product {
         this.salePrice = salePrice;
         this.status = status;
         this.image = image;
+        this.importedPrice = importedPrice;
     }
 
     public Double getImportedPrice() {

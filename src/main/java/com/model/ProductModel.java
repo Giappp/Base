@@ -66,7 +66,7 @@ public class ProductModel {
 
     public boolean updateProduct(Product product) {
         String sql = "Update `product` SET `name` = ?, `product_type_id` = ?, `supplier_id` = ?, `sale_price` = ?" +
-                ", `status` = ?, `image` = ? " +
+                ", `status` = ?, `image` = ?, `imported_price` = ?" +
                 "WHERE id = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
@@ -77,7 +77,8 @@ public class ProductModel {
                 preparedStatement.setDouble(4,product.getSalePrice());
                 preparedStatement.setBoolean(5,product.getStatus().equalsIgnoreCase("available"));
                 preparedStatement.setString(6,product.getImage());
-                preparedStatement.setInt(7,product.getId());
+                preparedStatement.setDouble(7,product.getImportedPrice());
+                preparedStatement.setInt(8,product.getId());
                 return preparedStatement.executeUpdate() > 0;
             }
         }catch (SQLException e){

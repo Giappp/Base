@@ -152,6 +152,7 @@ public class ImportProduct implements Initializable {
                 Double totalPrice = Double.valueOf(total_lb.getText());
                 if(supplierName != null && productName != null){
                     Integer productId = new ProductModel().getIdProduct(productName);
+                    Product product = new ProductModel().getProduct(productId);
                     Date date = Date.valueOf(LocalDate.now());
                     try {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -162,7 +163,7 @@ public class ImportProduct implements Initializable {
                         Optional<ButtonType> option = alert.showAndWait();
 
                         if (option.get().equals(ButtonType.OK)) {
-                            GoodsImport goodsImport = new GoodsImport(productId,amount,importedPrice,totalPrice,date,1);
+                            GoodsImport goodsImport = new GoodsImport(productId,product,amount,importedPrice,totalPrice,date,1);
                             boolean check = new GoodsImportModel().importGoods(goodsImport);
                             System.out.println(check);
 
