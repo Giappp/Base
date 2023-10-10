@@ -5,6 +5,7 @@ import java.sql.Date;
 public class GoodsImport {
     private Integer id;
     private Integer productId;
+    private Product product;
     private Integer quantity;
     private Double unitPrice;
     private Double totalPrice;
@@ -14,8 +15,10 @@ public class GoodsImport {
     public GoodsImport() {
     }
 
-    public GoodsImport(Integer productId, Integer quantity, Double unitPrice, Double totalPrice, Date dateImported,Integer userId) {
+
+    public GoodsImport(Integer productId, Product product, Integer quantity, Double unitPrice, Double totalPrice, Date dateImported, Integer userId) {
         this.productId = productId;
+        this.product = product;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
@@ -77,5 +80,13 @@ public class GoodsImport {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

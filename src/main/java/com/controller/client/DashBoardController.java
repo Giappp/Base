@@ -2,7 +2,9 @@ package com.controller.client;
 
 import com.controller.logSign.DBController;
 import com.db.dao.JDBCConnect;
+import com.entities.GoodsImport;
 import com.entities.Product;
+import com.model.GoodsImportModel;
 import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
@@ -28,6 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,7 +177,7 @@ public class DashBoardController implements Initializable {
     private Button orders_btn;
 
     @FXML
-    private TableView<Product> tblv_productView;
+    private TableView<Product> tbv_goods;
 
     @FXML
     private TableView<Product> tblv_orderView;
@@ -265,9 +268,10 @@ public class DashBoardController implements Initializable {
     private ComboBox<String> addProduct_type_cb;
     @FXML
     private ComboBox<String> cb_status;
-
     @FXML
     private ImageView addproduct_imageview;
+    @FXML
+    private TextField addProduct_importedprice_tf;
     @FXML
     private Button addProduct_updatebtn;
     @FXML
@@ -276,6 +280,29 @@ public class DashBoardController implements Initializable {
     private TextField addProduct_id;
     @FXML
     private Text txt_product_id;
+    @FXML
+    private TableColumn<Product, String> good_col_supplier;
+
+    @FXML
+    private TableColumn<Product, Integer> goods_col_amount;
+
+    @FXML
+    private TableColumn<Product, Integer> goods_col_id;
+
+    @FXML
+    private TableColumn<Product, String> goods_col_name;
+
+    @FXML
+    private TableColumn<Product, Double> goods_col_price;
+
+    @FXML
+    private TableColumn<Product, String> goods_col_status;
+
+    @FXML
+    private TableColumn<Product, Double> goods_col_total;
+
+    @FXML
+    private TableColumn<Product, String> goods_col_type;
 
 
     @Override
@@ -341,22 +368,6 @@ public class DashBoardController implements Initializable {
         });
 
 
-        // Storage Controller begin here
-        storage_btn.setOnAction(event -> {
-            dashboard_home.setVisible(false);
-            dashboard_account.setVisible(false);
-            dashboard_order.setVisible(false);
-            dashboard_storage.setVisible(true);
-            dashboard_product.setVisible(false);
-
-            storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-            account_btn.setStyle("-fx-background-color: transparent");
-            home_btn.setStyle("-fx-background-color: transparent");
-            orders_btn.setStyle("-fx-background-color: transparent");
-            product_btn.setStyle("-fx-background-color: transparent");
-        });
-
-
         // Orders Controller begin here
         orders_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
@@ -394,6 +405,23 @@ public class DashBoardController implements Initializable {
             addProduct_type_cb.setItems(listCategory);
         });
 
+        addProduct_newBrand_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    openModalWindow("/controller/client/newSupplier.fxml", "Supplier Management");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                ObservableList<String> listBrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
+                addProduct_brand_cb.setItems(listBrands);
+                List<String> status = Arrays.asList("Available", "Unavailable");
+                cb_status.setItems(FXCollections.observableList(status));
+                ObservableList<String> listCategory = FXCollections.observableArrayList(new ProductCategoryModel().getType());
+                addProduct_type_cb.setItems(listCategory);
+            }
+        });
+
         addProduct_addBtn.setOnAction(event -> {
             String imageUrl = null;
             if (addproduct_imageview != null && addproduct_imageview.getImage() != null) {
@@ -406,6 +434,7 @@ public class DashBoardController implements Initializable {
             String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
             String name = addProduct_name_tf.getText();
             String price = addProduct_salesprice_tf.getText();
+            String importedPrice = addProduct_importedprice_tf.getText();
             String status = cb_status.getSelectionModel().getSelectedItem();
             if (brand != null && type != null && name != null && price != null
                      && status != null) {
@@ -419,7 +448,7 @@ public class DashBoardController implements Initializable {
                     Optional<ButtonType> option = alert.showAndWait();
 
                     if (option.get().equals(ButtonType.OK)) {
-                        Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), 0.0, imageUrl, status);
+                        Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), Double.parseDouble(importedPrice), imageUrl, status);
                         DBAdd(product);
                         addProductShowListData();
                         addProduct_addBtn.setDisable(false);
@@ -464,6 +493,7 @@ public class DashBoardController implements Initializable {
                 addProduct_salesprice_tf.setText(String.valueOf(newValue.getSalePrice()));
                 cb_status.getSelectionModel().select(newValue.getStatus());
                 addProduct_id.setText(String.valueOf(newValue.getId()));
+                addProduct_importedprice_tf.setText(String.valueOf(newValue.getImportedPrice()));
             }
             else{
                 addProduct_addBtn.setDisable(false);
@@ -481,6 +511,7 @@ public class DashBoardController implements Initializable {
             String name = addProduct_name_tf.getText();
             String price = addProduct_salesprice_tf.getText();
             String status = cb_status.getSelectionModel().getSelectedItem();
+            String importedPrice = addProduct_importedprice_tf.getText();
             String imageUrl = addproduct_imageview.getImage().getUrl();
             if (brand != null && type != null && name != null && price != null
                     && imageUrl != null && status != null) {
@@ -493,7 +524,7 @@ public class DashBoardController implements Initializable {
                     alert.setContentText("Update " + name + " with id " + id);
                     Optional<ButtonType> option = alert.showAndWait();
                     if (option.get().equals(ButtonType.OK)) {
-                        Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl);
+                        Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl,Double.parseDouble(importedPrice));
                         DBUpdate(product);
                         addProduct_addBtn.setDisable(false);
                         addProduct_updatebtn.setDisable(true);
@@ -521,6 +552,7 @@ public class DashBoardController implements Initializable {
                 String price = addProduct_salesprice_tf.getText();
                 String status = cb_status.getSelectionModel().getSelectedItem();
                 String imageUrl = addproduct_imageview.getImage().getUrl();
+                String importedPrice = addProduct_importedprice_tf.getText();
                 if(brand != null && type != null && name != null && price != null
                         && imageUrl != null && status != null){
                     int brandId = new SupplierModel().getIdSupplier(brand);
@@ -532,7 +564,7 @@ public class DashBoardController implements Initializable {
                         alert.setContentText("Are you sure want to delete " + name + "\nId: " + id);
                         Optional<ButtonType> option = alert.showAndWait();
                         if(option.get().equals(ButtonType.OK)){
-                            Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl);
+                            Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl,Double.parseDouble(importedPrice));
                             DBDelete(product);
                             addProduct_addBtn.setDisable(false);
                             addProduct_updatebtn.setDisable(true);
@@ -550,7 +582,23 @@ public class DashBoardController implements Initializable {
         observableList.addListener((InvalidationListener) observable -> addProductShowListData());
 
 
-        // Storage controller
+        // Storage Controller begin here
+        storage_btn.setOnAction(event -> {
+            dashboard_home.setVisible(false);
+            dashboard_account.setVisible(false);
+            dashboard_order.setVisible(false);
+            dashboard_storage.setVisible(true);
+            dashboard_product.setVisible(false);
+
+            storageList();
+
+            storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            account_btn.setStyle("-fx-background-color: transparent");
+            home_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: transparent");
+            product_btn.setStyle("-fx-background-color: transparent");
+        });
+
         importProduct_btn.setOnAction(event -> {
             try {
                 openModalWindow("/controller/client/importProduct.fxml", "Import Product");
@@ -559,8 +607,10 @@ public class DashBoardController implements Initializable {
                 e.printStackTrace();
             }
             System.out.println("reset table");
-            addProductShowListData();
+            storageList();
         });
+
+
 
 
         //
@@ -673,20 +723,6 @@ public class DashBoardController implements Initializable {
     public void addProductShowListData() {
         observableList = new ProductModel().getProductList();
         product_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        product_col_image.setCellValueFactory(param -> {
-//            // Create an imageView based on the image URL in the data
-//            ImageView imageView = new ImageView();
-//            imageView.setFitHeight(50);
-//            imageView.setFitWidth(50);
-//
-//            String imageUrl = param.getValue().getImage();
-//            if(imageUrl != null){
-//                Image image = new Image(imageUrl);
-//                imageView.setImage(image);
-//                return new SimpleObjectProperty<>(imageView);
-//            }
-//            return null;
-//        });
         product_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         product_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -694,6 +730,16 @@ public class DashBoardController implements Initializable {
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_product.setItems(observableList);
+    }
+    public void storageList(){
+        ObservableList<Product> storageList = new ProductModel().getProductList();
+        goods_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        goods_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
+        good_col_supplier.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+        goods_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        goods_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
+        goods_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tbv_goods.setItems(storageList);
     }
 
     private void openModalWindow(String resource, String title) throws IOException {

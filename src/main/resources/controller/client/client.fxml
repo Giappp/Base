@@ -342,7 +342,7 @@
             </Label>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -355,23 +355,22 @@
                </font>
             </TextField>
             <FontAwesomeIconView glyphName="SEARCH" layoutX="214.0" layoutY="34.0" />
-            <TableView fx:id="tblv_productView" layoutX="14.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="479.0" prefWidth="973.0" stylesheets="@table.css">
+            <TableView fx:id="tbv_goods" layoutX="14.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="940.0" stylesheets="@table.css">
                <columns>
-                  <TableColumn fx:id="product_col_id1" prefWidth="45.60003662109375" sortable="false" text="ID" visible="false" />
-                  <TableColumn fx:id="product_col_image1" prefWidth="115.99998474121094" text="Image" />
-                  <TableColumn fx:id="product_col_name1" editable="false" maxWidth="200.0" prefWidth="125.60000610351562" styleClass="column-header" text="Name" />
-                  <TableColumn fx:id="product_col_type1" editable="false" maxWidth="250.0" prefWidth="135.99996948242188" styleClass="column-header" text="Type" />
-                  <TableColumn fx:id="product_col_brand1" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="149.5999755859375" styleClass="column-header" text="Brand" />
-                  <TableColumn fx:id="product_col_price1" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="97.59991455078125" styleClass="column-header" text="Price" />
-                  <TableColumn fx:id="product_col_status1" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="105.5999755859375" styleClass="column-header" text="Status" />
-                  <TableColumn fx:id="product_col_amount1" editable="false" maxWidth="212.00003662109373" prefWidth="107.199951171875" styleClass="column-header" text="Amount" />
-                  <TableColumn fx:id="product_col_value" prefWidth="119.20004882812498" text="Value" />
+                  <TableColumn fx:id="goods_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" />
+                  <TableColumn fx:id="goods_col_name" editable="false" maxWidth="200.0" prefWidth="138.39999389648438" text="Name" />
+                  <TableColumn fx:id="goods_col_type" editable="false" maxWidth="250.0" prefWidth="133.60003662109375" text="Type" />
+                  <TableColumn fx:id="good_col_supplier" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="150.39996337890625" text="Supplier" />
+                  <TableColumn fx:id="goods_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="114.4000244140625" text="Price" />
+                  <TableColumn fx:id="goods_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="100.79998779296875" text="Status" />
+                  <TableColumn fx:id="goods_col_amount" editable="false" maxWidth="212.00003662109373" prefWidth="86.4000244140625" text="Amount" />
+                  <TableColumn fx:id="goods_col_total" prefWidth="165.5999755859375" text="Total" />
                </columns>
             </TableView>
             <Button fx:id="importProduct_btn" layoutX="740.0" layoutY="17.0" mnemonicParsing="false" text="Import Product" />
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0">
          <AnchorPane fx:id="updateScene" layoutX="14.0" layoutY="46.0" prefHeight="660.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                <TableView fx:id="tblv_product" layoutX="309.0" prefHeight="646.0" prefWidth="662.0">
@@ -403,12 +402,12 @@
                            <Font name="Segoe UI" size="14.0" />
                         </font>
                      </Text>
-                     <Button fx:id="addProduct_addBtn" layoutX="14.0" layoutY="422.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="124.0" style="-fx-background-color: #158BFF; -fx-border-radius: 5px;" text="Add" textFill="WHITE">
+                     <Button fx:id="addProduct_addBtn" layoutX="14.0" layoutY="472.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="124.0" style="-fx-background-color: #158BFF; -fx-border-radius: 5px;" text="Add" textFill="WHITE">
                         <font>
                            <Font name="Segoe UI" size="13.0" />
                         </font>
                      </Button>
-                     <Button fx:id="cancel_btn" layoutX="152.0" layoutY="422.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="124.0" style="-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-style: solid; -fx-border-radius: 5px;" text="Cancel">
+                     <Button fx:id="cancel_btn" layoutX="152.0" layoutY="472.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="124.0" style="-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-style: solid; -fx-border-radius: 5px;" text="Cancel">
                         <font>
                            <Font name="Segoe UI" size="13.0" />
                         </font>
@@ -441,13 +440,13 @@
                            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14.0" wrappingWidth="11.0" />
                         </graphic>
                      </Button>
-                     <Text layoutX="23.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="RIGHT" wrappingWidth="46.19726562500023">
+                     <Text layoutX="23.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="RIGHT" wrappingWidth="46.19726562500023">
                         <font>
                            <Font name="Segoe UI" size="14.0" />
                         </font>
                      </Text>
-                     <ComboBox fx:id="cb_status" layoutX="82.0" layoutY="367.0" prefHeight="26.0" prefWidth="116.0" style="-fx-background-color: transparent; -fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-border-color: #00A7D5;" />
-                     <Button fx:id="addProduct_updatebtn" disable="true" layoutX="14.0" layoutY="465.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="124.0" style="-fx-background-color: #28A745; -fx-border-radius: 5px;" text="Update" textFill="WHITE">
+                     <ComboBox fx:id="cb_status" layoutX="82.0" layoutY="418.0" prefHeight="26.0" prefWidth="116.0" style="-fx-background-color: transparent; -fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-border-color: #00A7D5;" />
+                     <Button fx:id="addProduct_updatebtn" disable="true" layoutX="14.0" layoutY="526.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="124.0" style="-fx-background-color: #28A745; -fx-border-radius: 5px;" text="Update" textFill="WHITE">
                         <font>
                            <Font name="Segoe UI" size="13.0" />
                         </font>
@@ -458,7 +457,13 @@
                         </font>
                      </Text>
                      <TextField fx:id="addProduct_id" disable="true" layoutX="85.0" layoutY="405.0" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: transparent; -fx-border-style: solid; -fx-border-width: 0 0 1px 0; -fx-border-color: #00A7D5;" visible="false" />
-                     <Button fx:id="productDelete_btn" disable="true" layoutX="153.0" layoutY="464.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="124.0" style="-fx-background-color: Red;" text="Delete" textFill="WHITE" />
+                     <Button fx:id="productDelete_btn" disable="true" layoutX="152.0" layoutY="525.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="124.0" style="-fx-background-color: Red;" text="Delete" textFill="WHITE" />
+                     <Text layoutX="10.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imported Price" textAlignment="CENTER" wrappingWidth="61.464843749999886">
+                        <font>
+                           <Font name="Segoe UI" size="14.0" />
+                        </font>
+                     </Text>
+                     <TextField fx:id="addProduct_importedprice_tf" layoutX="86.0" layoutY="372.0" prefHeight="26.0" prefWidth="179.0" style="-fx-background-color: transparent; -fx-border-style: solid; -fx-border-width: 0 0 1px 0; -fx-border-color: #00A7D5;" />
                   </children>
                </AnchorPane>
             </children>
