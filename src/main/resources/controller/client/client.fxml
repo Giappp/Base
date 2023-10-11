@@ -314,6 +314,35 @@
             </Label>
          </AnchorPane>
       </AnchorPane>
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
+         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
+            <font>
+               <Font name="Segoe UI" size="24.0" />
+            </font>
+         </Text>
+         <AnchorPane layoutY="60.0" prefHeight="600.0" prefWidth="1000.0">
+            <TextField fx:id="product_field_search" layoutX="14.0" layoutY="15.0" prefHeight="28.0" prefWidth="220.0" promptText="Search">
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+            </TextField>
+            <FontAwesomeIconView glyphName="SEARCH" layoutX="214.0" layoutY="34.0" />
+            <TableView fx:id="tbv_goods" layoutX="14.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="940.0" stylesheets="@table.css">
+               <columns>
+                  <TableColumn fx:id="goods_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" />
+                  <TableColumn fx:id="goods_col_name" editable="false" maxWidth="200.0" prefWidth="138.39999389648438" text="Name" />
+                  <TableColumn fx:id="goods_col_type" editable="false" maxWidth="250.0" prefWidth="133.60003662109375" text="Type" />
+                  <TableColumn fx:id="good_col_supplier" editable="false" maxWidth="211.199951171875" minWidth="0.0" prefWidth="150.39996337890625" text="Supplier" />
+                  <TableColumn fx:id="goods_col_price" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="114.4000244140625" text="Price" />
+                  <TableColumn fx:id="goods_col_status" editable="false" maxWidth="200.0" minWidth="0.0" prefWidth="100.79998779296875" text="Status" />
+                  <TableColumn fx:id="goods_col_amount" editable="false" maxWidth="212.00003662109373" prefWidth="86.4000244140625" text="Amount" />
+                  <TableColumn fx:id="goods_col_total" prefWidth="165.5999755859375" text="Total" />
+               </columns>
+            </TableView>
+            <Button fx:id="importProduct_btn" layoutX="740.0" layoutY="17.0" mnemonicParsing="false" style="-fx-background-color: #28A745;" text="Import Product" textFill="WHITE" />
+            <Button fx:id="history_btn" layoutX="855.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="97.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="History" />
+         </AnchorPane>
+      </AnchorPane>
       <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0" visible="false">
          <AnchorPane fx:id="updateScene" layoutX="14.0" layoutY="46.0" prefHeight="660.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>

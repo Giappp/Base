@@ -58,7 +58,7 @@
             <TableColumn fx:id="tv_supplier_email" prefWidth="140.0001220703125" text="Email" />
         </columns>
       </TableView>
-      <Label layoutX="362.0" layoutY="14.0" text="Supplier Management">
+      <Label layoutX="362.0" layoutY="18.0" text="Supplier Management">
          <font>
             <Font name="Segoe UI" size="24.0" />
          </font>

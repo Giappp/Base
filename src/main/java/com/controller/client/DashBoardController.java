@@ -9,6 +9,10 @@ import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
 import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ObservableNumberValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,6 +48,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static javafx.beans.binding.Bindings.format;
 
 public class DashBoardController implements Initializable {
     @FXML
@@ -303,6 +309,8 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TableColumn<Product, String> goods_col_type;
+    @FXML
+    private Button history_btn;
 
 
     @Override
@@ -611,6 +619,17 @@ public class DashBoardController implements Initializable {
             storageList();
         });
 
+        history_btn.setOnAction(event -> {
+            try {
+                openModalWindow("/controller/client/importHistory.fxml", "Import History");
+                System.out.println("Viewing History");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("reset table");
+            storageList();
+        });
+
 
 
 
@@ -632,15 +651,6 @@ public class DashBoardController implements Initializable {
             }
         });
     }
-
-//        order_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        order_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
-//        order_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        order_col_type.setCellValueFactory(new PropertyValueFactory<>("productTypeId"));
-//        order_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
-//        order_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
-//        order_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-//        tblv_orderView.setItems(observableList);
 
 
         // General Controller functions
@@ -762,8 +772,18 @@ public class DashBoardController implements Initializable {
         goods_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         good_col_supplier.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         goods_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        goods_col_price.setCellValueFactory(new PropertyValueFactory<>("importedPrice"));
         goods_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         goods_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        goods_col_total.setCellValueFactory(cellData -> {
+            Product product = cellData.getValue();
+            DoubleBinding totalBinding = Bindings.createDoubleBinding(() ->
+                            product.getImportedPrice() * product.getQuantityInStock(),
+                    product.unitPriceProperty(),
+                    product.getQuantityInStockProperty()
+            );
+            return totalBinding.asObject();
+        });
         tbv_goods.setItems(storageList);
     }
 
