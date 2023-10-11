@@ -342,7 +342,7 @@
             </Label>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -367,10 +367,11 @@
                   <TableColumn fx:id="goods_col_total" prefWidth="165.5999755859375" text="Total" />
                </columns>
             </TableView>
-            <Button fx:id="importProduct_btn" layoutX="740.0" layoutY="17.0" mnemonicParsing="false" text="Import Product" />
+            <Button fx:id="importProduct_btn" layoutX="740.0" layoutY="17.0" mnemonicParsing="false" style="-fx-background-color: #28A745;" text="Import Product" textFill="WHITE" />
+            <Button fx:id="history_btn" layoutX="855.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="97.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="History" />
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0" visible="false">
          <AnchorPane fx:id="updateScene" layoutX="14.0" layoutY="46.0" prefHeight="660.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                <TableView fx:id="tblv_product" layoutX="309.0" prefHeight="646.0" prefWidth="662.0">

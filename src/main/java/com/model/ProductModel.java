@@ -219,4 +219,19 @@ public class ProductModel {
         }
         return product;
     }
+
+    public String getName(int productId){
+        String sql = "Select name from product where id = ?";
+        try(Connection connection = JDBCConnect.getJDBCConnection()) {
+            assert connection != null;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, productId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet.getString("name");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
