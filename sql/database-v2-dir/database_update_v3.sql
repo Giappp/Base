@@ -1,7 +1,7 @@
 CREATE SCHEMA POS;
 
 CREATE  TABLE pos.customer (
-                               id                   INT  NOT NULL     PRIMARY KEY,
+                               id                   INT  NOT NULL  AUTO_INCREMENT   PRIMARY KEY,
                                name                 VARCHAR(255)       ,
                                address              VARCHAR(255)       ,
                                phone                VARCHAR(255)       ,
