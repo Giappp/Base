@@ -318,13 +318,13 @@ public class DashBoardController implements Initializable {
 
         // All the essentials initialization begin here
 
-        try {
-            chart();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            chart();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
         displayUsername();
-        displaySalesInfo();
+//        displaySalesInfo();
         viewProfile();
         addProductShowListData();
 
@@ -490,8 +490,11 @@ public class DashBoardController implements Initializable {
                 productDelete_btn.setDisable(false);
 
                 if (checkImageUrl(newValue.getImage())) {
-                    Image img = new Image(newValue.getImage());
-                    addproduct_imageview.setImage(img);
+
+                    //Image img = new Image(newValue.getImage());
+                    //addproduct_imageview.setImage(img);
+                    String currentPath = System.getProperty("user.dir");
+                    addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
                 } else if(newValue.getImage() == null) {
                     String currentPath = System.getProperty("user.dir");
                     addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
@@ -739,21 +742,21 @@ public class DashBoardController implements Initializable {
         username_label.setText(user);
     }
 
-    public void displaySalesInfo() {
-        String sql = "SELECT total_paid, COUNT(o.id) FROM invoice i INNER JOIN order o ON i.order_id = o.id";
-        try (Connection con = JDBCConnect.getJDBCConnection();
-        PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                earning_text.setText(rs.getString("total_paid"));
-
-                total_order_text.setText(rs.getString("o.id"));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void displaySalesInfo() {
+//        String sql = "SELECT total_paid, COUNT(o.id) FROM invoice i INNER JOIN order o ON i.order_id = o.id";
+//        try (Connection con = JDBCConnect.getJDBCConnection();
+//        PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                earning_text.setText(rs.getString("total_paid"));
+//
+//                total_order_text.setText(rs.getString("o.id"));
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void addProductShowListData() {
         observableList = new ProductModel().getProductList();
