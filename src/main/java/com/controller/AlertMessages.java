@@ -17,4 +17,12 @@ public class AlertMessages {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void confirmationMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Message");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

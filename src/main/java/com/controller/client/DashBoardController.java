@@ -2,7 +2,9 @@ package com.controller.client;
 
 import com.controller.logSign.DBController;
 import com.db.dao.JDBCConnect;
+import com.entities.Customer;
 import com.entities.GoodsImport;
+import com.entities.Order;
 import com.entities.Product;
 import com.model.GoodsImportModel;
 import com.model.ProductCategoryModel;
@@ -42,6 +44,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicLong;
@@ -52,6 +55,10 @@ import java.util.regex.Pattern;
 import static javafx.beans.binding.Bindings.format;
 
 public class DashBoardController implements Initializable {
+
+    @FXML
+    private Pagination pagination;
+
     @FXML
     private Label display_detail;
 
@@ -60,10 +67,10 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private AnchorPane updateScene;
+
     @FXML
     private TableView<Product> tblv_product;
-    @FXML
-    private TextField tf_id_choice;
+
     Scene fxmlFile;
 
     Parent root;
@@ -89,25 +96,46 @@ public class DashBoardController implements Initializable {
     private TableColumn<Product, String> order_col_name;
 
     @FXML
+    private TableColumn<Customer, String> order_col_cusname;
+
+    @FXML
     private TableColumn<Product, Integer> order_col_amount;
 
     @FXML
     private TableColumn<Product, Double> order_col_price;
 
     @FXML
-    private TableColumn<Product, Integer> order_col_status;
+    private TableColumn<Order, Date> order_col_date;
 
     @FXML
-    private Spinner<?> sp_choice_amount;
+    private Spinner<?> sp_amount_choice;
 
     @FXML
     private Text display_price_all;
 
     @FXML
-    private Button accept_order_btn;
+    private TextField tf_cusname_choice;
 
     @FXML
-    private Button start_order_btn;
+    private TextField tf_name_choice;
+
+    @FXML
+    private ComboBox<String> cb_type_choice;
+
+    @FXML
+    private ComboBox<String> cb_brand_choice;
+
+    @FXML
+    private Button add_order_btn;
+
+    @FXML
+    private Button update_order_btn;
+
+    @FXML
+    private Button cancel_order_btn;
+
+    @FXML
+    private Button delete_order_btn;
 
     @FXML
     private Label display_username;
@@ -120,15 +148,6 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Label display_pass;
-
-    @FXML
-    private TextField tf_type_choice;
-
-    @FXML
-    private TextField tf_choice_brand;
-
-    @FXML
-    private TextField tf_choice_name;
 
     @FXML
     private Button earning_info_btn;
@@ -312,19 +331,16 @@ public class DashBoardController implements Initializable {
     @FXML
     private Button history_btn;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         // All the essentials initialization begin here
-
 //        try {
 //            chart();
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        displayUsername();
 //        displaySalesInfo();
+        displayUsername();
         viewProfile();
         addProductShowListData();
 
@@ -360,7 +376,6 @@ public class DashBoardController implements Initializable {
             product_btn.setStyle("-fx-background-color: transparent");
         });
 
-
         // Account controller begin here
         account_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
@@ -376,7 +391,6 @@ public class DashBoardController implements Initializable {
             product_btn.setStyle("-fx-background-color: transparent");
         });
 
-
         // Orders Controller begin here
         orders_btn.setOnAction(event -> {
             dashboard_home.setVisible(false);
@@ -391,7 +405,6 @@ public class DashBoardController implements Initializable {
             storage_btn.setStyle("-fx-background-color: transparent");
             product_btn.setStyle("-fx-background-color: transparent");
         });
-
 
         // Product Controller begin here
         product_btn.setOnAction(event -> {
@@ -633,9 +646,6 @@ public class DashBoardController implements Initializable {
             storageList();
         });
 
-
-
-
         //
 
         change_pass_btn.setOnAction(event -> {
@@ -653,8 +663,30 @@ public class DashBoardController implements Initializable {
                 e.printStackTrace();
             }
         });
-    }
 
+        add_order_btn.setOnAction(event -> {
+            String orderBrand = cb_brand_choice.getSelectionModel().getSelectedItem();
+            String orderType = cb_type_choice.getSelectionModel().getSelectedItem();
+            String orderName = tf_name_choice.getText();
+            String cusName = tf_cusname_choice.getText();
+            String orderAmount = String.valueOf(sp_amount_choice.getValue());
+            if (orderBrand != null && orderType != null && orderName != null && cusName != null
+                    && orderAmount != null) {
+                int orderBrandId = new SupplierModel().getIdSupplier(orderBrand);
+                int orderTypeId = new ProductCategoryModel().getProductCategoryId(orderType);
+                try {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Add " + orderName + " To Product lists?");
+                    Optional<ButtonType> optional = alert.showAndWait();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
         // General Controller functions
 
@@ -734,7 +766,6 @@ public class DashBoardController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     public void displayUsername() {
         String user = data.username;
@@ -816,38 +847,6 @@ public class DashBoardController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void handleScanProduct(KeyEvent event) throws Exception {
-        ps = con.prepareStatement("SELECT * FROM Product WHERE id = ?");
-        ps.setString(1, tf_id_choice.getText());
-        rs = ps.executeQuery();
-        if (rs.next()) {
-            int id = rs.getInt(1);
-            String name = rs.getString(2);
-            String productType = rs.getString(3);
-            String supplierName = rs.getString(5);
-            tf_choice_name.setText(name);
-            tf_choice_brand.setText(supplierName);
-            tf_type_choice.setText(productType);
-            sp_choice_amount.requestFocus();
-        }
-        rs.close();
-    }
-
-    public void handleOrder(ActionEvent event) {
-        int quantityInStock = Integer.parseInt(sp_choice_amount.getPromptText());
-        if (quantityInStock != 0) {
-            observableList.add(new Product());
-            tblv_orderView.setItems(observableList);
-        }
-    }
-
-    private void clearText() {
-        tf_id_choice.clear();
-        tf_type_choice.clear();
-        tf_choice_brand.clear();
-        tf_choice_name.clear();
     }
 
     @FXML
