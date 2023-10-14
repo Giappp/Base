@@ -1,5 +1,6 @@
 package com.controller.client;
 
+import com.controller.AlertMessages;
 import com.controller.logSign.DBController;
 import com.entities.Product;
 import com.entities.ProductCategory;
@@ -61,6 +62,8 @@ public class ProductController implements Initializable {
 
     private String imageUrl;
 
+    AlertMessages alertMessages;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> listbrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
@@ -87,6 +90,8 @@ public class ProductController implements Initializable {
                         alert.setHeaderText(null);
                         alert.setContentText("Add " + name + " To Product lists?");
                         Optional<ButtonType> option = alert.showAndWait();
+
+                        alertMessages.confirmationMessage("Add " + name + " To Product lists?");
 
                         if (option.get().equals(ButtonType.OK)) {
                         }
