@@ -17,7 +17,8 @@ CREATE  TABLE pos.invoice (
                               total_price          DOUBLE       ,
                               total_paid           DOUBLE       ,
                               date_recorded        DATE       ,
-                              
+                              CONSTRAINT unq_invoice UNIQUE ( order_id ) ,
+                              CONSTRAINT invoice_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES pos.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE INDEX customer_id ON pos.invoice ( customer_id );
@@ -54,7 +55,9 @@ CREATE  TABLE pos.`order` (
                               user_id              INT       ,
                               date_recorded        DATE       ,
                               `status`             TINYINT       ,
-                              
+                              CONSTRAINT order_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES pos.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                              CONSTRAINT order_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES pos.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                              CONSTRAINT fk_order_invoice FOREIGN KEY ( id ) REFERENCES pos.invoice( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE INDEX customer_id ON pos.`order` ( customer_id );
@@ -73,7 +76,8 @@ CREATE  TABLE pos.product (
                               description          TEXT       ,
                               `status`             TINYINT(1)       ,
                               image                VARCHAR(255)       ,
-                              
+                              CONSTRAINT product_ibfk_1 FOREIGN KEY ( product_type_id ) REFERENCES pos.product_category( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                              CONSTRAINT product_ibfk_2 FOREIGN KEY ( supplier_id ) REFERENCES pos.supplier( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE INDEX product_type_id ON pos.product ( product_type_id );
@@ -86,7 +90,8 @@ CREATE  TABLE pos.product_in_order (
                                        order_id             INT       ,
                                        product_id           INT       ,
                                        quantity             INT       ,
-                                       
+                                       CONSTRAINT product_in_order_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES pos.`order`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                                       CONSTRAINT product_in_order_ibfk_2 FOREIGN KEY ( product_id ) REFERENCES pos.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE INDEX order_id ON pos.product_in_order ( order_id );
@@ -101,8 +106,13 @@ CREATE  TABLE pos.goods_import (
                                    total_price          DOUBLE       ,
                                    date_imported        DATE       ,
                                    user_id              INT       ,
-                                   
+                                   CONSTRAINT goods_import_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES pos.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                                   CONSTRAINT goods_import_ibfk_3 FOREIGN KEY ( product_id ) REFERENCES pos.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE INDEX user_id ON pos.goods_import ( user_id );
+
+CREATE INDEX goods_import_ibfk_3_idx ON pos.goods_import ( product_id );
 
 DELIMITER //
 
@@ -238,9 +248,9 @@ INSERT INTO pos.customer (id, name, address, phone, email) VALUES
                                                                (3, ' urgot', '789 Oak St', '0369696969', 'urgotC@gmail.com');
 
 INSERT INTO pos.supplier (id, name, address, phone, email, details) VALUES
-                                                                        (1, 'Glasc Industries', '789 Supplier Rd', '0123456789', 'renata-glasc@gmail.com', 'Glasc Industries details'),
+                                                                        (1, 'Glasc Industies', '789 Supplier Rd', '0123456789', 'renata-glasc@gmail.com', 'Glasc Industries details'),
                                                                         (2, 'ZAIA Enterprise', '456 Supplier Ave', '0987654321', '1000percent@gmail.com', 'ZAIA Enterprise details'),
-                                                                        (3, 'Hiden Intelligence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
+                                                                        (3, 'Hiden Intellproductigence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
 
 INSERT INTO pos.`order` (id, customer_id, user_id, date_recorded, `status`)
 VALUES
@@ -257,7 +267,3 @@ VALUES
     (3, 3, 2, 1, 700.0, 700.0, '2023-10-06'),
     (4, 1, 3, 2, 800.0, 800.0, '2023-10-06'),
     (5, 3, 1, 1, 900.0, 900.0, '2023-10-07');
-
-CREATE INDEX user_id ON pos.goods_import ( user_id );
-
-CREATE INDEX goods_import_ibfk_3_idx ON pos.goods_import ( product_id );

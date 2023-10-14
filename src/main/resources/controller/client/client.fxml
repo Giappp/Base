@@ -36,6 +36,7 @@
                <Font name="Segoe UI Bold" size="32.0" />
             </font>
          </Label>
+         <Line endX="84.99998474121094" endY="1.4000015258789062" layoutX="115.0" layoutY="109.0" startX="-115.00001525878906" startY="1.4000015258789062" stroke="WHITE" />
       </Pane>
       <Line endX="100.0" startX="-100.0" stroke="WHITE" />
       <Pane prefHeight="76.0" prefWidth="202.0">
@@ -60,7 +61,7 @@
             <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="24" textAlignment="RIGHT" wrappingWidth="40.0" />
          </graphic>
       </Button>
-      <Button fx:id="account_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Account" textFill="WHITE">
+      <Button fx:id="account_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Account" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
          </font>
@@ -78,6 +79,33 @@
          <graphic>
             <FontAwesomeIconView fill="WHITE" glyphName="GEAR" size="24" text="" textAlignment="RIGHT" wrappingWidth="40.0" />
          </graphic>
+      </Button>
+      <Button fx:id="customer_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Customer" textFill="WHITE">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="USER_PLUS" selectionStart="10" size="24" tabSize="10" wrappingWidth="26.0" />
+         </graphic>
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="orders_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text=" Orders" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" size="24" text="" wrappingWidth="26.0" />
+         </graphic>
+      </Button>
+      <Button fx:id="event_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Event" textFill="WHITE">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="CALENDAR_CHECK_ALT" size="25" wrappingWidth="26.0" />
+         </graphic>
+         <font>
+            <Font name="Segoe UI" size="14.0" />
+         </font>
       </Button>
       <Button fx:id="product_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Product" textFill="WHITE">
          <font>
@@ -131,6 +159,7 @@
             <FontAwesomeIconView fill="WHITE" glyphName="GEAR" size="24" textAlignment="RIGHT" wrappingWidth="40.0" />
          </graphic>
       </Button>
+      <Line endX="100.0" startX="-100.0" stroke="WHITE" />
       <Button fx:id="sign_out_btn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: transparent;" text="Sign out" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="14.0" />
@@ -216,7 +245,7 @@
             </AreaChart>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_account" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="dashboard_account" prefHeight="200.0" prefWidth="200.0" visible="false">
          <Text fill="#00a7d5" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -285,7 +314,7 @@
             </Label>
          </AnchorPane>
       </AnchorPane>
-      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="dashboard_storage" prefHeight="200.0" prefWidth="200.0">
          <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
             <font>
                <Font name="Segoe UI" size="24.0" />
@@ -298,7 +327,7 @@
                </font>
             </TextField>
             <FontAwesomeIconView glyphName="SEARCH" layoutX="230.0" layoutY="37.0" />
-            <TableView fx:id="tbv_goods" layoutX="30.0" layoutY="71.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="940.0" stylesheets="@table.css">
+            <TableView fx:id="tbv_goods" layoutX="30.0" layoutY="219.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="940.0" stylesheets="@table.css">
                <columns>
                   <TableColumn fx:id="goods_col_id" prefWidth="45.60003662109375" sortable="false" text="ID" />
                   <TableColumn fx:id="goods_col_name" editable="false" maxWidth="200.0" prefWidth="138.39999389648438" text="Name" />
@@ -312,7 +341,7 @@
             </TableView>
             <Button fx:id="importProduct_btn" layoutX="757.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #28A745;" text="Import Product" textFill="WHITE" />
             <Button fx:id="history_btn" layoutX="872.0" layoutY="20.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="97.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="History" />
-            <Pagination fx:id="pagination1" layoutX="30.0" layoutY="585.0" prefHeight="50.0" prefWidth="940.0" />
+            <Pagination fx:id="storage_pg" layoutX="30.0" layoutY="218.0" prefHeight="418.0" prefWidth="940.0" />
          </AnchorPane>
       </AnchorPane>
       <AnchorPane fx:id="dashboard_product" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -409,7 +438,7 @@
                </Text>
                <TextField fx:id="addProduct_importedprice_tf" layoutX="422.0" layoutY="18.0" prefHeight="26.0" prefWidth="179.0" style="-fx-background-color: transparent; -fx-border-style: solid; -fx-border-width: 0 0 1px 0; -fx-border-color: #00A7D5;" />
             </AnchorPane>
-            <Pagination layoutX="21.0" layoutY="664.0" prefHeight="50.0" prefWidth="964.0" />
+            <Pagination fx:id="product_pg" layoutX="21.0" layoutY="296.0" prefHeight="418.0" prefWidth="964.0" />
          </AnchorPane>
          <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product">
             <font>
