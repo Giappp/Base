@@ -32,6 +32,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -56,6 +57,8 @@ import static javafx.beans.binding.Bindings.format;
 
 public class DashBoardController implements Initializable {
 
+    private static final int ITEMS_PER_PAGE = 10;
+    private ProductModel productModel = new ProductModel();
     @FXML
     private Pagination pagination;
 
@@ -77,9 +80,6 @@ public class DashBoardController implements Initializable {
 
     Stage window;
 
-    private Connection con;
-    private PreparedStatement ps;
-    private ResultSet rs;
 
     private ObservableList<Product> observableList = FXCollections.observableArrayList();
 
@@ -330,6 +330,12 @@ public class DashBoardController implements Initializable {
     private TableColumn<Product, String> goods_col_type;
     @FXML
     private Button history_btn;
+    @FXML
+    private Pagination product_pg;
+    @FXML
+    private Pagination storage_pg;
+    private Button activeButton;
+    private AnchorPane activePage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -339,12 +345,11 @@ public class DashBoardController implements Initializable {
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-//        displaySalesInfo();
-        displayUsername();
-        viewProfile();
-        addProductShowListData();
+//        displayUsername();
+//        viewProfile();
 
-        home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
+        setActivePage(dashboard_home);
+        setActiveButton(home_btn);
         sign_out_btn.setOnAction(event -> {
             try {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -355,7 +360,7 @@ public class DashBoardController implements Initializable {
 
                 if (option.get().equals(ButtonType.OK)) {
                     DBController.changeScene(event, "/controller/logSign/log-in.fxml");
-                } else return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -363,68 +368,52 @@ public class DashBoardController implements Initializable {
 
         // Home Controller begin here
         home_btn.setOnAction(event -> {
-            dashboard_home.setVisible(true);
-            dashboard_account.setVisible(false);
-            dashboard_order.setVisible(false);
-            dashboard_storage.setVisible(false);
-            dashboard_product.setVisible(false);
-
-            home_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
-            account_btn.setStyle("-fx-background-color: transparent");
-            storage_btn.setStyle("-fx-background-color: transparent");
-            orders_btn.setStyle("-fx-background-color: transparent");
-            product_btn.setStyle("-fx-background-color: transparent");
+            setActivePage(dashboard_home);
+            setActiveButton(home_btn);
         });
 
         // Account controller begin here
         account_btn.setOnAction(event -> {
-            dashboard_home.setVisible(false);
-            dashboard_account.setVisible(true);
-            dashboard_order.setVisible(false);
-            dashboard_storage.setVisible(false);
-            dashboard_product.setVisible(false);
+            setActivePage(dashboard_account);
+            setActiveButton(account_btn);
 
-            home_btn.setStyle("-fx-background-color: transparent");
-            account_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill:#ADEFD1FF");
-            storage_btn.setStyle("-fx-background-color: transparent");
-            orders_btn.setStyle("-fx-background-color: transparent");
-            product_btn.setStyle("-fx-background-color: transparent");
         });
 
         // Orders Controller begin here
         orders_btn.setOnAction(event -> {
-            dashboard_home.setVisible(false);
-            dashboard_account.setVisible(false);
-            dashboard_order.setVisible(true);
-            dashboard_storage.setVisible(false);
-            dashboard_product.setVisible(false);
-
-            orders_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-            account_btn.setStyle("-fx-background-color: transparent");
-            home_btn.setStyle("-fx-background-color: transparent");
-            storage_btn.setStyle("-fx-background-color: transparent");
-            product_btn.setStyle("-fx-background-color: transparent");
+            setActiveButton(orders_btn);
+            setActivePage(dashboard_order);
         });
 
         // Product Controller begin here
         product_btn.setOnAction(event -> {
-            dashboard_home.setVisible(false);
-            dashboard_account.setVisible(false);
-            dashboard_order.setVisible(false);
-            dashboard_storage.setVisible(false);
-            dashboard_product.setVisible(true);
-
-            orders_btn.setStyle("-fx-background-color: transparent");
-            account_btn.setStyle("-fx-background-color: transparent");
-            home_btn.setStyle("-fx-background-color: transparent");
-            storage_btn.setStyle("-fx-background-color: transparent");
-            product_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            setActivePage(dashboard_product);
+            setActiveButton(product_btn);
             ObservableList<String> listBrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
             addProduct_brand_cb.setItems(listBrands);
             List<String> status = Arrays.asList("Available", "Unavailable");
             cb_status.setItems(FXCollections.observableList(status));
             ObservableList<String> listCategory = FXCollections.observableArrayList(new ProductCategoryModel().getType());
             addProduct_type_cb.setItems(listCategory);
+
+            // Set up the Pagination control
+            int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+            product_pg.setPageCount(pageCount);
+            product_pg.setPageFactory(pageIndex -> {
+                ShowListDataProduct(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
+                return tblv_product;
+            });
+        });
+
+        addProduct_salesprice_tf.addEventFilter(KeyEvent.KEY_TYPED,event ->{
+            if(!isNumeric(event.getCharacter())){
+                event.consume();
+            }
+        });
+        addProduct_importedprice_tf.addEventFilter(KeyEvent.KEY_TYPED,event ->{
+            if(!isNumeric(event.getCharacter())){
+                event.consume();
+            }
         });
 
         addProduct_newBrand_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -472,11 +461,7 @@ public class DashBoardController implements Initializable {
                     if (option.get().equals(ButtonType.OK)) {
                         Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), Double.parseDouble(importedPrice), imageUrl, status);
                         DBAdd(product);
-                        addProductShowListData();
-                        addProduct_addBtn.setDisable(false);
-                        addProduct_updatebtn.setDisable(true);
-                        productDelete_btn.setDisable(true);
-                        clearTextFields(dashboard_product);
+                        resetTable();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -503,9 +488,8 @@ public class DashBoardController implements Initializable {
                 productDelete_btn.setDisable(false);
 
                 if (checkImageUrl(newValue.getImage())) {
-
-                    //Image img = new Image(newValue.getImage());
-                    //addproduct_imageview.setImage(img);
+//                    Image img = new Image(newValue.getImage());
+//                    addproduct_imageview.setImage(img);
                     String currentPath = System.getProperty("user.dir");
                     addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
                 } else if(newValue.getImage() == null) {
@@ -526,6 +510,10 @@ public class DashBoardController implements Initializable {
                 productDelete_btn.setDisable(true);
                 tblv_product.getSelectionModel().clearSelection();
                 clearTextFields(dashboard_product);
+                int pageIndex = product_pg.getCurrentPageIndex();
+                int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+                product_pg.setPageCount(pageCount);
+                ShowListDataProduct(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
             }
         });
 
@@ -551,11 +539,7 @@ public class DashBoardController implements Initializable {
                     if (option.get().equals(ButtonType.OK)) {
                         Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl,Double.parseDouble(importedPrice));
                         DBUpdate(product);
-                        addProduct_addBtn.setDisable(false);
-                        addProduct_updatebtn.setDisable(true);
-                        productDelete_btn.setDisable(true);
-                        addProductShowListData();
-                        clearTextFields(dashboard_product);
+                        resetTable();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -591,11 +575,7 @@ public class DashBoardController implements Initializable {
                         if(option.get().equals(ButtonType.OK)){
                             Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl,Double.parseDouble(importedPrice));
                             DBDelete(product);
-                            addProduct_addBtn.setDisable(false);
-                            addProduct_updatebtn.setDisable(true);
-                            productDelete_btn.setDisable(true);
-                            addProductShowListData();
-                            clearTextFields(dashboard_product);
+                            resetTable();
                         }else return;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -604,49 +584,35 @@ public class DashBoardController implements Initializable {
             }
         });
 
-        observableList.addListener((InvalidationListener) observable -> addProductShowListData());
-
 
         // Storage Controller begin here
         storage_btn.setOnAction(event -> {
-            dashboard_home.setVisible(false);
-            dashboard_account.setVisible(false);
-            dashboard_order.setVisible(false);
-            dashboard_storage.setVisible(true);
-            dashboard_product.setVisible(false);
-
-            storageList();
-
-            storage_btn.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-            account_btn.setStyle("-fx-background-color: transparent");
-            home_btn.setStyle("-fx-background-color: transparent");
-            orders_btn.setStyle("-fx-background-color: transparent");
-            product_btn.setStyle("-fx-background-color: transparent");
+            setActiveButton(storage_btn);
+            setActivePage(dashboard_storage);
+            int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+            storage_pg.setPageCount(pageCount);
+            storage_pg.setPageFactory(pageIndex -> {
+                storageList(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
+                return tbv_goods;
+            });
         });
 
         importProduct_btn.setOnAction(event -> {
             try {
                 openModalWindow("/controller/client/importProduct.fxml", "Import Product");
-                System.out.println("Import Product on progress...");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("reset table");
-            storageList();
         });
 
         history_btn.setOnAction(event -> {
             try {
                 openModalWindow("/controller/client/importHistory.fxml", "Import History");
-                System.out.println("Viewing History");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("reset table");
-            storageList();
         });
 
-        //
 
         change_pass_btn.setOnAction(event -> {
             try {
@@ -664,6 +630,15 @@ public class DashBoardController implements Initializable {
             }
         });
 
+    private void resetTable() {
+        addProduct_addBtn.setDisable(false);
+        addProduct_updatebtn.setDisable(true);
+        productDelete_btn.setDisable(true);
+        clearTextFields(dashboard_product);
+        int pageIndex = product_pg.getCurrentPageIndex();
+        int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        product_pg.setPageCount(pageCount);
+        ShowListDataProduct(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
         add_order_btn.setOnAction(event -> {
             String orderBrand = cb_brand_choice.getSelectionModel().getSelectedItem();
             String orderType = cb_type_choice.getSelectionModel().getSelectedItem();
@@ -688,7 +663,8 @@ public class DashBoardController implements Initializable {
         });
     }
 
-        // General Controller functions
+
+    // General Controller functions
 
         void CancelAction (Button cancelBtn){
             cancelBtn.setOnAction(event -> {
@@ -773,6 +749,8 @@ public class DashBoardController implements Initializable {
         username_label.setText(user);
     }
 
+    public void ShowListDataProduct(int offset,int limit,int pageIndex) {
+        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex*ITEMS_PER_PAGE,ITEMS_PER_PAGE));
 //    public void displaySalesInfo() {
 //        String sql = "SELECT total_paid, COUNT(o.id) FROM invoice i INNER JOIN order o ON i.order_id = o.id";
 //        try (Connection con = JDBCConnect.getJDBCConnection();
@@ -798,10 +776,11 @@ public class DashBoardController implements Initializable {
         product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        tblv_product.setItems(observableList);
+        tblv_product.setItems(products);
     }
-    public void storageList(){
-        ObservableList<Product> storageList = new ProductModel().getProductList();
+
+    public void storageList(int offset,int limit,int pageIndex){
+        ObservableList<Product> storageList = FXCollections.observableList(productModel.getProductList2(pageIndex*ITEMS_PER_PAGE,ITEMS_PER_PAGE));
         goods_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         goods_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         good_col_supplier.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
@@ -849,6 +828,21 @@ public class DashBoardController implements Initializable {
         }
     }
 
+    public void handleOrder(ActionEvent event) {
+        int quantityInStock = Integer.parseInt(sp_choice_amount.getPromptText());
+        if (quantityInStock != 0) {
+            observableList.add(new Product());
+            tblv_orderView.setItems(observableList);
+        }
+    }
+
+    private void clearText() {
+        tf_id_choice.clear();
+        tf_type_choice.clear();
+        tf_choice_brand.clear();
+        tf_choice_name.clear();
+    }
+
     @FXML
     public void addProductImportImage() {
         Image image = null;
@@ -893,20 +887,29 @@ public class DashBoardController implements Initializable {
         // Compile the ReGex
         Pattern p = Pattern.compile(regex);
 
-        // If the string is empty
-        // return false
         if (url == null) {
             return false;
         }
 
-        // Pattern class contains matcher() method
-        // to find matching between given string
-        // and regular expression.
         Matcher m = p.matcher(url);
 
-        // Return if the string
-        // matched the ReGex
         return m.matches();
     }
+    private void setActiveButton(Button button) {
+        if (activeButton != null) {
+            activeButton.setStyle("-fx-background-color: transparent;");
+        }
+        button.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+        activeButton = button;
+    }
+    private void setActivePage(AnchorPane anchorPane){
+        if(activePage != null){
+            activePage.setVisible(false);
+        }
+        anchorPane.setVisible(true);
+        activePage = anchorPane;
+    }
+    private boolean isNumeric(String str) {
+        return str.matches("\\d*"); // Check if the given string contains only digits
+    }
 }
-
