@@ -1,156 +1,103 @@
-CREATE SCHEMA POS;
 
-CREATE  TABLE pos.customer (
-                               id                   INT  NOT NULL  AUTO_INCREMENT   PRIMARY KEY,
-                               name                 VARCHAR(255)       ,
-                               address              VARCHAR(255)       ,
-                               phone                VARCHAR(255)       ,
-                               email                VARCHAR(255)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.customer ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)       ,
+	address              VARCHAR(255)       ,
+	phone                VARCHAR(255)       ,
+	email                VARCHAR(255)       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE  TABLE pos.invoice (
-                              id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-                              order_id             INT       ,
-                              customer_id          INT       ,
-                              user_id              INT       ,
-                              payment_type         INT       ,
-                              total_price          DOUBLE       ,
-                              total_paid           DOUBLE       ,
-                              date_recorded        DATE       ,
-                              
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.invoice ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	order_id             INT       ,
+	customer_id          INT       ,
+	user_id              INT       ,
+	payment_type         INT       ,
+	total_price          DOUBLE       ,
+	total_paid           DOUBLE       ,
+	date_recorded        DATE       ,
+	CONSTRAINT unq_invoice UNIQUE ( order_id ) 
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX customer_id ON pos.invoice ( customer_id );
+CREATE INDEX customer_id ON `POS`.invoice ( customer_id );
 
-CREATE INDEX user_id ON pos.invoice ( user_id );
+CREATE INDEX user_id ON `POS`.invoice ( user_id );
 
-CREATE  TABLE pos.product_category (
-                                       id                   INT  NOT NULL     PRIMARY KEY,
-                                       name                 VARCHAR(255)       ,
-                                       description          TEXT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.product_category ( 
+	id                   INT  NOT NULL     PRIMARY KEY,
+	name                 VARCHAR(255)       ,
+	description          TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE  TABLE pos.supplier (
-                               id                   INT  NOT NULL  AUTO_INCREMENT   PRIMARY KEY,
-                               name                 VARCHAR(255)       ,
-                               address              VARCHAR(255)       ,
-                               phone                VARCHAR(255)       ,
-                               email                VARCHAR(255)       ,
-                               details              TEXT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.supplier ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)       ,
+	address              VARCHAR(255)       ,
+	phone                VARCHAR(255)       ,
+	email                VARCHAR(255)       ,
+	details              TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE  TABLE pos.users (
-                            id                   INT  NOT NULL  AUTO_INCREMENT   PRIMARY KEY,
-                            username             VARCHAR(255)       ,
-                            password             VARCHAR(255)       ,
-                            phone                VARCHAR(255)       ,
-                            email                VARCHAR(255)       ,
-                            details              TEXT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.users ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	username             VARCHAR(255)       ,
+	password             VARCHAR(255)       ,
+	phone                VARCHAR(255)       ,
+	email                VARCHAR(255)       ,
+	details              TEXT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE  TABLE pos.`order` (
-                              id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-                              customer_id          INT       ,
-                              user_id              INT       ,
-                              date_recorded        DATE       ,
-                              `status`             TINYINT       ,
-                              
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.`order` ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	customer_id          INT       ,
+	user_id              INT       ,
+	date_recorded        DATE       ,
+	`status`             TINYINT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX customer_id ON pos.`order` ( customer_id );
+CREATE INDEX customer_id ON `POS`.`order` ( customer_id );
 
-CREATE INDEX user_id ON pos.`order` ( user_id );
+CREATE INDEX user_id ON `POS`.`order` ( user_id );
 
-CREATE  TABLE pos.product (
-                              id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-                              name                 VARCHAR(255)       ,
-                              supplier_id          INT       ,
-                              product_type_id      INT       ,
-                              quantity_in_stock    INT       ,
-                              sale_price           FLOAT       ,
-                              imported_price       FLOAT       ,
-                              discount_percentage  FLOAT       ,
-                              description          TEXT       ,
-                              `status`             TINYINT(1)       ,
-                              image                VARCHAR(255)       ,
-                              
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.product ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	name                 VARCHAR(255)       ,
+	supplier_id          INT       ,
+	product_type_id      INT       ,
+	quantity_in_stock    INT       ,
+	sale_price           FLOAT       ,
+	imported_price       FLOAT       ,
+	discount_percentage  FLOAT       ,
+	description          TEXT       ,
+	`status`             TINYINT       ,
+	image                VARCHAR(255)       
+ ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX product_type_id ON pos.product ( product_type_id );
+CREATE INDEX product_type_id ON `POS`.product ( product_type_id );
 
-CREATE INDEX supplier_id ON pos.product ( supplier_id );
+CREATE INDEX supplier_id ON `POS`.product ( supplier_id );
 
-CREATE INDEX id ON pos.product ( id );
+CREATE INDEX id ON `POS`.product ( id );
 
-CREATE  TABLE pos.product_in_order (
-                                       order_id             INT       ,
-                                       product_id           INT       ,
-                                       quantity             INT       ,
-                                       
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE  TABLE `POS`.product_in_order ( 
+	order_id             INT       ,
+	product_id           INT       ,
+	quantity             INT       
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX order_id ON pos.product_in_order ( order_id );
+CREATE INDEX order_id ON `POS`.product_in_order ( order_id );
 
-CREATE INDEX product_id ON pos.product_in_order ( product_id );
+CREATE INDEX product_id ON `POS`.product_in_order ( product_id );
 
-CREATE  TABLE pos.goods_import (
-                                   id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-                                   product_id           INT       ,
-                                   quantity             INT       ,
-                                   unit_price           DOUBLE       ,
-                                   total_price          DOUBLE       ,
-                                   date_imported        DATE       ,
-                                   user_id              INT       ,
-                                   
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-DELIMITER //
-
-CREATE TRIGGER pos.goods_import_AFTER_INSERT AFTER INSERT ON goods_import FOR EACH ROW
-BEGIN
-    DECLARE product_count INT;
-
-    SELECT COUNT(*) INTO product_count FROM product WHERE id = NEW.product_id;
-
-    IF product_count = 0 THEN
-        INSERT INTO product (`id`, `quantity_in_stock`) VALUES (NEW.product_id, NEW.quantity);
-    ELSE
-        UPDATE product SET `quantity_in_stock` = `quantity_in_stock` + NEW.quantity WHERE id = NEW.product_id;
-    END IF;
-END;
-//
-
-DELIMITER ;
-
-
-DELIMITER //
-
-CREATE TRIGGER pos.product_in_order_AFTER_DELETE AFTER DELETE ON product_in_order FOR EACH ROW
-BEGIN
-    DECLARE quantity_to_add INT;
-
-    SELECT `quantity` INTO quantity_to_add FROM product_in_order WHERE product_id = OLD.product_id;
-
-    UPDATE product SET `amount` = `amount` + quantity_to_add WHERE id = OLD.product_id;
-END;
-//
-
-DELIMITER ;
-
-
-DELIMITER //
-
-CREATE TRIGGER pos.product_in_order_AFTER_INSERT AFTER INSERT ON product_in_order FOR EACH ROW
-BEGIN
-    DECLARE quantity_to_subtract INT;
-
-    SELECT `quantity` INTO quantity_to_subtract FROM product_in_order WHERE product_id = NEW.product_id;
-
-    UPDATE product SET `amount` = `amount` - quantity_to_subtract WHERE id = NEW.product_id;
-END;
-//
-
-DELIMITER ;
+CREATE  TABLE `POS`.goods_import ( 
+	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
+	product_id           INT       ,
+	quantity             INT       ,
+	unit_price           DOUBLE       ,
+	total_price          DOUBLE       ,
+	date_imported        DATE       ,
+	user_id              INT       
+ ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO pos.product_category (id, name, description) VALUES
                                                              (1, 'Rectifier Diode', 'Linh kiện điện tửDiode'),
@@ -258,6 +205,74 @@ VALUES
     (4, 1, 3, 2, 800.0, 800.0, '2023-10-06'),
     (5, 3, 1, 1, 900.0, 900.0, '2023-10-07');
 
-CREATE INDEX user_id ON pos.goods_import ( user_id );
+CREATE INDEX user_id ON `POS`.goods_import ( user_id );
 
-CREATE INDEX goods_import_ibfk_3_idx ON pos.goods_import ( product_id );
+CREATE INDEX goods_import_ibfk_3_idx ON `POS`.goods_import ( product_id );
+
+ALTER TABLE `POS`.goods_import ADD CONSTRAINT goods_import_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES `POS`.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.goods_import ADD CONSTRAINT goods_import_ibfk_3 FOREIGN KEY ( product_id ) REFERENCES `POS`.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.invoice ADD CONSTRAINT invoice_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES `POS`.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.`order` ADD CONSTRAINT order_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES `POS`.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.`order` ADD CONSTRAINT order_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES `POS`.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.`order` ADD CONSTRAINT fk_order_invoice FOREIGN KEY ( id ) REFERENCES `POS`.invoice( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.product ADD CONSTRAINT product_ibfk_1 FOREIGN KEY ( product_type_id ) REFERENCES `POS`.product_category( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.product ADD CONSTRAINT product_ibfk_2 FOREIGN KEY ( supplier_id ) REFERENCES `POS`.supplier( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.product_in_order ADD CONSTRAINT product_in_order_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES `POS`.`order`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `POS`.product_in_order ADD CONSTRAINT product_in_order_ibfk_2 FOREIGN KEY ( product_id ) REFERENCES `POS`.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+DELIMITER //
+
+CREATE TRIGGER pos.goods_import_AFTER_INSERT AFTER INSERT ON goods_import FOR EACH ROW
+BEGIN
+    DECLARE product_count INT;
+
+    SELECT COUNT(*) INTO product_count FROM product WHERE id = NEW.product_id;
+
+    IF product_count = 0 THEN
+        INSERT INTO product (`id`, `quantity_in_stock`) VALUES (NEW.product_id, NEW.quantity);
+    ELSE
+        UPDATE product SET `quantity_in_stock` = `quantity_in_stock` + NEW.quantity WHERE id = NEW.product_id;
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE TRIGGER pos.product_in_order_AFTER_DELETE AFTER DELETE ON product_in_order FOR EACH ROW
+BEGIN
+    DECLARE quantity_to_add INT;
+
+    SELECT `quantity` INTO quantity_to_add FROM product_in_order WHERE product_id = OLD.product_id;
+
+    UPDATE product SET `amount` = `amount` + quantity_to_add WHERE id = OLD.product_id;
+END;
+//
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE TRIGGER pos.product_in_order_AFTER_INSERT AFTER INSERT ON product_in_order FOR EACH ROW
+BEGIN
+    DECLARE quantity_to_subtract INT;
+
+    SELECT `quantity` INTO quantity_to_subtract FROM product_in_order WHERE product_id = NEW.product_id;
+
+    UPDATE product SET `amount` = `amount` - quantity_to_subtract WHERE id = NEW.product_id;
+END;
+//
+
+DELIMITER ;

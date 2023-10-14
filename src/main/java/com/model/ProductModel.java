@@ -101,23 +101,27 @@ public class ProductModel {
         return false;
     }
 
-    public List<Product> getProductList2(){
-        String sql = "SELECT * from product";
+    public List<Product> getProductList2(int offset,int limit){
+        String sql = "SELECT * from product LIMIT ? OFFSET ?";
         List<Product> productList = new ArrayList<>();
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                ResultSet resultSet = preparedStatement.executeQuery()){
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setInt(1,limit);
+                preparedStatement.setInt(2,offset);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()){
                     Product product = new Product();
                     product.setId(resultSet.getInt("id"));
                     product.setName(resultSet.getString("name"));
                     product.setSupplierId(resultSet.getInt("supplier_id"));
+                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
                     product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
-                    product.setImportedPrice(resultSet.getDouble("imported_price"));
                     product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setStatus(resultSet.getBoolean("status")  ? "Available" : "Unavailable" );
+                    product.setImportedPrice(resultSet.getDouble("imported_price"));
+                    product.setStatus(resultSet.getBoolean("status") ? "Available" : "Unavailable");
                     product.setProductTypeId(resultSet.getInt("product_type_id"));
+                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
                     product.setImage(resultSet.getString("image"));
                     productList.add(product);
                 }
@@ -234,4 +238,21 @@ public class ProductModel {
         }
         return null;
     }
+    public int getNumberRecords() {
+        String sql = "SELECT COUNT(*) FROM product";
+        int count = 0;
+        try (Connection connection = JDBCConnect.getJDBCConnection()) {
+            assert connection != null;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    count = resultSet.getInt(1); // Retrieve the count value
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
 }
