@@ -37,7 +37,3 @@ build/
 ### Mac OS ###
 .DS_Store
 /.gitignore
-/src/main/java/com/db/config/
-sql/backup-10-11-2023
-src/main/java/com/db/config/IDBConfig.java
-src/main/java/com/db/config/IDBConfig.java

@@ -400,18 +400,18 @@ public class DashBoardController implements Initializable {
             int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
             product_pg.setPageCount(pageCount);
             product_pg.setPageFactory(pageIndex -> {
-                ShowListDataProduct(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
+                ShowListDataProduct(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, productModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
                 return tblv_product;
             });
         });
 
-        addProduct_salesprice_tf.addEventFilter(KeyEvent.KEY_TYPED,event ->{
-            if(!isNumeric(event.getCharacter())){
+        addProduct_salesprice_tf.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (!isNumeric(event.getCharacter())) {
                 event.consume();
             }
         });
-        addProduct_importedprice_tf.addEventFilter(KeyEvent.KEY_TYPED,event ->{
-            if(!isNumeric(event.getCharacter())){
+        addProduct_importedprice_tf.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (!isNumeric(event.getCharacter())) {
                 event.consume();
             }
         });
@@ -448,7 +448,7 @@ public class DashBoardController implements Initializable {
             String importedPrice = addProduct_importedprice_tf.getText();
             String status = cb_status.getSelectionModel().getSelectedItem();
             if (brand != null && type != null && name != null && price != null
-                     && status != null) {
+                    && status != null) {
                 int brandId = new SupplierModel().getIdSupplier(brand);
                 int typeId = new ProductCategoryModel().getProductCategoryId(type);
                 try {
@@ -475,7 +475,7 @@ public class DashBoardController implements Initializable {
 
         CancelAction(cancel_btn);
         tblv_product.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 ObservableList<String> listBrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
                 addProduct_brand_cb.setItems(listBrands);
                 List<String> status = Arrays.asList("Available", "Unavailable");
@@ -492,7 +492,7 @@ public class DashBoardController implements Initializable {
 //                    addproduct_imageview.setImage(img);
                     String currentPath = System.getProperty("user.dir");
                     addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
-                } else if(newValue.getImage() == null) {
+                } else if (newValue.getImage() == null) {
                     String currentPath = System.getProperty("user.dir");
                     addproduct_imageview.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
                 }
@@ -503,8 +503,7 @@ public class DashBoardController implements Initializable {
                 cb_status.getSelectionModel().select(newValue.getStatus());
                 addProduct_id.setText(String.valueOf(newValue.getId()));
                 addProduct_importedprice_tf.setText(String.valueOf(newValue.getImportedPrice()));
-            }
-            else{
+            } else {
                 addProduct_addBtn.setDisable(false);
                 addProduct_updatebtn.setDisable(true);
                 productDelete_btn.setDisable(true);
@@ -513,7 +512,7 @@ public class DashBoardController implements Initializable {
                 int pageIndex = product_pg.getCurrentPageIndex();
                 int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
                 product_pg.setPageCount(pageCount);
-                ShowListDataProduct(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
+                ShowListDataProduct(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, productModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
             }
         });
 
@@ -537,7 +536,7 @@ public class DashBoardController implements Initializable {
                     alert.setContentText("Update " + name + " with id " + id);
                     Optional<ButtonType> option = alert.showAndWait();
                     if (option.get().equals(ButtonType.OK)) {
-                        Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl,Double.parseDouble(importedPrice));
+                        Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl, Double.parseDouble(importedPrice));
                         DBUpdate(product);
                         resetTable();
                     }
@@ -562,8 +561,8 @@ public class DashBoardController implements Initializable {
                 String status = cb_status.getSelectionModel().getSelectedItem();
                 String imageUrl = addproduct_imageview.getImage().getUrl();
                 String importedPrice = addProduct_importedprice_tf.getText();
-                if(brand != null && type != null && name != null && price != null
-                        && imageUrl != null && status != null){
+                if (brand != null && type != null && name != null && price != null
+                        && imageUrl != null && status != null) {
                     int brandId = new SupplierModel().getIdSupplier(brand);
                     int typeId = new ProductCategoryModel().getProductCategoryId(type);
                     try {
@@ -572,11 +571,11 @@ public class DashBoardController implements Initializable {
                         alert.setHeaderText(null);
                         alert.setContentText("Are you sure want to delete " + name + "\nId: " + id);
                         Optional<ButtonType> option = alert.showAndWait();
-                        if(option.get().equals(ButtonType.OK)){
-                            Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl,Double.parseDouble(importedPrice));
+                        if (option.get().equals(ButtonType.OK)) {
+                            Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl, Double.parseDouble(importedPrice));
                             DBDelete(product);
                             resetTable();
-                        }else return;
+                        } else return;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -592,7 +591,7 @@ public class DashBoardController implements Initializable {
             int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
             storage_pg.setPageCount(pageCount);
             storage_pg.setPageFactory(pageIndex -> {
-                storageList(pageIndex*ITEMS_PER_PAGE,Math.min(pageIndex*ITEMS_PER_PAGE,productModel.getNumberRecords()-(pageIndex*ITEMS_PER_PAGE)),pageIndex);
+                storageList(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, productModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
                 return tbv_goods;
             });
         });
@@ -629,6 +628,7 @@ public class DashBoardController implements Initializable {
                 e.printStackTrace();
             }
         });
+    }
 
     private void resetTable() {
         addProduct_addBtn.setDisable(false);
@@ -748,10 +748,7 @@ public class DashBoardController implements Initializable {
         user = user.substring(0, 1).toUpperCase() + user.substring(1);
         username_label.setText(user);
     }
-
-    public void ShowListDataProduct(int offset,int limit,int pageIndex) {
-        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex*ITEMS_PER_PAGE,ITEMS_PER_PAGE));
-//    public void displaySalesInfo() {
+    //    public void displaySalesInfo() {
 //        String sql = "SELECT total_paid, COUNT(o.id) FROM invoice i INNER JOIN order o ON i.order_id = o.id";
 //        try (Connection con = JDBCConnect.getJDBCConnection();
 //        PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
@@ -766,150 +763,132 @@ public class DashBoardController implements Initializable {
 //            e.printStackTrace();
 //        }
 //    }
-
-    public void addProductShowListData() {
-        observableList = new ProductModel().getProductList();
+    public void ShowListDataProduct(int offset,int limit,int pageIndex) {
+        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
         product_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         product_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         product_col_brand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
-        product_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         product_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
         product_col_price.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         product_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tblv_product.setItems(products);
     }
 
-    public void storageList(int offset,int limit,int pageIndex){
-        ObservableList<Product> storageList = FXCollections.observableList(productModel.getProductList2(pageIndex*ITEMS_PER_PAGE,ITEMS_PER_PAGE));
-        goods_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        goods_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
-        good_col_supplier.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
-        goods_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        goods_col_price.setCellValueFactory(new PropertyValueFactory<>("importedPrice"));
-        goods_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
-        goods_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        goods_col_total.setCellValueFactory(cellData -> {
-            Product product = cellData.getValue();
-            DoubleBinding totalBinding = Bindings.createDoubleBinding(() ->
-                            product.getImportedPrice() * product.getQuantityInStock(),
-                    product.unitPriceProperty(),
-                    product.getQuantityInStockProperty()
-            );
-            return totalBinding.asObject();
-        });
-        tbv_goods.setItems(storageList);
-    }
-
-    private void openModalWindow(String resource, String title) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
-        fxmlFile = new Scene(root);
-        window = new Stage();
-        window.setScene(fxmlFile);
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setIconified(false);
-        window.setTitle(title);
-        window.showAndWait();
-    }
-
-    public void viewProfile() {
-        String viewAccountSql = "SELECT username, email, phone, details, password FROM users";
-        try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(viewAccountSql)) {
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                display_username.setText(rs.getString("username"));
-                display_email.setText(rs.getString("email"));
-                display_phone.setText(rs.getString("phone"));
-                display_pass.setText(rs.getString("password"));
-                display_detail.setText(rs.getString("details"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        public void storageList( int offset, int limit, int pageIndex){
+            ObservableList<Product> storageList = FXCollections.observableList(productModel.getProductList2(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
+            goods_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            goods_col_amount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
+            good_col_supplier.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+            goods_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+            goods_col_price.setCellValueFactory(new PropertyValueFactory<>("importedPrice"));
+            goods_col_type.setCellValueFactory(new PropertyValueFactory<>("productType"));
+            goods_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+            goods_col_total.setCellValueFactory(cellData -> {
+                Product product = cellData.getValue();
+                DoubleBinding totalBinding = Bindings.createDoubleBinding(() ->
+                                product.getImportedPrice() * product.getQuantityInStock(),
+                        product.unitPriceProperty(),
+                        product.getQuantityInStockProperty()
+                );
+                return totalBinding.asObject();
+            });
+            tbv_goods.setItems(storageList);
         }
-    }
 
-    public void handleOrder(ActionEvent event) {
-        int quantityInStock = Integer.parseInt(sp_choice_amount.getPromptText());
-        if (quantityInStock != 0) {
-            observableList.add(new Product());
-            tblv_orderView.setItems(observableList);
+        private void openModalWindow (String resource, String title) throws IOException {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
+            fxmlFile = new Scene(root);
+            window = new Stage();
+            window.setScene(fxmlFile);
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setIconified(false);
+            window.setTitle(title);
+            window.showAndWait();
         }
-    }
 
-    private void clearText() {
-        tf_id_choice.clear();
-        tf_type_choice.clear();
-        tf_choice_brand.clear();
-        tf_choice_name.clear();
-    }
-
-    @FXML
-    public void addProductImportImage() {
-        Image image = null;
-        String currentPath = System.getProperty("user.dir");
-        FileChooser open = new FileChooser();
-        open.setTitle("Open image file");
-        open.setInitialDirectory(new File(currentPath + "\\src\\main\\resources\\controller\\images"));
-        open.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File", "*jpg", "*png"));
-
-        File file = open.showOpenDialog(dashboard_product.getScene().getWindow());
-
-        if (file != null) {
-            image = new Image(file.toURI().toString());
-            addproduct_imageview.setImage(image);
-        }
-        return;
-    }
-
-    private void clearTextFields(Parent parent) {
-        if (parent == null) return;
-
-        for (javafx.scene.Node node : parent.getChildrenUnmodifiable()) {
-            if (node instanceof TextField) {
-                TextField textField = (TextField) node;
-                textField.clear();
-            } else if (node instanceof ComboBox) {
-                ComboBox<String> comboBox = (ComboBox<String>) node;
-                comboBox.getSelectionModel().clearSelection();
-            } else if (node instanceof Parent) {
-                clearTextFields((Parent) node); // Recursively clear TextFields in child nodes
-            }
-            else if (node instanceof ImageView){
-                ImageView imageView = (ImageView) node;
-                imageView.setImage(null);
+        public void viewProfile () {
+            String viewAccountSql = "SELECT username, email, phone, details, password FROM users";
+            try (Connection con = JDBCConnect.getJDBCConnection();
+                 PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(viewAccountSql)) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    display_username.setText(rs.getString("username"));
+                    display_email.setText(rs.getString("email"));
+                    display_phone.setText(rs.getString("phone"));
+                    display_pass.setText(rs.getString("password"));
+                    display_detail.setText(rs.getString("details"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-    }
-    private boolean checkImageUrl(String url){
-        String regex
-                = "(\\S+(\\.(?i)(jpe?g|png|gif|bmp))$)";
 
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
+        @FXML
+        public void addProductImportImage () {
+            Image image = null;
+            String currentPath = System.getProperty("user.dir");
+            FileChooser open = new FileChooser();
+            open.setTitle("Open image file");
+            open.setInitialDirectory(new File(currentPath + "\\src\\main\\resources\\controller\\images"));
+            open.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File", "*jpg", "*png"));
 
-        if (url == null) {
-            return false;
+            File file = open.showOpenDialog(dashboard_product.getScene().getWindow());
+
+            if (file != null) {
+                image = new Image(file.toURI().toString());
+                addproduct_imageview.setImage(image);
+            }
+            return;
         }
 
-        Matcher m = p.matcher(url);
+        private void clearTextFields (Parent parent){
+            if (parent == null) return;
 
-        return m.matches();
-    }
-    private void setActiveButton(Button button) {
-        if (activeButton != null) {
-            activeButton.setStyle("-fx-background-color: transparent;");
+            for (javafx.scene.Node node : parent.getChildrenUnmodifiable()) {
+                if (node instanceof TextField) {
+                    TextField textField = (TextField) node;
+                    textField.clear();
+                } else if (node instanceof ComboBox) {
+                    ComboBox<String> comboBox = (ComboBox<String>) node;
+                    comboBox.getSelectionModel().clearSelection();
+                } else if (node instanceof Parent) {
+                    clearTextFields((Parent) node); // Recursively clear TextFields in child nodes
+                } else if (node instanceof ImageView) {
+                    ImageView imageView = (ImageView) node;
+                    imageView.setImage(null);
+                }
+            }
         }
-        button.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
-        activeButton = button;
-    }
-    private void setActivePage(AnchorPane anchorPane){
-        if(activePage != null){
-            activePage.setVisible(false);
+        private boolean checkImageUrl (String url){
+            String regex
+                    = "(\\S+(\\.(?i)(jpe?g|png|gif|bmp))$)";
+
+            // Compile the ReGex
+            Pattern p = Pattern.compile(regex);
+
+            if (url == null) {
+                return false;
+            }
+
+            Matcher m = p.matcher(url);
+
+            return m.matches();
         }
-        anchorPane.setVisible(true);
-        activePage = anchorPane;
-    }
-    private boolean isNumeric(String str) {
-        return str.matches("\\d*"); // Check if the given string contains only digits
-    }
+        private void setActiveButton (Button button){
+            if (activeButton != null) {
+                activeButton.setStyle("-fx-background-color: transparent;");
+            }
+            button.setStyle("-fx-background-color: #00203FFF;-fx-text-fill: #ADEFD1FF");
+            activeButton = button;
+        }
+        private void setActivePage (AnchorPane anchorPane){
+            if (activePage != null) {
+                activePage.setVisible(false);
+            }
+            anchorPane.setVisible(true);
+            activePage = anchorPane;
+        }
+        private boolean isNumeric (String str){
+            return str.matches("\\d*"); // Check if the given string contains only digits
+        }
 }
