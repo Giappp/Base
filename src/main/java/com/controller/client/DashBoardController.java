@@ -66,6 +66,7 @@ import static javafx.beans.binding.Bindings.format;
 public class DashBoardController implements Initializable {
 
     private static final int ITEMS_PER_PAGE = 10;
+    
     @FXML
     private Button customer_btn;
 
