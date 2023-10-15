@@ -10,6 +10,7 @@ import com.model.GoodsImportModel;
 import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -22,9 +23,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -33,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -46,6 +50,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicLong;
@@ -58,7 +66,44 @@ import static javafx.beans.binding.Bindings.format;
 public class DashBoardController implements Initializable {
 
     private static final int ITEMS_PER_PAGE = 10;
+    @FXML
+    private Button customer_btn;
+
+    @FXML
+    private Button add_customer_btn;
+
+    @FXML
+    private Button event_btn;
+
+    @FXML
+    private AnchorPane addProductScene;
+
+    @FXML
+    private Label totalOrdersLabel;
+
+    @FXML
+    private Label compareTotalOrdersLabel;
+
+    @FXML
+    private BarChart<String, Number> sale_order_chart;
+
+    @FXML
+    private Button total_customer_btn;
+
+    @FXML
+    private Text total_customer_text;
+
+    @FXML
+    private Label revenueLabel;
+
+    @FXML
+    private Label totalOrdersMonthLabel;
+
+    @FXML
+    private Label compareRevenueLabel;
+
     private ProductModel productModel = new ProductModel();
+
     @FXML
     private Pagination pagination;
 
@@ -79,6 +124,8 @@ public class DashBoardController implements Initializable {
     Parent root;
 
     Stage window;
+
+    DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
 
 
     private ObservableList<Product> observableList = FXCollections.observableArrayList();
@@ -162,10 +209,10 @@ public class DashBoardController implements Initializable {
     private Button notify_btn;
 
     @FXML
-    private Button product_sold_btn;
+    private Button product_import_btn;
 
     @FXML
-    private javafx.scene.text.Text product_sold_text;
+    private javafx.scene.text.Text product_import_text;
 
     @FXML
     private Button total_delivery_btn;
@@ -258,7 +305,13 @@ public class DashBoardController implements Initializable {
     private Label username_label;
 
     @FXML
-    private BarChart<?, ?> sale_revenue_chart;
+    private LineChart<String, Number> sale_revenue_chart;
+
+    @FXML
+    private Label totalRevenueLabel;
+
+    @FXML
+    private Label compareTotalRevenueLabel;
 
     @FXML
     private Button change_pass_btn;
@@ -340,13 +393,44 @@ public class DashBoardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // All the essentials initialization begin here
-//        try {
-//            chart();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        displayUsername();
-//        viewProfile();
+
+        displayUsername();
+        viewProfile();
+
+        LocalDate currentDate = LocalDate.now();
+        Month currentMonth = currentDate.getMonth();
+        String monthName = currentMonth.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        revenueLabel.setText("Total Revenue " + monthName + ": ");
+        totalOrdersMonthLabel.setText("Total Orders " + monthName + ":");
+
+        displayTotalEarning();
+        displayTotalOrder();
+        displayTotalProductImport();
+        displayTotalCustomer();
+
+        // Populate the line chart when the view is initialized
+        revenueChart();
+
+        // Apply custom tooltips to each data point
+        for (XYChart.Series<String, Number> series : sale_revenue_chart.getData()) {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                int totalOrders = data.getYValue().intValue();
+                Tooltip tooltip = createTooltipRevenue(totalOrders);
+                Tooltip.install(data.getNode(), tooltip);
+            }
+        }
+
+        // Populate the line chart when the view is initialized
+        orderChart();
+
+        // Apply custom tooltips to each data point
+        for (XYChart.Series<String, Number> series : sale_order_chart.getData()) {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                int totalOrders = data.getYValue().intValue();
+                Tooltip tooltip = createTooltipOrder(totalOrders);
+                Tooltip.install(data.getNode(), tooltip);
+            }
+        }
 
         setActivePage(dashboard_home);
         setActiveButton(home_btn);
@@ -550,35 +634,32 @@ public class DashBoardController implements Initializable {
             }
         });
 
-        productDelete_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Integer id = Integer.valueOf(addProduct_id.getText());
-                String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
-                String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
-                String name = addProduct_name_tf.getText();
-                String price = addProduct_salesprice_tf.getText();
-                String status = cb_status.getSelectionModel().getSelectedItem();
-                String imageUrl = addproduct_imageview.getImage().getUrl();
-                String importedPrice = addProduct_importedprice_tf.getText();
-                if (brand != null && type != null && name != null && price != null
-                        && imageUrl != null && status != null) {
-                    int brandId = new SupplierModel().getIdSupplier(brand);
-                    int typeId = new ProductCategoryModel().getProductCategoryId(type);
-                    try {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Delete Confirmation");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Are you sure want to delete " + name + "\nId: " + id);
-                        Optional<ButtonType> option = alert.showAndWait();
-                        if (option.get().equals(ButtonType.OK)) {
-                            Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl, Double.parseDouble(importedPrice));
-                            DBDelete(product);
-                            resetTable();
-                        } else return;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        productDelete_btn.setOnAction(event -> {
+            Integer id = Integer.valueOf(addProduct_id.getText());
+            String brand = addProduct_brand_cb.getSelectionModel().getSelectedItem();
+            String type = addProduct_type_cb.getSelectionModel().getSelectedItem();
+            String name = addProduct_name_tf.getText();
+            String price = addProduct_salesprice_tf.getText();
+            String status = cb_status.getSelectionModel().getSelectedItem();
+            String imageUrl = addproduct_imageview.getImage().getUrl();
+            String importedPrice = addProduct_importedprice_tf.getText();
+            if (brand != null && type != null && name != null && price != null
+                    && imageUrl != null && status != null) {
+                int brandId = new SupplierModel().getIdSupplier(brand);
+                int typeId = new ProductCategoryModel().getProductCategoryId(type);
+                try {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Delete Confirmation");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Are you sure want to delete " + name + "\nId: " + id);
+                    Optional<ButtonType> option = alert.showAndWait();
+                    if (option.get().equals(ButtonType.OK)) {
+                        Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl, Double.parseDouble(importedPrice));
+                        DBDelete(product);
+                        resetTable();
+                    } else return;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -663,7 +744,6 @@ public class DashBoardController implements Initializable {
         });
     }
 
-
     // General Controller functions
 
         void CancelAction (Button cancelBtn){
@@ -720,27 +800,244 @@ public class DashBoardController implements Initializable {
         }
     }
 
-    public void chart() {
-        sale_revenue_chart.getData().clear();
+    public void revenueChart() {
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        String fullMonthName = currentDate.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        int currentYear = currentDate.getYear();
 
-        String sql = "SELECT SUM(total_price), date_recorded FROM invoice GROUP BY date_recorded ORDER BY TIMESTAMP(date_recorded) ASC LIMIT 8";
+        int lastMonth, lastYear = 0;
+        if (currentMonth == 1) {
+            lastMonth = 12;
+            lastYear = currentYear - 1;
+        } else {
+            lastMonth = currentMonth -1;
+            lastYear = currentYear;
+        }
 
-        try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
+        double revenueThisMonth = 0, revenueLastMonth = 0;
 
-            XYChart.Series<String, Double> chartData = new XYChart.Series<>();
+        int lastDay = java.time.YearMonth.of(currentYear, currentMonth).lengthOfMonth();
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                chartData.getData().add(new XYChart.Data<>(rs.getString(2), rs.getDouble(1)));
+        String sql = "SELECT DAY(date_recorded) AS day, IFNULL(SUM(totalAmount), 0) AS revenue " +
+                "FROM `order` " +
+                "WHERE YEAR(order_recorded) = ? AND MONTH(order_recorded) = ? " +
+                "GROUP BY DAY(order_recorded)";
+        try {
+            Connection con = JDBCConnect.getJDBCConnection();
+            PreparedStatement psThisMonth = Objects.requireNonNull(con).prepareStatement(sql);
+            psThisMonth.setInt(1, currentYear);
+            psThisMonth.setInt(2, currentMonth);
+
+            ResultSet rsThisMonth = psThisMonth.executeQuery();
+
+            PreparedStatement psLastMonth = con.prepareStatement(sql);
+            psLastMonth.setInt(1, lastYear);
+            psLastMonth.setInt(2, lastMonth);
+
+            ResultSet rsLastMonth = psLastMonth.executeQuery();
+
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+            while (rsThisMonth.next()) {
+                int day = rsThisMonth.getInt("day");
+                double revenue = rsThisMonth.getDouble("revenue");
+
+                // Add the data points to the series
+                XYChart.Data<String, Number> dataPoint = new XYChart.Data<>(Integer.toString(day), revenue);
+                series.getData().add(dataPoint);
+
+                //Create a tooltip for the data point
+                Tooltip tooltip = new Tooltip("Revenue: " + revenue + "\nDate: " + day + "/" + currentMonth + "/" + currentYear);
+                tooltip.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
+
+                // Postpone setting the tooltip until the line chart is fully rendered
+                Platform.runLater(() -> {
+                    Node node = dataPoint.getNode();
+                    Tooltip.install(node, tooltip);
+
+                    // Add event handler to show the tooltip when hovering over the data point
+                    node.setOnMouseEntered(event -> tooltip.show(node, event.getScreenX(), event.getScreenY() + 20));
+                    node.setOnMouseExited(event -> tooltip.hide());
+                });
+
+                revenueThisMonth += revenue;
+            }
+            while (rsLastMonth.next()) {
+                revenueLastMonth += rsLastMonth.getDouble("revenue");
             }
 
-            XYChart<String, Double> saleRevenueChart = (XYChart<String, Double>) sale_revenue_chart;
-            saleRevenueChart.getData().add(chartData);
+            // Fill in missing days with zero revenue
+            for (int day = 1; day <= lastDay; day++) {
+                boolean found = false;
+                for (XYChart.Data<String, Number> data : series.getData()) {
+                    if (Integer.parseInt(data.getXValue()) == day) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    series.getData().add(new XYChart.Data<>(Integer.toString(day), 0));
+                }
+            }
 
+            // Set the name for the series (optional)
+            series.setName("Revenue " + fullMonthName);
+
+            // Update revenueLabel and compareRevenueLabel
+            totalRevenueLabel.setText(String.format("%.2f", revenueThisMonth));
+            compareTotalRevenueLabel.setText(decimalFormat.format(revenueThisMonth - revenueLastMonth));
+
+            // Update revenueLabel and compareRevenueLabel
+            totalRevenueLabel.setText(decimalFormat.format(revenueThisMonth));
+
+            double compareRevenue = revenueThisMonth - revenueLastMonth;
+
+            // Set the text fill based on compareRevenue value
+            if (compareRevenue > 0) {
+                compareTotalRevenueLabel.setText("+" + decimalFormat.format(compareRevenue));
+                compareTotalRevenueLabel.setTextFill(Color.GREEN);
+            } else {
+                compareTotalRevenueLabel.setText(decimalFormat.format(compareRevenue));
+                compareTotalRevenueLabel.setTextFill(Color.RED);
+            }
+
+            // Sort the data by day
+            series.getData().sort(Comparator.comparing(data -> Integer.parseInt(data.getXValue())));
+
+            sale_revenue_chart.getData().add(series);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Tooltip createTooltipRevenue(int totalAmount) {
+        Tooltip tooltip = new Tooltip("Orders: " + totalAmount);
+
+        // Apply custom CSS styles to the tooltip
+        tooltip.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
+        return tooltip;
+    }
+
+    public void orderChart() {
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        String fullMonthName = currentDate.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        int currentYear = currentDate.getYear();
+
+        int lastMonth, lastYear = 0;
+        if (currentMonth == 1) {
+            lastMonth = 12;
+            lastYear = currentYear - 1;
+        } else {
+            lastMonth = currentMonth -1;
+            lastYear = currentYear;
+        }
+
+        int ordersThisMonth = 0, ordersLastMonth = 0;
+
+        int lastDay = java.time.YearMonth.of(currentYear, currentMonth).lengthOfMonth();
+
+        String sql = "SELECT DAY(date_recorded) AS day, IFNULL(COUNT(*), 0) AS totalOrders " +
+                "FROM `order` " +
+                "WHERE YEAR(order_recorded) = ? AND MONTH(order_recorded) = ? " +
+                "GROUP BY DAY(order_recorded)";
+
+        try {
+            Connection con = JDBCConnect.getJDBCConnection();
+            PreparedStatement psThisMonth = Objects.requireNonNull(con).prepareStatement(sql);
+            psThisMonth.setInt(1, currentYear);
+            psThisMonth.setInt(2, currentMonth);
+
+            ResultSet rsThisMonth = psThisMonth.executeQuery();
+
+            PreparedStatement psLastMonth = con.prepareStatement(sql);
+            psLastMonth.setInt(1, lastYear);
+            psLastMonth.setInt(2, lastMonth);
+
+            ResultSet rsLastMonth = psLastMonth.executeQuery();
+
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+            while (rsThisMonth.next()) {
+                int day = rsThisMonth.getInt("day");
+                int orders = rsThisMonth.getInt("totalOrders");
+
+                // Add the data points to the series
+                XYChart.Data<String, Number> dataPoint = new XYChart.Data<>(Integer.toString(day), orders);
+                series.getData().add(dataPoint);
+
+                //Create a tooltip for the data point
+                Tooltip tooltip = new Tooltip("Orders: " + orders + "\nDate: " + day + "/" + currentMonth + "/" + currentYear);
+                tooltip.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
+
+                // Postpone setting the tooltip until the line chart is fully rendered
+                Platform.runLater(() -> {
+                    Node node = dataPoint.getNode();
+                    Tooltip.install(node, tooltip);
+
+                    // Add event handler to show the tooltip when hovering over the data point
+                    node.setOnMouseEntered(event -> tooltip.show(node, event.getScreenX(), event.getScreenY() + 20));
+                    node.setOnMouseExited(event -> tooltip.hide());
+                });
+
+                ordersThisMonth += orders;
+            }
+            while (rsLastMonth.next()) {
+                ordersLastMonth += rsLastMonth.getInt("totalOrders");
+            }
+
+            // Fill in missing days with zero revenue
+            for (int day = 1; day <= lastDay; day++) {
+                boolean found = false;
+                for (XYChart.Data<String, Number> data : series.getData()) {
+                    if (Integer.parseInt(data.getXValue()) == day) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    series.getData().add(new XYChart.Data<>(Integer.toString(day), 0));
+                }
+            }
+
+            // Set the name for the series (optional)
+            series.setName("Orders " + fullMonthName);
+
+            // Update revenueLabel and compareRevenueLabel
+            totalOrdersLabel.setText(String.valueOf(ordersThisMonth));
+            compareTotalOrdersLabel.setText(String.valueOf(ordersThisMonth - ordersLastMonth));
+
+            totalOrdersLabel.setText(String.valueOf(ordersThisMonth));
+
+            int compareOrders = ordersThisMonth - ordersLastMonth;
+
+
+            // Set the text fill based on compareRevenue value
+            if (compareOrders > 0) {
+                compareTotalOrdersLabel.setText("+" + compareOrders);
+                compareTotalOrdersLabel.setTextFill(Color.GREEN);
+            } else {
+                compareTotalOrdersLabel.setText(String.valueOf(compareOrders));
+                compareTotalOrdersLabel.setTextFill(Color.RED);
+            }
+
+            // Sort the data by day
+            series.getData().sort(Comparator.comparing(data -> Integer.parseInt(data.getXValue())));
+
+            sale_order_chart.getData().add(series);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Tooltip createTooltipOrder(int totalOrders) {
+        Tooltip tooltip = new Tooltip("Orders: " + totalOrders);
+
+        // Apply custom CSS styles to the tooltip
+        tooltip.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
+
+        return tooltip;
     }
 
     public void displayUsername() {
@@ -748,21 +1045,67 @@ public class DashBoardController implements Initializable {
         user = user.substring(0, 1).toUpperCase() + user.substring(1);
         username_label.setText(user);
     }
-    //    public void displaySalesInfo() {
-//        String sql = "SELECT total_paid, COUNT(o.id) FROM invoice i INNER JOIN order o ON i.order_id = o.id";
-//        try (Connection con = JDBCConnect.getJDBCConnection();
-//        PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                earning_text.setText(rs.getString("total_paid"));
-//
-//                total_order_text.setText(rs.getString("o.id"));
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+
+    public void displayTotalProductImport() {
+        String sql = "SELECT COUNT(quantity) AS totalProductImport FROM goods_import";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+        Statement stmt = Objects.requireNonNull(con).createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int total = rs.getInt("totalProductImport");
+                product_import_text.setText(String.valueOf(total));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayTotalEarning() {
+        String sql = "SELECT COUNT(total_paid) AS totalEarning FROM invoice";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+             Statement stmt = Objects.requireNonNull(con).createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int total = rs.getInt("totalEarning");
+                earning_text.setText(String.valueOf(total));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayTotalCustomer() {
+        String sql = "SELECT COUNT(*) AS totalCustomer FROM customer";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+             Statement stmt = Objects.requireNonNull(con).createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int total = rs.getInt("totalCustomer");
+                total_customer_text.setText(String.valueOf(total));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayTotalOrder() {
+        String sql = "SELECT COUNT(*) AS totalOrder FROM `order`";
+
+        try (Connection con = JDBCConnect.getJDBCConnection();
+             Statement stmt = Objects.requireNonNull(con).createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int total = rs.getInt("totalOrder");
+                total_order_text.setText(String.valueOf(total));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void ShowListDataProduct(int offset,int limit,int pageIndex) {
         ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
         product_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
