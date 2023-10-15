@@ -267,3 +267,11 @@ VALUES
     (3, 3, 2, 1, 700.0, 700.0, '2023-10-06'),
     (4, 1, 3, 2, 800.0, 800.0, '2023-10-06'),
     (5, 3, 1, 1, 900.0, 900.0, '2023-10-07');
+
+ALTER TABLE `order` ADD totalAMount DECIMAL(12);
+
+UPDATE `pos`.`order` SET `totalAMount` = '1200' WHERE (`id` = '1');
+UPDATE `pos`.`order` SET `totalAMount` = '4200' WHERE (`id` = '2');
+UPDATE `pos`.`order` SET `totalAMount` = '3000' WHERE (`id` = '3');
+UPDATE `pos`.`order` SET `totalAMount` = '7200' WHERE (`id` = '4');
+UPDATE `pos`.`order` SET `totalAMount` = '1000' WHERE (`id` = '5');
