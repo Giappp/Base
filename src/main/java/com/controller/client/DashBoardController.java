@@ -238,7 +238,6 @@ public class DashBoardController implements Initializable {
     @FXML
     private AnchorPane dashboard_storage;
 
-
     @FXML
     private Button home_btn;
 
@@ -321,6 +320,7 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private Button account_btn;
+
     @FXML
     private Button addProduct_addBtn;
 
@@ -344,20 +344,28 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private ComboBox<String> addProduct_type_cb;
+
     @FXML
     private ComboBox<String> cb_status;
+
     @FXML
     private ImageView addproduct_imageview;
+
     @FXML
     private TextField addProduct_importedprice_tf;
+
     @FXML
     private Button addProduct_updatebtn;
+
     @FXML
     private Button productDelete_btn;
+
     @FXML
     private TextField addProduct_id;
+
     @FXML
     private Text txt_product_id;
+
     @FXML
     private TableColumn<Product, String> good_col_supplier;
 
@@ -381,13 +389,18 @@ public class DashBoardController implements Initializable {
 
     @FXML
     private TableColumn<Product, String> goods_col_type;
+
     @FXML
     private Button history_btn;
+
     @FXML
     private Pagination product_pg;
+
     @FXML
     private Pagination storage_pg;
+
     private Button activeButton;
+    
     private AnchorPane activePage;
 
     @Override
