@@ -127,7 +127,6 @@ public class DashBoardController implements Initializable {
 
     DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
 
-
     private ObservableList<Product> observableList = FXCollections.observableArrayList();
 
     @FXML
