@@ -815,5 +815,73 @@
          <FontAwesomeIconView glyphName="SEARCH" layoutX="794.0" layoutY="285.0" size="18" />
          <Pagination fx:id="event_pg" layoutX="24.0" layoutY="651.0" prefHeight="58.0" prefWidth="951.0" />
       </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adding New Custommer">
+               <font>
+                  <Font name="Segoe UI" size="24.0" />
+               </font>
+            </Text>
+            <AnchorPane layoutX="30.0" layoutY="46.0" prefHeight="134.0" prefWidth="940.0" style="-fx-background-color: white;">
+               <children>
+                  <TextField fx:id="tf_add_cusname" layoutX="110.0" layoutY="23.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;" />
+                  <Label layoutX="51.0" layoutY="25.0" text="Name:" textFill="#00a7d5">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tf_add_address" layoutX="110.0" layoutY="67.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;" />
+                  <Label layoutX="338.0" layoutY="26.0" text="Phone:" textFill="#00a7d5">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tf_add_phone" layoutX="399.0" layoutY="23.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;" />
+                  <Label layoutX="36.0" layoutY="70.0" text="Address:" textFill="#00a7d5">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tf_add_email" layoutX="399.0" layoutY="67.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;" />
+                  <Label layoutX="345.0" layoutY="70.0" text="Email:" textFill="#00a7d5">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="dd_customer_btn" layoutX="641.0" layoutY="23.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: #00a7d5;" text="Add" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="update_customer_btn" layoutX="752.0" layoutY="23.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: #33b249;" text="Update" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="cancel_customer_btn" layoutX="641.0" layoutY="73.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cancel">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="delete_customer_btn" layoutX="752.0" layoutY="73.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+            <TableView layoutX="30.0" layoutY="254.0" prefHeight="400.0" prefWidth="940.0">
+              <columns>
+                <TableColumn fx:id="customer_col_id" prefWidth="41.600006103515625" text="ID" />
+                <TableColumn fx:id="customer_col_name" prefWidth="173.5999755859375" text="Name" />
+                  <TableColumn fx:id="customer_col_dob" prefWidth="150.40008544921875" text="DOB" />
+                  <TableColumn fx:id="customer_col_email" prefWidth="191.99993896484375" text="Email" />
+                  <TableColumn fx:id="customer_col__phone" prefWidth="132.0" text="Phone" />
+                  <TableColumn fx:id="customer_col_address" prefWidth="252.0" text="Address" />
+              </columns>
+            </TableView>
+            <Pagination layoutX="30.0" layoutY="654.0" prefHeight="58.0" prefWidth="940.0" />
+         </children>
+      </AnchorPane>
    </StackPane>
 </AnchorPane>
