@@ -1,12 +1,9 @@
 package com.entities;
 
-import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-
-import java.sql.Date;
 
 public class Product {
     private Integer id;
@@ -18,7 +15,6 @@ public class Product {
     private Integer quantityInStock;
     private Double salePrice;
     private Double importedPrice;
-    private Double discountPercentage;
     private String description;
     private String status;
     private String image;
@@ -121,14 +117,6 @@ public class Product {
 
     public void setSalePrice(Double unitPrice) {
         this.salePrice = unitPrice;
-    }
-
-    public Double getDiscountPercentage() {
-        return discountPercentage;
-    }
-
-    public void setDiscountPercentage(Double discountPercentage) {
-        this.discountPercentage = discountPercentage;
     }
 
     public String getDescription() {

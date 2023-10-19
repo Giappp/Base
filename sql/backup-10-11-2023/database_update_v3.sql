@@ -54,6 +54,7 @@ CREATE  TABLE pos.`order` (
                               customer_id          INT       ,
                               user_id              INT       ,
                               date_recorded        DATE       ,
+                              totalAmount          DECIMAL(12) ,
                               `status`             TINYINT       ,
                               CONSTRAINT order_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES pos.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
                               CONSTRAINT order_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES pos.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -72,7 +73,6 @@ CREATE  TABLE pos.product (
                               quantity_in_stock    INT       ,
                               sale_price           FLOAT       ,
                               imported_price       FLOAT       ,
-                              discount_percentage  FLOAT       ,
                               description          TEXT       ,
                               `status`             TINYINT(1)       ,
                               image                VARCHAR(255)       ,
@@ -98,7 +98,7 @@ CREATE INDEX order_id ON pos.product_in_order ( order_id );
 
 CREATE INDEX product_id ON pos.product_in_order ( product_id );
 
-CREATE  TABLE pos.goods_import (
+CREATE TABLE pos.goods_import (
                                    id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
                                    product_id           INT       ,
                                    quantity             INT       ,
@@ -113,6 +113,16 @@ CREATE  TABLE pos.goods_import (
 CREATE INDEX user_id ON pos.goods_import ( user_id );
 
 CREATE INDEX goods_import_ibfk_3_idx ON pos.goods_import ( product_id );
+
+CREATE TABLE `pos`.`event` (
+                               `id`             INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                               `event_name`     VARCHAR(250) NULL,
+                               `discount`       FLOAT NULL,
+                               `start_date`     DATE NULL,
+                               `start_time`     TIME NULL,
+                               `end_date`   DATE NULL,
+                               `end_time`   TIME NULL
+);
 
 DELIMITER //
 
@@ -252,13 +262,13 @@ INSERT INTO pos.supplier (id, name, address, phone, email, details) VALUES
                                                                         (2, 'ZAIA Enterprise', '456 Supplier Ave', '0987654321', '1000percent@gmail.com', 'ZAIA Enterprise details'),
                                                                         (3, 'Hiden Intellproductigence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
 
-INSERT INTO pos.`order` (id, customer_id, user_id, date_recorded, `status`)
+INSERT INTO pos.`order` (id, customer_id, user_id, date_recorded, `status`, totalAmount)
 VALUES
-    (1, 1, 1, '2023-10-05', 1),
-    (2,2, 2, '2023-10-05', 1),
-    (3,3, 2, '2023-10-06', 1),
-    (4,2, 1, '2023-10-06', 1),
-    (5,1, 3, '2023-10-07', 1);
+    (1, 1, 1, '2023-10-05', 1, 1200),
+    (2,2, 2, '2023-10-05', 1, 4200),
+    (3,3, 2, '2023-10-06', 1, 3000),
+    (4,2, 1, '2023-10-06', 1, 7200),
+    (5,1, 3, '2023-10-07', 1, 1000);
 
 INSERT INTO pos.invoice (order_id, customer_id, user_id, payment_type, total_price, total_paid, date_recorded)
 VALUES
@@ -268,10 +278,9 @@ VALUES
     (4, 1, 3, 2, 800.0, 800.0, '2023-10-06'),
     (5, 3, 1, 1, 900.0, 900.0, '2023-10-07');
 
-ALTER TABLE `order` ADD totalAMount DECIMAL(12);
-
-UPDATE `pos`.`order` SET `totalAMount` = '1200' WHERE (`id` = '1');
-UPDATE `pos`.`order` SET `totalAMount` = '4200' WHERE (`id` = '2');
-UPDATE `pos`.`order` SET `totalAMount` = '3000' WHERE (`id` = '3');
-UPDATE `pos`.`order` SET `totalAMount` = '7200' WHERE (`id` = '4');
-UPDATE `pos`.`order` SET `totalAMount` = '1000' WHERE (`id` = '5');
+INSERT INTO `pos`.`event` (id, `event_name`, `discount`, `start_date`, `start_time`, `end_date`, `end_time`) VALUES
+                                                                                                                 (1, 'Back to School', 15.0, '2023-09-01', '10:00:00', '2023-09-30', '14:00:00'),
+                                                                                                                 (2, 'Merry Christmas', 20.0, '2023-12-01', '15:30:00', '2023-12-31', '18:30:00'),
+                                                                                                                 (3, 'Happy New Year', 12.5, '2023-01-01', '11:00:00', '2023-01-31', '16:00:00'),
+                                                                                                                 (4, "Summer's Time", 18.5, '2023-06-01', '09:00:00', '2023-06-30', '13:00:00'),
+                                                                                                                 (5, 'Trick of Treat', 25.0, '2023-10-31', '00:00:00', '2023-10-31', '23:59:00');

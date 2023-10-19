@@ -3,23 +3,17 @@ package com.controller.client;
 import com.controller.logSign.DBController;
 import com.db.dao.JDBCConnect;
 import com.entities.Customer;
-import com.entities.GoodsImport;
 import com.entities.Order;
 import com.entities.Product;
-import com.model.GoodsImportModel;
 import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.value.ObservableNumberValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,13 +29,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,16 +48,141 @@ import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static javafx.beans.binding.Bindings.format;
 
 public class DashBoardController implements Initializable {
 
     private static final int ITEMS_PER_PAGE = 10;
+
+    @FXML
+    private AnchorPane dashboard_customer;
+
+    @FXML
+    private TableView<Customer> customer_tblv;
+
+    @FXML
+    private Pagination customer_pg;
+
+    @FXML
+    private TextField search_customer;
+
+    @FXML
+    private AnchorPane dashboard_event;
+
+    @FXML
+    private TextField tf_event_name;
+
+    @FXML
+    private TextField tf_discount_percent;
+
+    @FXML
+    private DatePicker dp_event_start_date;
+
+    @FXML
+    private DatePicker dp_event_end_date;
+
+    @FXML
+    private ComboBox<Integer> cb_event_start_hour;
+
+    @FXML
+    private ComboBox<Integer> cb_event_start_minute;
+
+    @FXML
+    private ComboBox<Integer> cb_event_start_time_notation;
+
+    @FXML
+    private ComboBox<Integer> cb_event_end_hour;
+
+    @FXML
+    private ComboBox<Integer> cb_event_end_minute;
+
+    @FXML
+    private ComboBox<Integer> cb_event_end_time_notation;
+
+    @FXML
+    private Button add_event_btn;
+
+    @FXML
+    private Button update_event_btn;
+
+    @FXML
+    private Button cancel_event_btn;
+
+    @FXML
+    private Button delete_event_btn;
+
+    @FXML
+    private TableView<Event> event_tblv;
+
+    @FXML
+    private TableColumn<Event, Integer> event_col_id;
+
+    @FXML
+    private TableColumn<Event, String> event_col_name;
+
+    @FXML
+    private TableColumn<Event, Float> event_col_discount;
+
+    @FXML
+    private TableColumn<Event, String> event_col_start_date;
+
+    @FXML
+    private TableColumn<Event, String> event_col_start_time;
+
+    @FXML
+    private TableColumn<Event, String> event_col_end_date;
+
+    @FXML
+    private TableColumn<Event, String> event_col_end_time;
+
+    @FXML
+    private TextField search_event;
+
+    @FXML
+    private Pagination event_pg;
+
+    @FXML
+    private Pagination order_pg;
+
+    @FXML
+    private TextField tf_add_cusname;
+
+    @FXML
+    private TextField tf_add_address;
+
+    @FXML
+    private TextField tf_add_phone;
+
+    @FXML
+    private TextField tf_add_email;
+
+    @FXML
+    private Button add_customer_btn;
+
+    @FXML
+    private Button update_customer_btn;
+
+    @FXML
+    private Button cancel_customer_btn;
+
+    @FXML
+    private Button delete_customer_btn;
+
+    @FXML
+    private TableColumn<Customer, Integer> customer_col_id;
+
+    @FXML
+    private TableColumn<Customer, String> customer_col_name;
+
+    @FXML
+    private TableColumn<Customer, String> customer_col_email;
+
+    @FXML
+    private TableColumn<Customer, String> customer_col_phone;
+
+    @FXML
+    private TableColumn<Customer, String> customer_col_address;
 
     @FXML
     private Button customer_btn;
@@ -100,7 +217,7 @@ public class DashBoardController implements Initializable {
     @FXML
     private Label compareRevenueLabel;
 
-    private ProductModel productModel = new ProductModel();
+    private final ProductModel productModel = new ProductModel();
 
     @FXML
     private Label display_detail;
@@ -1223,4 +1340,6 @@ public class DashBoardController implements Initializable {
     private boolean isNumeric (String str){
         return str.matches("\\d*"); // Check if the given string contains only digits
     }
+
+
 }
