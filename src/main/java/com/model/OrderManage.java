@@ -26,18 +26,18 @@ public class OrderManage {
             if (rs.next()) {
                 result = true;
                 orderResult.setId(rs.getInt("id"));
-                orderResult.setCustomerId(rs.getInt("customer_id"));
-                orderResult.setUserId(rs.getInt("user_id"));
-                orderResult.setDateRecorded(rs.getDate("date_recorded"));
+                orderResult.setCustomerId(rs.getInt("customerId"));
+                orderResult.setUserId(rs.getInt("userId"));
+                orderResult.setDateRecorded(rs.getDate("dateRecorded"));
                 orderResult.setStatus(rs.getInt("status"));
-                sql = "SELECT * FROM `product_in_order` WHERE `order_id` = ?;";
+                sql = "SELECT * FROM `product_in_order` WHERE `orderId` = ?;";
                 JDBCConnect.closeResultSet(rs);
                 JDBCConnect.closePreparedStatement(ps);
                 ps = conn.prepareStatement(sql);
                 rs = ps.executeQuery();
                 ArrayList<Product> productList = new ArrayList<Product>();
                 ProductModel productModel = new ProductModel();
-                while (rs.next()) productList.add(productModel.getProduct(rs.getInt("product_id")));
+                while (rs.next()) productList.add(productModel.getProduct(rs.getInt("productId")));
                 orderResult.setProductInOrder(productList);
             }
         } catch (SQLException e) {

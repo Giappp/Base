@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="dashboardOrder" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.order.OrderController">
+   <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
+      <font>
+         <Font name="Segoe UI Bold" size="24.0"/>
+      </font>
+   </Text>
+   <TableView fx:id="tblvOrderView" layoutX="20.0" layoutY="223.0" prefHeight="430.0" prefWidth="964.0">
+      <columns>
+         <TableColumn fx:id="orderColId" minWidth="4.0" prefWidth="90.4000244140625" text="ID" visible="false"/>
+         <TableColumn fx:id="orderColType" minWidth="4.0" prefWidth="116.0" text="Type"/>
+         <TableColumn fx:id="orderColBrand" prefWidth="134.0" text="Brand"/>
+         <TableColumn fx:id="orderColName" prefWidth="159.0" text="Product Name"/>
+         <TableColumn fx:id="orderColCusname" prefWidth="173.0" text="Customer Name"/>
+         <TableColumn fx:id="orderColAmount" minWidth="0.0" prefWidth="116.0" text="Amount"/>
+         <TableColumn fx:id="orderColPrice" minWidth="0.0" prefWidth="117.0" text="Price"/>
+         <TableColumn fx:id="orderColDate" minWidth="0.0" prefWidth="148.0" text="Date record"/>
+      </columns>
+   </TableView>
+   <AnchorPane layoutX="18.0" layoutY="57.0" prefHeight="145.0" prefWidth="964.0" style="-fx-background-color: white;">
+      <Text fill="#00a7d5" layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Type:"
+            textAlignment="RIGHT" wrappingWidth="118.3671875">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Text>
+      <Text fill="#00a7d5" layoutX="348.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brand Name:"
+            textAlignment="RIGHT" wrappingWidth="118.3671875">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Text>
+      <Text fill="#00a7d5" layoutX="348.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Name:"
+            textAlignment="RIGHT" wrappingWidth="118.3671875">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Text>
+      <TextField fx:id="tfNameChoice" layoutX="482.0" layoutY="57.0" prefHeight="26.0" prefWidth="154.0"
+                 style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;">
+         <font>
+            <Font name="Segoe UI" size="12.0"/>
+         </font>
+      </TextField>
+      <Text fill="#00a7d5" layoutX="423.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:">
+         <font>
+            <Font name="Segoe UI" size="18.0"/>
+         </font>
+      </Text>
+      <Text fx:id="displayPriceAll" fill="#00a7d5" layoutX="478.0" layoutY="121.0" strokeType="OUTSIDE"
+            strokeWidth="0.0" text="Price$">
+         <font>
+            <Font name="Segoe UI" size="18.0"/>
+         </font>
+      </Text>
+      <Button fx:id="addOrderBtn" layoutX="705.0" layoutY="29.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="94.0" style="-fx-background-color: #00a7d5;" text="Add" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Button>
+      <Text fill="#00a7d5" layoutX="14.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0"
+            text="Customer Name:">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Text>
+      <Button fx:id="updateOrderBtn" layoutX="816.0" layoutY="29.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="94.0" style="-fx-background-color: #33b249;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Button>
+      <Button fx:id="cancelOrderBtn" layoutX="705.0" layoutY="79.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="94.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cancel">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Button>
+      <Text fill="#00a7d5" layoutX="14.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount:"
+            textAlignment="RIGHT" wrappingWidth="118.3671875">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Text>
+      <Spinner fx:id="spAmountChoice" layoutX="144.0" layoutY="102.0" prefHeight="26.0" prefWidth="154.0"/>
+      <ComboBox fx:id="cbTypeChoice" layoutX="144.0" layoutY="57.0" prefHeight="26.0" prefWidth="154.0"
+                style="-fx-background-color: transparent; -fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-border-color: #00a7d5;"/>
+      <ComboBox fx:id="cbBrandChoice" layoutX="481.0" layoutY="17.0" prefHeight="26.0" prefWidth="154.0"
+                style="-fx-background-color: transparent; -fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-border-color: #00a7d5;"/>
+      <TextField fx:id="tfCusnameChoice" layoutX="144.0" layoutY="17.0" prefHeight="26.0" prefWidth="154.0"
+                 style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;">
+         <font>
+            <Font name="Segoe UI" size="12.0"/>
+         </font>
+      </TextField>
+      <Button fx:id="deleteOrderBtn" layoutX="816.0" layoutY="79.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="94.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="16.0"/>
+         </font>
+      </Button>
+   </AnchorPane>
+   <Pagination fx:id="orderPg" layoutX="20.0" layoutY="653.0" prefHeight="58.0" prefWidth="964.0"/>
+</AnchorPane>

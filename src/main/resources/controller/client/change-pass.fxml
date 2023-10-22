@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.ChangePassword">
+<AnchorPane prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.account.ChangePassword">
     <Label layoutX="131.0" layoutY="84.0" prefHeight="30.0" prefWidth="188.0" text="Change Password" textFill="#00a7d5">
         <font>
           <Font name="Segoe UI" size="24.0" />
@@ -18,7 +18,7 @@
           <Font name="Segoe UI" size="18.0" />
         </font>
     </Label>
-    <PasswordField fx:id="pf_change_new_pass" layoutX="192.0" layoutY="166.0">
+    <PasswordField fx:id="pfChangeNewPass" layoutX="192.0" layoutY="166.0">
       <font>
          <Font name="Segoe UI" size="18.0" />
       </font></PasswordField>
@@ -27,12 +27,12 @@
           <Font name="Segoe UI" size="18.0" />
         </font>
     </Label>
-    <Button fx:id="accept_new_pass_btn" layoutX="131.0" layoutY="342.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" style="-fx-background-color: #00a7d5;" text="Proceed" textFill="WHITE">
+    <Button fx:id="acceptNewPassBtn" layoutX="131.0" layoutY="342.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="188.0" style="-fx-background-color: #00a7d5;" text="Proceed" textFill="WHITE">
         <font>
           <Font name="Segoe UI" size="18.0" />
         </font>
     </Button>
-    <PasswordField fx:id="pf_confirm_new_pass" layoutX="192.0" layoutY="225.0">
+    <PasswordField fx:id="pfConfirmNewPass" layoutX="192.0" layoutY="225.0">
       <font>
          <Font name="Segoe UI" size="18.0" />
       </font></PasswordField>

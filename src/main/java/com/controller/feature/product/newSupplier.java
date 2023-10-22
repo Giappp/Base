@@ -1,4 +1,4 @@
-package com.controller.client;
+package com.controller.feature.product;
 
 import com.entities.Supplier;
 import com.model.SupplierModel;
@@ -17,64 +17,64 @@ import java.util.ResourceBundle;
 
 public class newSupplier implements Initializable {
     @FXML
-    private Button add_btn;
+    private Button addBtn;
 
     @FXML
-    private Button cancel_btn;
+    private Button cancelBtn;
 
     @FXML
-    private Button delete_btn;
+    private Button deleteBtn;
 
     @FXML
-    private TextArea ta_supplier_address;
+    private TextArea taSupplierAddress;
 
     @FXML
-    private TextField tf_supplier_email;
+    private TextField tfSupplierEmail;
 
     @FXML
-    private TextField tf_supplier_id;
+    private TextField tfSupplierId;
 
     @FXML
-    private TextField tf_supplier_name;
+    private TextField tfSupplierName;
 
     @FXML
-    private TextField tf_supplier_phone;
+    private TextField tfSupplierPhone;
     @FXML
-    private TableView<Supplier> tv_supplier;
+    private TableView<Supplier> tvSupplier;
 
     @FXML
-    private TableColumn<Supplier, String> tv_supplier_address;
+    private TableColumn<Supplier, String> tvSupplierAddress;
 
     @FXML
-    private TableColumn<Supplier, String> tv_supplier_email;
+    private TableColumn<Supplier, String> tvSupplierEmail;
 
     @FXML
-    private TableColumn<Supplier, String> tv_supplier_id;
+    private TableColumn<Supplier, String> tvSupplierId;
 
     @FXML
-    private TableColumn<Supplier, String> tv_supplier_name;
+    private TableColumn<Supplier, String> tvSupplierName;
 
     @FXML
-    private TableColumn<Supplier, String> tv_supplier_phone;
+    private TableColumn<Supplier, String> tvSupplierPhone;
 
     @FXML
-    private Button update_btn;
+    private Button updateBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         showTable();
-        add_btn.setDisable(false);
-        cancel_btn.setDisable(false);
-        update_btn.setDisable(true);
-        delete_btn.setDisable(true);
+        addBtn.setDisable(false);
+        cancelBtn.setDisable(false);
+        updateBtn.setDisable(true);
+        deleteBtn.setDisable(true);
 
-        add_btn.setOnAction(new EventHandler<ActionEvent>() {
+        addBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String name = tf_supplier_name.getText().trim();
-                String address = ta_supplier_address.getText().trim();
-                String phone = tf_supplier_phone.getText().trim();
-                String email = tf_supplier_email.getText().trim();
+                String name = tvSupplierName.getText().trim();
+                String address = taSupplierAddress.getText().trim();
+                String phone = tfSupplierPhone.getText().trim();
+                String email = tfSupplierEmail.getText().trim();
                 if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation Message");
@@ -95,14 +95,14 @@ public class newSupplier implements Initializable {
                 }
             }
         });
-        delete_btn.setOnAction(new EventHandler<ActionEvent>() {
+        deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String name = tf_supplier_name.getText().trim();
-                String address = ta_supplier_address.getText().trim();
-                String phone = tf_supplier_phone.getText().trim();
-                String email = tf_supplier_email.getText().trim();
-                Integer id = Integer.valueOf(tf_supplier_id.getText());
+                String name = tfSupplierName.getText().trim();
+                String address = taSupplierAddress.getText().trim();
+                String phone = tfSupplierPhone.getText().trim();
+                String email = tfSupplierEmail.getText().trim();
+                Integer id = Integer.valueOf(tfSupplierId.getText());
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation Message");
                     alert.setHeaderText(null);
@@ -118,14 +118,14 @@ public class newSupplier implements Initializable {
             }
         });
 
-        update_btn.setOnAction(new EventHandler<ActionEvent>() {
+        updateBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String name = tf_supplier_name.getText().trim();
-                String address = ta_supplier_address.getText().trim();
-                String phone = tf_supplier_phone.getText().trim();
-                String email = tf_supplier_email.getText().trim();
-                Integer id = Integer.valueOf(tf_supplier_id.getText());
+                String name = tfSupplierName.getText().trim();
+                String address = taSupplierAddress.getText().trim();
+                String phone = tfSupplierPhone.getText().trim();
+                String email = tfSupplierEmail.getText().trim();
+                Integer id = Integer.valueOf(tfSupplierId.getText());
                 if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation Message");
@@ -146,22 +146,22 @@ public class newSupplier implements Initializable {
                 }
             }
         });
-        cancel_btn.setOnAction(new EventHandler<ActionEvent>() {
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 clearTextField();
             }
         });
-        tv_supplier.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        tvSupplier.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
-                tf_supplier_id.setText(String.valueOf(newValue.getId()));
-                tf_supplier_name.setText(newValue.getName());
-                tf_supplier_phone.setText(newValue.getPhone());
-                tf_supplier_email.setText(newValue.getEmail());
-                ta_supplier_address.setText(newValue.getAddress());
-                add_btn.setDisable(true);
-                delete_btn.setDisable(false);
-                update_btn.setDisable(false);
+                tfSupplierId.setText(String.valueOf(newValue.getId()));
+                tfSupplierName.setText(newValue.getName());
+                tfSupplierPhone.setText(newValue.getPhone());
+                tfSupplierEmail.setText(newValue.getEmail());
+                taSupplierAddress.setText(newValue.getAddress());
+                addBtn.setDisable(true);
+                deleteBtn.setDisable(false);
+                updateBtn.setDisable(false);
             }else{
                 clearTextField();
             }
@@ -169,26 +169,25 @@ public class newSupplier implements Initializable {
     }
 
     private void clearTextField() {
-        tf_supplier_name.clear();
-        tf_supplier_id.clear();
-        tf_supplier_email.clear();
-        tf_supplier_id.clear();
-        tf_supplier_phone.clear();
-        ta_supplier_address.clear();
-        add_btn.setDisable(false);
-        delete_btn.setDisable(true);
-        update_btn.setDisable(true);
+        tfSupplierName.clear();
+        tfSupplierId.clear();
+        tfSupplierEmail.clear();
+        tfSupplierPhone.clear();
+        taSupplierAddress.clear();
+        addBtn.setDisable(false);
+        deleteBtn.setDisable(true);
+        updateBtn.setDisable(true);
     }
 
 
     public void showTable(){
         ObservableList<Supplier> supplierObservableList = FXCollections.observableList(new SupplierModel().getData());
-        tv_supplier_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tv_supplier_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tv_supplier_address.setCellValueFactory(new PropertyValueFactory<>("address"));
-        tv_supplier_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        tv_supplier_email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tv_supplier.setItems(supplierObservableList);
+        tvSupplierId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tvSupplierName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tvSupplierAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        tvSupplierPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        tvSupplierEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tvSupplier.setItems(supplierObservableList);
     }
     public static void DBAdd(Supplier supplier){
         boolean check = new SupplierModel().insertSupplier(supplier);

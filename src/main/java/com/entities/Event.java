@@ -5,24 +5,24 @@ import java.util.Date;
 
 public class Event {
     private Integer id;
-    private String event_name;
+    private String eventName;
     private Float discount;
-    private Date start_date;
-    private Time start_time;
-    private Date end_date;
-    private Time end_time;
+    private String startDate;
+    private String startTime;
+    private String endDate;
+    private String endTime;
 
     public Event() {
     }
 
-    public Event(Integer id, String event_name, Float discount, Date start_date, Time start_time, Date end_date, Time end_time) {
+    public Event(Integer id, String eventName, Float discount, String startDate, String startTime, String endDate, String endTime) {
         this.id = id;
-        this.event_name = event_name;
+        this.eventName = eventName;
         this.discount = discount;
-        this.start_date = start_date;
-        this.start_time = start_time;
-        this.end_date = end_date;
-        this.end_time = end_time;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
     }
 
     public Integer getId() {
@@ -33,12 +33,12 @@ public class Event {
         this.id = id;
     }
 
-    public String getEvent_name() {
-        return event_name;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setEvent_name(String event_name) {
-        this.event_name = event_name;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     public Float getDiscount() {
@@ -49,35 +49,35 @@ public class Event {
         this.discount = discount;
     }
 
-    public Date getStart_date() {
-        return start_date;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStart_date(Date start_date) {
-        this.start_date = start_date;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public Time getStart_time() {
-        return start_time;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(Time start_time) {
-        this.start_time = start_time;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEnd_date() {
-        return end_date;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setEnd_date(Date end_date) {
-        this.end_date = end_date;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public Time getEnd_time() {
-        return end_time;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Time end_time) {
-        this.end_time = end_time;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

@@ -6,9 +6,9 @@
     <file url="file://$PROJECT_DIR$/sql/database-v1.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/database-v2-dir/database-v2.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/sql/database-v2-dir/database_update_v3.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/controller/client/ChangePassword.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/controller/client/DashBoardController.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/controller/client/UpdateInfo.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/controller/feature/account/ChangePassword.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/controller/feature/account/UpdateInfo.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/controller/feature/allfile.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/controller/logSign/LogInController.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/controller/logSign/SignUpController.java" dialect="GenericSQL" />
   </component>

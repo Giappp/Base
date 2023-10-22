@@ -1,21 +1,16 @@
-package com.controller.client;
+package com.controller.feature.storage;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -24,19 +19,19 @@ import java.util.ResourceBundle;
 public class SelectDate implements Initializable {
 
     @FXML
-    private Button cancel_btn;
+    private Button cancelBtn;
 
     @FXML
-    private AnchorPane chooseDate_scene;
+    private AnchorPane chooseDateScene;
 
     @FXML
-    private DatePicker dp_endDate;
+    private DatePicker dpEndDate;
 
     @FXML
-    private DatePicker dp_startDate;
+    private DatePicker dpStartDate;
 
     @FXML
-    private Button ok_btn;
+    private Button okBtn;
 
     private Date beginDate;
     private Date endDate;

@@ -1,10 +1,8 @@
-package com.controller.client;
+package com.controller.feature.storage;
 
 import com.entities.GoodsImport;
 import com.entities.Product;
 import com.model.GoodsImportModel;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,8 +21,6 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -32,27 +28,27 @@ public class ImportHistory implements Initializable {
     Parent root;
     FXMLLoader loader;
     @FXML
-    private TableColumn<GoodsImport, Date> tv_date;
+    private TableColumn<GoodsImport, Date> tvDate;
 
     @FXML
-    private TableView<GoodsImport> tv_history;
+    private TableView<GoodsImport> tvHistory;
 
     @FXML
-    private TableColumn<GoodsImport, Integer> tv_id;
+    private TableColumn<GoodsImport, Integer> tvId;
 
     @FXML
-    private TableColumn<GoodsImport, Product> tv_product;
+    private TableColumn<GoodsImport, Product> tvProduct;
 
     @FXML
-    private TableColumn<GoodsImport, Integer> tv_quantity;
+    private TableColumn<GoodsImport, Integer> tvQuantity;
 
     @FXML
-    private TableColumn<GoodsImport, Double> tv_total;
+    private TableColumn<GoodsImport, Double> tvTotal;
 
     @FXML
-    private TableColumn<GoodsImport, Double> tv_unit_price;
+    private TableColumn<GoodsImport, Double> tvUnitPrice;
     @FXML
-    private Button selectDate_btn;
+    private Button selectDateBtn;
     private Date beginDate;
     private Date endDate;
     private SelectDate selectDate;

@@ -1,12 +1,10 @@
-package com.controller.client;
+package com.controller.feature.storage;
 
 import com.entities.GoodsImport;
 import com.entities.Product;
 import com.model.GoodsImportModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,8 +13,6 @@ import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Date;
@@ -27,27 +23,27 @@ import java.util.ResourceBundle;
 public class ImportProduct implements Initializable {
 
     @FXML
-    private Spinner<Integer> amount_sp;
+    private Spinner<Integer> amountSp;
 
     @FXML
-    private Button cancel_btn;
+    private Button cancelBtn;
 
     @FXML
-    private Button import_btn;
+    private Button importBtn;
 
     @FXML
-    private TextField importedPrice_tf;
+    private TextField importedPriceTf;
 
     @FXML
-    private Button newSupplier_btn;
+    private Button newSupplierBtn;
 
     @FXML
-    private ComboBox<String> product_cb;
+    private ComboBox<String> productCb;
 
     @FXML
-    private ComboBox<String> supplier_cb;
+    private ComboBox<String> supplierCb;
     @FXML
-    private Label total_lb;
+    private Label totalLb;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
