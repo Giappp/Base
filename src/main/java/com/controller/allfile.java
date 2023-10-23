@@ -1,4 +1,4 @@
-package com.controller.client;
+package com.controller;
 
 import com.controller.logSign.DBController;
 import com.db.dao.JDBCConnect;
@@ -51,7 +51,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DashBoardController implements Initializable {
+public class DashBoardController {
 
     private static final int ITEMS_PER_PAGE = 10;
 
@@ -492,7 +492,7 @@ public class DashBoardController implements Initializable {
     private Pagination storage_pg;
 
     private Button activeButton;
-    
+
     private AnchorPane activePage;
 
     @Override
@@ -599,6 +599,7 @@ public class DashBoardController implements Initializable {
                 event.consume();
             }
         });
+
         addProduct_importedprice_tf.addEventFilter(KeyEvent.KEY_TYPED, event -> {
             if (!isNumeric(event.getCharacter())) {
                 event.consume();
@@ -845,17 +846,17 @@ public class DashBoardController implements Initializable {
     }
 
     // General Controller functions
-        void CancelAction (Button cancelBtn){
-            cancelBtn.setOnAction(event -> {
+    void CancelAction (Button cancelBtn){
+        cancelBtn.setOnAction(event -> {
 
-                // Get a reference to the cancel button's stage (window)
-                addProduct_addBtn.setDisable(false);
-                addProduct_updatebtn.setDisable(true);
-                productDelete_btn.setDisable(true);
-                tblv_product.getSelectionModel().clearSelection();
-                clearTextFields(dashboard_product);
-            });
-        }
+            // Get a reference to the cancel button's stage (window)
+            addProduct_addBtn.setDisable(false);
+            addProduct_updatebtn.setDisable(true);
+            productDelete_btn.setDisable(true);
+            tblv_product.getSelectionModel().clearSelection();
+            clearTextFields(dashboard_product);
+        });
+    }
 
     static void DBAdd(Product product) {
         boolean check = new ProductModel().addProduct(product);
@@ -1152,7 +1153,7 @@ public class DashBoardController implements Initializable {
         String sql = "SELECT COUNT(quantity) AS totalProductImport FROM goods_import";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
-        Statement stmt = Objects.requireNonNull(con).createStatement()) {
+             Statement stmt = Objects.requireNonNull(con).createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 int total = rs.getInt("totalProductImport");

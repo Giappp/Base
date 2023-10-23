@@ -11,7 +11,7 @@ import java.util.List;
 public class GoodsImportModel {
     public boolean importGoods(GoodsImport goodsImport) {
         String sql = "INSERT into goods_import" +
-                "(`product_id`,`quantity`,`unit_price`,`total_price`,`date_imported`,`user_id`) " +
+                "(`productId`, `userId`, `quantity`,`unitPrice`,`totalPrice`,`dateImported`) " +
                 "VALUES(?,?,?,?,?,?) ";
         try (Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;
@@ -44,7 +44,7 @@ public class GoodsImportModel {
         return goodsImportList;
     }
     public List<GoodsImport> getDataByDate(Date begin,Date end){
-        String sql = "SELECT * FROM goods_import where date_imported >= ? and date_imported <= ?";
+        String sql = "SELECT * FROM goods_import where dateImported >= ? and dateImported <= ?";
         List<GoodsImport> goodsImports = new ArrayList<>();
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
@@ -64,13 +64,13 @@ public class GoodsImportModel {
         while(resultSet.next()){
             GoodsImport goodsImport = new GoodsImport();
             goodsImport.setId(resultSet.getInt("id"));
-            goodsImport.setProductId(resultSet.getInt("product_id"));
+            goodsImport.setProductId(resultSet.getInt("productId"));
             goodsImport.setQuantity(resultSet.getInt("quantity"));
-            goodsImport.setUnitPrice(resultSet.getDouble("unit_price"));
-            goodsImport.setTotalPrice(resultSet.getDouble("total_price"));
-            goodsImport.setDateImported(resultSet.getDate("date_imported"));
-            goodsImport.setUserId(resultSet.getInt("user_id"));
-            goodsImport.setProduct(new ProductModel().getProduct(resultSet.getInt("product_id")));
+            goodsImport.setUnitPrice(resultSet.getDouble("unitPrice"));
+            goodsImport.setTotalPrice(resultSet.getDouble("totalPrice"));
+            goodsImport.setDateImported(resultSet.getDate("dateImported"));
+            goodsImport.setUserId(resultSet.getInt("userId"));
+            goodsImport.setProduct(new ProductModel().getProduct(resultSet.getInt("productId")));
             goodsImports.add(goodsImport);
         }
     }

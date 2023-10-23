@@ -1,4 +1,4 @@
-package com.controller.client;
+package com.controller;
 
 public class data {
 

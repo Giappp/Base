@@ -10,58 +10,69 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="590.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.newSupplier">
-   <children>
-      <Pane layoutY="84.0" prefHeight="506.0" prefWidth="298.0" style="-fx-background-color: none;">
-         <children>
-            <Button fx:id="add_btn" layoutX="34.0" layoutY="367.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: #158BFF; -fx-border-radius: 10px;" text="Add" textFill="WHITE" />
-            <Label layoutX="22.0" layoutY="39.0" text="Name:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="15.0" layoutY="80.0" text="Address:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="21.0" layoutY="229.0" text="Phone:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Button fx:id="cancel_btn" layoutX="163.0" layoutY="367.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: black; -fx-border-radius: 10px;" text="Cancel" />
-            <TextField fx:id="tf_supplier_name" layoutX="74.0" layoutY="28.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <TextField fx:id="tf_supplier_phone" layoutX="74.0" layoutY="225.0" prefHeight="25.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <TextArea fx:id="ta_supplier_address" layoutX="74.0" layoutY="80.0" prefHeight="116.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5;" />
-            <Label layoutX="23.0" layoutY="269.0" text="Email:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="tf_supplier_email" layoutX="74.0" layoutY="266.0" prefHeight="25.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <TextField fx:id="tf_supplier_id" layoutX="74.0" layoutY="311.0" prefHeight="25.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <Button fx:id="update_btn" disable="true" layoutX="34.0" layoutY="428.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: #28A745; -fx-border-radius: 10px;" text="Update" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="delete_btn" disable="true" layoutX="163.0" layoutY="429.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: Red; -fx-border-radius: 10px;" text="Delete" textFill="WHITE" />
-         </children>
-      </Pane>
-      <TableView fx:id="tv_supplier" layoutX="306.0" layoutY="81.0" prefHeight="492.0" prefWidth="568.0">
-        <columns>
-          <TableColumn fx:id="tv_supplier_id" prefWidth="37.60003662109375" text="ID" />
-          <TableColumn fx:id="tv_supplier_name" prefWidth="149.59991455078125" text="Name" />
-            <TableColumn fx:id="tv_supplier_address" prefWidth="146.40005493164062" text="Address" />
-            <TableColumn fx:id="tv_supplier_phone" prefWidth="100.800048828125" text="Phone" />
-            <TableColumn fx:id="tv_supplier_email" prefWidth="140.0001220703125" text="Email" />
-        </columns>
-      </TableView>
-      <Label layoutX="362.0" layoutY="18.0" text="Supplier Management">
+<AnchorPane prefHeight="590.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.product.newSupplier">
+   <Pane layoutY="84.0" prefHeight="506.0" prefWidth="298.0" style="-fx-background-color: none;">
+      <Button fx:id="addBtn" layoutX="34.0" layoutY="367.0" mnemonicParsing="false" prefHeight="35.0"
+              prefWidth="94.0" style="-fx-background-color: #158BFF; -fx-border-radius: 10px;" text="Add"
+              textFill="WHITE"/>
+      <Label layoutX="22.0" layoutY="39.0" text="Name:">
          <font>
-            <Font name="Segoe UI" size="24.0" />
+            <Font name="Segoe UI" size="14.0"/>
          </font>
       </Label>
-   </children>
+      <Label layoutX="15.0" layoutY="80.0" text="Address:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <Label layoutX="21.0" layoutY="229.0" text="Phone:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <Button fx:id="cancelBtn" layoutX="163.0" layoutY="367.0" mnemonicParsing="false" prefHeight="35.0"
+              prefWidth="94.0"
+              style="-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: black; -fx-border-radius: 10px;"
+              text="Cancel"/>
+      <TextField fx:id="tfSupplierName" layoutX="74.0" layoutY="28.0" prefHeight="25.0" prefWidth="200.0"
+                 style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <TextField fx:id="tfSupplierPhone" layoutX="74.0" layoutY="225.0" prefHeight="25.0" prefWidth="207.0"
+                 style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <TextArea fx:id="taSupplierAddress" layoutX="74.0" layoutY="80.0" prefHeight="116.0" prefWidth="207.0"
+                style="-fx-background-color: transparent; -fx-border-color: #00a7d5;"/>
+      <Label layoutX="23.0" layoutY="269.0" text="Email:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="tfSupplierEmail" layoutX="74.0" layoutY="266.0" prefHeight="25.0" prefWidth="207.0"
+                 style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <TextField fx:id="tfSupplierId" layoutX="74.0" layoutY="311.0" prefHeight="25.0" prefWidth="207.0"
+                 style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <Button fx:id="updateBtn" disable="true" layoutX="34.0" layoutY="428.0" mnemonicParsing="false"
+              prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: #28A745; -fx-border-radius: 10px;"
+              text="Update" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="13.0"/>
+         </font>
+      </Button>
+      <Button fx:id="deleteBtn" disable="true" layoutX="163.0" layoutY="429.0" mnemonicParsing="false"
+              prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: Red; -fx-border-radius: 10px;"
+              text="Delete" textFill="WHITE"/>
+   </Pane>
+   <TableView fx:id="tvSupplier" layoutX="306.0" layoutY="81.0" prefHeight="492.0" prefWidth="568.0">
+      <columns>
+         <TableColumn fx:id="tvSupplierId" prefWidth="37.60003662109375" text="ID"/>
+         <TableColumn fx:id="tvSupplierName" prefWidth="149.59991455078125" text="Name"/>
+         <TableColumn fx:id="tvSupplierAddress" prefWidth="146.40005493164062" text="Address"/>
+         <TableColumn fx:id="tvSupplierPhone" prefWidth="100.800048828125" text="Phone"/>
+         <TableColumn fx:id="tvSupplierEmail" prefWidth="140.0001220703125" text="Email"/>
+      </columns>
+   </TableView>
+   <Label layoutX="362.0" layoutY="18.0" text="Supplier Management">
+      <font>
+         <Font name="Segoe UI" size="24.0"/>
+      </font>
+   </Label>
 </AnchorPane>

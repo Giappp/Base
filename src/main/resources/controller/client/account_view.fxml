@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.account.AccountController">
+   <Text fill="#00a7d5" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account">
+      <font>
+         <Font name="Segoe UI Bold" size="24.0" />
+      </font>
+   </Text>
+   <AnchorPane layoutX="102.0" layoutY="109.0" prefHeight="502.0" prefWidth="794.0" style="-fx-border-color: #00a7d5; -fx-border-radius: 25;">
+      <Label layoutX="80.0" layoutY="80.0" prefHeight="28.0" prefWidth="149.0" text="Username:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="displayUsername" layoutX="225.0" layoutY="80.0" prefHeight="28.0" prefWidth="149.0" text="username" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="119.0" layoutY="230.0" prefHeight="28.0" prefWidth="57.0" text="Email:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="displayEmail" layoutX="225.0" layoutY="230.0" prefHeight="28.0" prefWidth="149.0" text="email" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="28.0" layoutY="180.0" text="Phone number:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="displayPhone" layoutX="225.0" layoutY="180.0" prefHeight="28.0" prefWidth="149.0" text="phone number" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="80.0" layoutY="130.0" prefHeight="28.0" prefWidth="149.0" text="Password:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="225.0" layoutY="130.0" prefHeight="28.0" prefWidth="149.0" text="password" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Button fx:id="updateAccountInfo" layoutX="472.0" layoutY="354.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #00a7d5;" text="Edit Info" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="changePassBtn" layoutX="135.0" layoutY="354.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #00a7d5;" text="Change Pass" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="466.0" layoutY="80.0" text="Detail:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="displayDetail" layoutX="562.0" layoutY="80.0" prefHeight="23.0" prefWidth="118.0" text="detail" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="22.0" />
+         </font>
+      </Label>
+   </AnchorPane>
+</AnchorPane>

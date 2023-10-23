@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.customer.CustomerController">
+   <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer">
+      <font>
+         <Font name="Segoe UI Bold" size="24.0" />
+      </font>
+   </Text>
+   <AnchorPane layoutX="30.0" layoutY="50.0" prefHeight="174.0" prefWidth="940.0" style="-fx-background-color: white;">
+      <TextField fx:id="idTextField" layoutX="114.0" layoutY="134.0" visible="false" />
+      <TextField fx:id="tfAddCusname" layoutX="112.0" layoutY="52.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font>
+      </TextField>
+      <Label layoutX="53.0" layoutY="54.0" text="Name:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfAddAddress" layoutX="112.0" layoutY="96.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font>
+      </TextField>
+      <Label layoutX="340.0" layoutY="55.0" text="Phone:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfAddPhone" layoutX="401.0" layoutY="52.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font>
+      </TextField>
+      <Label layoutX="38.0" layoutY="99.0" text="Address:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfAddEmail" layoutX="401.0" layoutY="96.0" prefHeight="26.0" prefWidth="154.0" style="-fx-border-width: 0 0 1px 0; -fx-border-style: solid; -fx-background-color: transparent; -fx-border-color: #00a7d5;">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font>
+      </TextField>
+      <Label layoutX="347.0" layoutY="99.0" text="Email:" textFill="#00a7d5">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="addCustomerBtn" layoutX="643.0" layoutY="52.0" mnemonicParsing="false" onAction="#addCustomerToDatabase" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: #00a7d5;" text="Add" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="updateCustomerBtn" layoutX="754.0" layoutY="52.0" mnemonicParsing="false" onAction="#updateCustomerToDatabase" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: #33b249;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelCustomerBtn" layoutX="643.0" layoutY="102.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cancel">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteCustomerBtn" layoutX="754.0" layoutY="102.0" mnemonicParsing="false" onAction="#deleteCustomerFromDatabase" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="16.0" />
+         </font>
+      </Button>
+      <Text fx:id="actionStatusLabel" fill="#00a7d5" layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adding New Customer">
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+      </Text>
+   </AnchorPane>
+   <TableView fx:id="customerTblv" layoutX="30.0" layoutY="273.0" prefHeight="382.0" prefWidth="940.0">
+      <columns>
+         <TableColumn fx:id="customerColId" prefWidth="88.80000305175781" text="ID" visible="false" />
+         <TableColumn fx:id="customerColOrderNumber" prefWidth="88.80000305175781" text="ID" />
+         <TableColumn fx:id="customerColName" prefWidth="221.59994506835938" text="Name" />
+         <TableColumn fx:id="customerColEmail" prefWidth="229.60003662109375" text="Email" />
+         <TableColumn fx:id="customerColPhone" prefWidth="198.4000244140625" text="Phone" />
+         <TableColumn fx:id="customerColAddress" prefWidth="198.4000244140625" text="Address" />
+      </columns>
+   </TableView>
+   <Pagination fx:id="customerPg" layoutX="30.0" layoutY="654.0" prefHeight="58.0" prefWidth="940.0" />
+   <TextField fx:id="searchCustomer" layoutX="716.0" layoutY="237.0" promptText="Search">
+      <font>
+         <Font name="Segoe UI" size="13.0" />
+      </font>
+   </TextField>
+   <FontAwesomeIconView glyphName="SEARCH" layoutX="691.0" layoutY="255.0" size="19" />
+   <ComboBox fx:id="searchComboBox" layoutX="889.0" layoutY="237.0" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-border-width: 0 0 1px 0; -fx-border-style: solid;" />
+</AnchorPane>

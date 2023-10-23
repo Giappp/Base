@@ -10,57 +10,65 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="509.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.client.ImportProduct">
-   <children>
-      <Label layoutX="214.0" layoutY="26.0" text="Import Product">
+<AnchorPane prefHeight="509.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.storage.ImportProduct">
+   <Label layoutX="214.0" layoutY="26.0" text="Import Product">
+      <font>
+         <Font size="24.0"/>
+      </font>
+   </Label>
+   <Pane layoutY="68.0" prefHeight="444.0" prefWidth="590.0">
+      <Button fx:id="importBtn" layoutX="131.0" layoutY="300.0" mnemonicParsing="false" prefHeight="35.0"
+              prefWidth="94.0" style="-fx-background-color: #28a745; -fx-border-radius: 10px;" text="Import"
+              textFill="WHITE"/>
+      <Label layoutX="41.0" layoutY="27.0" text="Supplier:">
          <font>
-            <Font size="24.0" />
+            <Font name="Segoe UI" size="14.0"/>
          </font>
       </Label>
-      <Pane layoutY="68.0" prefHeight="444.0" prefWidth="590.0">
-         <children>
-            <Button fx:id="import_btn" layoutX="131.0" layoutY="300.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: #28a745; -fx-border-radius: 10px;" text="Import" textFill="WHITE" />
-            <Label layoutX="41.0" layoutY="27.0" text="Supplier:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="supplier_cb" layoutX="120.0" layoutY="24.0" prefHeight="25.0" prefWidth="191.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <Button fx:id="newSupplier_btn" layoutX="331.0" layoutY="24.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="39.0" style="-fx-background-color: #33b249;">
-               <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14.0" />
-               </graphic>
-            </Button>
-            <Label layoutX="41.0" layoutY="80.0" text="Product:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="product_cb" layoutX="120.0" layoutY="77.0" prefHeight="25.0" prefWidth="191.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <Label layoutX="14.0" layoutY="126.0" text="Imported Price:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="importedPrice_tf" disable="true" layoutX="121.0" layoutY="122.0" prefHeight="26.0" prefWidth="191.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <Label layoutX="42.0" layoutY="174.0" text="Amount:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Spinner fx:id="amount_sp" layoutX="120.0" layoutY="171.0" style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;" />
-            <Button fx:id="cancel_btn" layoutX="311.0" layoutY="300.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" style="-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: black; -fx-border-radius: 10px;" text="Cancel" />
-            <Label layoutX="51.0" layoutY="227.0" text="Total:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="total_lb" layoutX="120.0" layoutY="223.0" prefHeight="26.0" prefWidth="54.0">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-   </children>
+      <ComboBox fx:id="supplierCb" layoutX="120.0" layoutY="24.0" prefHeight="25.0" prefWidth="191.0"
+                style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <Button fx:id="newSupplierBtn" layoutX="331.0" layoutY="24.0" mnemonicParsing="false" prefHeight="26.0"
+              prefWidth="39.0" style="-fx-background-color: #33b249;">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14.0"/>
+         </graphic>
+      </Button>
+      <Label layoutX="41.0" layoutY="80.0" text="Product:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <ComboBox fx:id="productCb" layoutX="120.0" layoutY="77.0" prefHeight="25.0" prefWidth="191.0"
+                style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <Label layoutX="14.0" layoutY="126.0" text="Imported Price:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="importedPriceTf" disable="true" layoutX="121.0" layoutY="122.0" prefHeight="26.0"
+                 prefWidth="191.0"
+                 style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <Label layoutX="42.0" layoutY="174.0" text="Amount:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <Spinner fx:id="amountSp" layoutX="120.0" layoutY="171.0"
+               style="-fx-background-color: transparent; -fx-border-color: #00a7d5; -fx-border-width: 0 0 1px 0;"/>
+      <Button fx:id="cancelBtn" layoutX="311.0" layoutY="300.0" mnemonicParsing="false" prefHeight="35.0"
+              prefWidth="94.0"
+              style="-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: black; -fx-border-radius: 10px;"
+              text="Cancel"/>
+      <Label layoutX="51.0" layoutY="227.0" text="Total:">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+      <Label fx:id="totalLb" layoutX="120.0" layoutY="223.0" prefHeight="26.0" prefWidth="54.0">
+         <font>
+            <Font name="Segoe UI" size="14.0"/>
+         </font>
+      </Label>
+   </Pane>
 </AnchorPane>

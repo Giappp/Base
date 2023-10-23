@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductModel {
+
     public ObservableList<Product> getProductList(){
         String sql = "SELECT * from product";
         ObservableList<Product> productObservableList = FXCollections.observableArrayList();
@@ -24,14 +25,14 @@ public class ProductModel {
                     Product product = new Product();
                     product.setId(resultSet.getInt("id"));
                     product.setName(resultSet.getString("name"));
-                    product.setSupplierId(resultSet.getInt("supplier_id"));
-                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
-                    product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
-                    product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setImportedPrice(resultSet.getDouble("imported_price"));
+                    product.setSupplierId(resultSet.getInt("supplierId"));
+                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplierId")));
+                    product.setQuantityInStock(resultSet.getInt("quantityInStock"));
+                    product.setSalePrice(resultSet.getDouble("salePrice"));
+                    product.setImportedPrice(resultSet.getDouble("importedPrice"));
                     product.setStatus(resultSet.getBoolean("status") ? "Available" : "Unavailable");
-                    product.setProductTypeId(resultSet.getInt("product_type_id"));
-                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
+                    product.setProductTypeId(resultSet.getInt("productTypeId"));
+                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("productTypeId")));
                     product.setImage(resultSet.getString("image"));
                     productObservableList.add(product);
                 }
@@ -41,9 +42,10 @@ public class ProductModel {
         }
         return productObservableList;
     }
+
     public boolean addProduct(Product product){
         String sql = "INSERT into product" +
-                "(`name`,`supplier_id`,`product_type_id`,`quantity_in_stock`,`sale_price`,`imported_price`,`status`,`image`) " +
+                "(`name`,`supplierId`,`productTypeId`,`quantityInStock`,`salePrice`,`importedPrice`,`status`,`image`) " +
                 "VALUES(?,?,?,?,?,?,?,?) ";
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
@@ -65,8 +67,8 @@ public class ProductModel {
     }
 
     public boolean updateProduct(Product product) {
-        String sql = "Update `product` SET `name` = ?, `product_type_id` = ?, `supplier_id` = ?, `sale_price` = ?" +
-                ", `status` = ?, `image` = ?, `imported_price` = ?" +
+        String sql = "Update `product` SET `name` = ?, `productTypeId` = ?, `supplierId` = ?, `salePrice` = ?" +
+                ", `status` = ?, `image` = ?, `importedPrice` = ?" +
                 "WHERE id = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()){
             assert connection != null;
@@ -114,14 +116,14 @@ public class ProductModel {
                     Product product = new Product();
                     product.setId(resultSet.getInt("id"));
                     product.setName(resultSet.getString("name"));
-                    product.setSupplierId(resultSet.getInt("supplier_id"));
-                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
-                    product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
-                    product.setSalePrice(resultSet.getDouble("sale_price"));
-                    product.setImportedPrice(resultSet.getDouble("imported_price"));
+                    product.setSupplierId(resultSet.getInt("supplierId"));
+                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplierId")));
+                    product.setQuantityInStock(resultSet.getInt("quantityInStock"));
+                    product.setSalePrice(resultSet.getDouble("salePrice"));
+                    product.setImportedPrice(resultSet.getDouble("importedPrice"));
                     product.setStatus(resultSet.getBoolean("status") ? "Available" : "Unavailable");
-                    product.setProductTypeId(resultSet.getInt("product_type_id"));
-                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
+                    product.setProductTypeId(resultSet.getInt("productTypeId"));
+                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("productTypeId")));
                     product.setImage(resultSet.getString("image"));
                     productList.add(product);
                 }
@@ -131,8 +133,9 @@ public class ProductModel {
         }
         return productList;
     }
+
     public List<String> getNameProductFromSupplier(Integer supplierId){
-        String sql = "Select * from product where supplier_id = ?";
+        String sql = "Select * from product where supplierId = ?";
         List<String> productName = new ArrayList<>();
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;
@@ -148,6 +151,7 @@ public class ProductModel {
         }
         return productName;
     }
+
     public Integer getIdProduct(String name){
         String sql = "Select `id` from product where name = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
@@ -164,6 +168,7 @@ public class ProductModel {
         }
         return 0;
     }
+
     public void setProductById(Integer id){
         String sql = "Select * from product where id = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
@@ -179,6 +184,7 @@ public class ProductModel {
             throw new RuntimeException(e);
         }
     }
+
     public Double getImportedPrice(Integer id){
         String sql = "Select * from product where id = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
@@ -187,7 +193,7 @@ public class ProductModel {
                 preparedStatement.setInt(1,id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
-                    return resultSet.getDouble("imported_price");
+                    return resultSet.getDouble("importedPrice");
                 }
             }
         } catch (SQLException e) {
@@ -207,14 +213,14 @@ public class ProductModel {
                 while (resultSet.next()){
                     product.setId(resultSet.getInt("id"));
                     product.setName(resultSet.getString("name"));
-                    product.setSupplierId(resultSet.getInt("supplier_id"));
-                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplier_id")));
-                    product.setQuantityInStock(resultSet.getInt("quantity_in_stock"));
-                    product.setSalePrice(resultSet.getDouble("sale_price"));
+                    product.setSupplierId(resultSet.getInt("supplierId"));
+                    product.setSupplierName(new SupplierModel().getNameSupplier(resultSet.getInt("supplierId")));
+                    product.setQuantityInStock(resultSet.getInt("quantityInStock"));
+                    product.setSalePrice(resultSet.getDouble("salePrice"));
                     product.setStatus(resultSet.getBoolean("status")  ? "Available" : "Unavailable");
-                    product.setProductTypeId(resultSet.getInt("product_type_id"));
-                    product.setImportedPrice(resultSet.getDouble("imported_price"));
-                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("product_type_id")));
+                    product.setProductTypeId(resultSet.getInt("productTypeId"));
+                    product.setImportedPrice(resultSet.getDouble("importedPrice"));
+                    product.setProductType(new ProductCategoryModel().getProductCategoryName(resultSet.getInt("productTypeId")));
                     product.setImage(resultSet.getString("image"));
                 }
             }
@@ -238,6 +244,7 @@ public class ProductModel {
         }
         return null;
     }
+
     public int getNumberRecords() {
         String sql = "SELECT COUNT(*) FROM product";
         int count = 0;
@@ -254,5 +261,4 @@ public class ProductModel {
         }
         return count;
     }
-
 }

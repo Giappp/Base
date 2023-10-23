@@ -1,6 +1,6 @@
 package com.controller.logSign;
 
-import com.controller.client.DashBoardController;
+import com.controller.dashboard.DashboardController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -37,7 +37,7 @@ public class DBController {
             FXMLLoader loader = new FXMLLoader(DBController.class.getResource("/controller/client/client.fxml"));
             root = loader.load();
 
-            DashBoardController dashBoardController = loader.getController();
+            DashboardController dashBoardController = loader.getController();
         }catch (IOException e){
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package com.model;
 
 import java.sql.*;
+import java.util.Objects;
 
 import com.db.dao.JDBCConnect;
 import com.entities.Customer;
@@ -46,7 +47,7 @@ public class CustomerManage {
         String sql = "INSERT INTO `customer` VALUES (?, ?, ?, ?, ?);";
         try {
             conn = JDBCConnect.getJDBCConnection();
-            ps = conn.prepareStatement(sql);
+            ps = Objects.requireNonNull(conn).prepareStatement(sql);
             ps.setInt(1, customer.getId());
             ps.setString(2, customer.getName());
             ps.setString(3, customer.getAddress());
@@ -71,7 +72,7 @@ public class CustomerManage {
         boolean result = false;
         try {
             conn = JDBCConnect.getJDBCConnection();
-            ps = conn.prepareStatement(sql);
+            ps = Objects.requireNonNull(conn).prepareStatement(sql);
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getAddress());
             ps.setString(3, customer.getPhone());
@@ -96,7 +97,7 @@ public class CustomerManage {
         boolean result = false;
         try {
             conn = JDBCConnect.getJDBCConnection();
-            ps = conn.prepareStatement(sql);
+            ps = Objects.requireNonNull(conn).prepareStatement(sql);
             ps.setInt(1, selectedId);
             int executeResult = ps.executeUpdate();
             if (executeResult != 0) {

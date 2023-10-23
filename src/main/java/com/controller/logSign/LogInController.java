@@ -1,7 +1,7 @@
 package com.controller.logSign;
 
 import com.controller.AlertMessages;
-import com.controller.client.data;
+import com.controller.data;
 import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,21 +19,24 @@ import java.util.ResourceBundle;
 public class LogInController implements Initializable {
 
     @FXML
-    private Button btn_login;
+    private Button btnLogin;
+
     @FXML
-    private Button btn_signup;
+    private Button btnSignup;
+
     @FXML
-    private TextField tf_username;
+    private TextField tfUsername;
+
     @FXML
-    private PasswordField pf_password;
+    private PasswordField pfPassword;
 
     AlertMessages alert = new AlertMessages();
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        btn_login.setOnAction(event -> logInUser(event, tf_username.getText(), pf_password.getText()));
+        btnLogin.setOnAction(event -> logInUser(event, tfUsername.getText(), pfPassword.getText()));
 
-        btn_signup.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/sign-up.fxml"));
+        btnSignup.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/sign-up.fxml"));
     }
     public void logInUser(ActionEvent event, String username, String password) {
         try (Connection con = JDBCConnect.getJDBCConnection();
@@ -47,7 +50,7 @@ public class LogInController implements Initializable {
             } else {
                 while (rs.next()) {
 
-                    data.username = tf_username.getText();
+                    data.username = tfUsername.getText();
 
                     String retrievedPass = rs.getString("password");
                     if (retrievedPass.equals(password)) {

@@ -18,50 +18,58 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
+
     @FXML
-    private Button btn_signup;
+    private Button btnSignup;
+
     @FXML
-    private Button btn_login;
+    private Button btnLogin;
+
     @FXML
-    private TextField tf_username;
+    private TextField tfUsername;
+
     @FXML
-    private PasswordField pf_password;
+    private PasswordField pfPassword;
+
     @FXML
-    private PasswordField pf_confirm_password;
+    private PasswordField pfConfirmPassword;
+
     @FXML
-    private TextField tf_email;
+    private TextField tfEmail;
+
     @FXML
-    private TextField tf_phone;
+    private TextField tfPhone;
+
     @FXML
-    private Label lbl_error_pass;
+    private Label lblErrorPass;
 
     AlertMessages alert = new AlertMessages();
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        btn_login.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/log-in.fxml"));
+        btnLogin.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/log-in.fxml"));
 
 
-        btn_signup.setOnAction(event -> {
-            if (!tf_username.getText().trim().isEmpty()
-                    && validatePasswords(pf_password.getText(), pf_confirm_password.getText(), lbl_error_pass)
-                    && validateEmail(tf_email.getText()) && validatePhone(tf_phone.getText())) {
-                signUpUser(event, tf_username.getText(), pf_password.getText(), pf_confirm_password.getText(),
-                        tf_email.getText(), tf_phone.getText());
+        btnSignup.setOnAction(event -> {
+            if (!tfUsername.getText().trim().isEmpty()
+                    && validatePasswords(pfPassword.getText(), pfConfirmPassword.getText(), lblErrorPass)
+                    && validateEmail(tfEmail.getText()) && validatePhone(tfPhone.getText())) {
+                signUpUser(event, tfUsername.getText(), pfPassword.getText(), pfConfirmPassword.getText(),
+                        tfEmail.getText(), tfPhone.getText());
             } else {
                 System.out.println("Please fill all information");
                 alert.errorMessage("Please fill all information to sign up.");
             }
         });
         // Add listener on focus action
-        pf_confirm_password.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        pfConfirmPassword.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                validatePasswords(pf_password.getText(), pf_confirm_password.getText(), lbl_error_pass);
+                validatePasswords(pfPassword.getText(), pfConfirmPassword.getText(), lblErrorPass);
             }
         });
-        pf_password.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        pfPassword.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                validatePasswords(Objects.requireNonNull(pf_password.getText()), Objects.requireNonNull(pf_confirm_password.getText()), lbl_error_pass);
+                validatePasswords(Objects.requireNonNull(pfPassword.getText()), Objects.requireNonNull(pfConfirmPassword.getText()), lblErrorPass);
             }
         });
     }
