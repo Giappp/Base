@@ -1,4 +1,4 @@
-package com.controller.feature.order;
+package com.controller.order;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

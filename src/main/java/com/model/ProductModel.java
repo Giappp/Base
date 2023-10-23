@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductModel {
+
     public ObservableList<Product> getProductList(){
         String sql = "SELECT * from product";
         ObservableList<Product> productObservableList = FXCollections.observableArrayList();
@@ -41,6 +42,7 @@ public class ProductModel {
         }
         return productObservableList;
     }
+
     public boolean addProduct(Product product){
         String sql = "INSERT into product" +
                 "(`name`,`supplierId`,`productTypeId`,`quantityInStock`,`salePrice`,`importedPrice`,`status`,`image`) " +
@@ -131,6 +133,7 @@ public class ProductModel {
         }
         return productList;
     }
+
     public List<String> getNameProductFromSupplier(Integer supplierId){
         String sql = "Select * from product where supplierId = ?";
         List<String> productName = new ArrayList<>();
@@ -148,6 +151,7 @@ public class ProductModel {
         }
         return productName;
     }
+
     public Integer getIdProduct(String name){
         String sql = "Select `id` from product where name = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
@@ -164,6 +168,7 @@ public class ProductModel {
         }
         return 0;
     }
+
     public void setProductById(Integer id){
         String sql = "Select * from product where id = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
@@ -179,6 +184,7 @@ public class ProductModel {
             throw new RuntimeException(e);
         }
     }
+
     public Double getImportedPrice(Integer id){
         String sql = "Select * from product where id = ?";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
@@ -238,6 +244,7 @@ public class ProductModel {
         }
         return null;
     }
+
     public int getNumberRecords() {
         String sql = "SELECT COUNT(*) FROM product";
         int count = 0;
@@ -254,5 +261,4 @@ public class ProductModel {
         }
         return count;
     }
-
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="590.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.product.newSupplier">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.product.newSupplier">
    <Pane layoutY="84.0" prefHeight="506.0" prefWidth="298.0" style="-fx-background-color: none;">
       <Button fx:id="addBtn" layoutX="34.0" layoutY="367.0" mnemonicParsing="false" prefHeight="35.0"
               prefWidth="94.0" style="-fx-background-color: #158BFF; -fx-border-radius: 10px;" text="Add"

@@ -1,7 +1,7 @@
-package com.controller.feature.account;
+package com.controller.account;
 
 import com.controller.AlertMessages;
-import com.controller.feature.data;
+import com.controller.data;
 import com.db.dao.JDBCConnect;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

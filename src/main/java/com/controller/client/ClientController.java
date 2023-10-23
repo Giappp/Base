@@ -1,6 +1,6 @@
-package com.controller.feature.client;
+package com.controller.client;
 
-import com.controller.feature.data;
+import com.controller.data;
 import com.controller.logSign.DBController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

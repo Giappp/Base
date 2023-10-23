@@ -1,8 +1,9 @@
-package com.controller.feature.dashboard;
+package com.controller.dashboard;
 
 import com.db.dao.JDBCConnect;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
@@ -13,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,11 +26,9 @@ import java.time.format.TextStyle;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class DashboardController {
-
-    @FXML
-    private AnchorPane dashboardHome;
+public class DashboardController implements Initializable {
 
     @FXML
     private Text earningText;
@@ -41,9 +41,6 @@ public class DashboardController {
 
     @FXML
     private Text totalCustomerText;
-
-    @FXML
-    private AnchorPane mainForm;
 
     @FXML
     private LineChart<String, Number> saleRevenueChart;
@@ -372,7 +369,7 @@ public class DashboardController {
         return tooltip;
     }
 
-    public void initialize() {
+    public void initialize(URL location, ResourceBundle resourceBundle) {
 
         LocalDate currentDate = LocalDate.now();
         Month currentMonth = currentDate.getMonth();

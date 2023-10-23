@@ -1,7 +1,7 @@
 package com.controller.logSign;
 
 import com.controller.AlertMessages;
-import com.controller.feature.data;
+import com.controller.data;
 import com.db.dao.JDBCConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

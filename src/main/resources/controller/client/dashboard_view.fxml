@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="dashboardHome" prefHeight="720.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.dashboard.DashboardController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.dashboard.DashboardController">
    <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
       <font>
          <Font name="Segoe UI Bold" size="24.0" />
@@ -83,7 +77,7 @@
       </ImageView>
       <FontAwesomeIconView fill="WHITE" layoutX="160.0" layoutY="40.0" size="30" text="" />
    </Pane>
-   <AnchorPane fx:id="mainForm" layoutX="18.0" layoutY="207.0" prefHeight="482.0" prefWidth="964.0">
+   <AnchorPane layoutX="18.0" layoutY="207.0" prefHeight="482.0" prefWidth="964.0">
       <AnchorPane prefHeight="482.0" prefWidth="482.0">
          <LineChart fx:id="saleRevenueChart" layoutX="15.0" layoutY="68.0" prefHeight="400.0" prefWidth="452.0">
             <xAxis>

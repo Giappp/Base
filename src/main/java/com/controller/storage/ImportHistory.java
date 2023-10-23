@@ -1,4 +1,4 @@
-package com.controller.feature.storage;
+package com.controller.storage;
 
 import com.entities.GoodsImport;
 import com.entities.Product;
@@ -25,8 +25,11 @@ import java.util.ResourceBundle;
 
 
 public class ImportHistory implements Initializable {
+
     Parent root;
+
     FXMLLoader loader;
+
     @FXML
     private TableColumn<GoodsImport, Date> tvDate;
 
@@ -47,46 +50,49 @@ public class ImportHistory implements Initializable {
 
     @FXML
     private TableColumn<GoodsImport, Double> tvUnitPrice;
+
     @FXML
     private Button selectDateBtn;
+
     private Date beginDate;
+
     private Date endDate;
-    private SelectDate selectDate;
+
+    private com.controller.storage.SelectDate selectDate;
+
     public ImportHistory() {
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         showData();
 
-        selectDate_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    openModalWindow("/controller/client/selectDate.fxml","Date Filter");
-                    Date selectedBeginDate = selectDate.getBeginDate();
-                    Date selectedEndDate = selectDate.getEndDate();
+        selectDateBtn.setOnAction(event -> {
+            try {
+                openModalWindow("/controller/client/selectDate.fxml","Date Filter");
+                Date selectedBeginDate = selectDate.getBeginDate();
+                Date selectedEndDate = selectDate.getEndDate();
 
-                    if (selectedBeginDate != null && selectedEndDate != null) {
-                        // Update the date range in ImportHistory
-                        beginDate = selectedBeginDate;
-                        endDate = selectedEndDate;
-                        showDataByDate(beginDate, endDate);
-                    }else{
-                        showData();
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if (selectedBeginDate != null && selectedEndDate != null) {
+                    // Update the date range in ImportHistory
+                    beginDate = selectedBeginDate;
+                    endDate = selectedEndDate;
+                    showDataByDate(beginDate, endDate);
+                }else{
+                    showData();
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }
 
     public void showData(){
         ObservableList<GoodsImport> goodsImports = FXCollections.observableList(new GoodsImportModel().getData());
-        tv_date.setCellValueFactory(new PropertyValueFactory<>("dateImported"));
-        tv_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tv_product.setCellFactory(new Callback<TableColumn<GoodsImport, Product>, TableCell<GoodsImport, Product>>() {
+        tvDate.setCellValueFactory(new PropertyValueFactory<>("dateImported"));
+        tvId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tvProduct.setCellFactory(new Callback<TableColumn<GoodsImport, Product>, TableCell<GoodsImport, Product>>() {
             @Override
             public TableCell<GoodsImport, Product> call(TableColumn<GoodsImport, Product> param) {
                 return new TableCell<GoodsImport, Product>() {
@@ -104,22 +110,23 @@ public class ImportHistory implements Initializable {
         });
 
         // Bind the cell value factory to the product property
-        tv_product.setCellValueFactory(new PropertyValueFactory<>("product"));
-        tv_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        tv_total.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        tv_unit_price.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        tv_history.setItems(goodsImports);
+        tvProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
+        tvQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tvTotal.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        tvUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        tvHistory.setItems(goodsImports);
 
     }
+
     public void showDataByDate(Date beginDate,Date endDate){
         if(beginDate.after(endDate) || beginDate == null || endDate == null){
             showData();
             return;
         }
         ObservableList<GoodsImport> goodsImports = FXCollections.observableList(new GoodsImportModel().getDataByDate(this.beginDate, this.endDate));
-        tv_date.setCellValueFactory(new PropertyValueFactory<>("dateImported"));
-        tv_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tv_product.setCellFactory(new Callback<TableColumn<GoodsImport, Product>, TableCell<GoodsImport, Product>>() {
+        tvDate.setCellValueFactory(new PropertyValueFactory<>("dateImported"));
+        tvId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tvProduct.setCellFactory(new Callback<TableColumn<GoodsImport, Product>, TableCell<GoodsImport, Product>>() {
             @Override
             public TableCell<GoodsImport, Product> call(TableColumn<GoodsImport, Product> param) {
                 return new TableCell<GoodsImport, Product>() {
@@ -136,11 +143,11 @@ public class ImportHistory implements Initializable {
             }
         });
         // Bind the cell value factory to the product property
-        tv_product.setCellValueFactory(new PropertyValueFactory<>("product"));
-        tv_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        tv_total.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        tv_unit_price.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        tv_history.setItems(goodsImports);
+        tvProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
+        tvQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tvTotal.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        tvUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        tvHistory.setItems(goodsImports);
     }
     private void openModalWindow(String resource, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource)); // Create a single instance of FXMLLoader
@@ -156,5 +163,4 @@ public class ImportHistory implements Initializable {
         window.setTitle(title);
         window.showAndWait();
     }
-
 }

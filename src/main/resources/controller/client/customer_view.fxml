@@ -5,7 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="dashboardCustomer" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.customer.CustomerController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.customer.CustomerController">
    <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer">
       <font>
          <Font name="Segoe UI Bold" size="24.0" />

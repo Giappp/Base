@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="dashboardOrder" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.order.OrderController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.order.OrderController">
    <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
       <font>
          <Font name="Segoe UI Bold" size="24.0"/>

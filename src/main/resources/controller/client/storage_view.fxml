@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="dashboardStorage" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.storage.StorageController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.storage.StorageController">
    <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage">
       <font>
          <Font name="Segoe UI Bold" size="24.0"/>
@@ -33,7 +33,7 @@
                          text="Name"/>
             <TableColumn fx:id="goodsColType" editable="false" maxWidth="250.0" prefWidth="133.60003662109375"
                          text="Type"/>
-            <TableColumn fx:id="goodColSupplier" editable="false" maxWidth="211.199951171875" minWidth="0.0"
+            <TableColumn fx:id="goodsColSupplier" editable="false" maxWidth="211.199951171875" minWidth="0.0"
                          prefWidth="150.39996337890625" text="Supplier"/>
             <TableColumn fx:id="goodsColPrice" editable="false" maxWidth="200.0" minWidth="0.0"
                          prefWidth="114.4000244140625" text="Price"/>

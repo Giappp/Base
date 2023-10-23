@@ -1,4 +1,4 @@
-package com.controller.feature;
+package com.controller;
 
 public class data {
 

@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="571.0" prefWidth="742.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.storage.ImportHistory">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.storage.ImportHistory">
     <TableView fx:id="tvHistory" layoutX="25.0" layoutY="112.0" prefHeight="435.0" prefWidth="690.0">
       <columns>
           <TableColumn fx:id="tvId" prefWidth="48.799986243247986" text="ID"/>

@@ -1,4 +1,4 @@
-package com.controller.feature.event;
+package com.controller.event;
 
 import com.controller.AlertMessages;
 import com.db.dao.JDBCConnect;
@@ -12,11 +12,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
@@ -33,9 +30,6 @@ public class EventController {
 
     @FXML
     private Text actionStatusLabel;
-
-    @FXML
-    private AnchorPane dashboardEvent;
 
     @FXML
     private TextField tfEventName;

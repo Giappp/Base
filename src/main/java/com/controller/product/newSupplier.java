@@ -1,4 +1,4 @@
-package com.controller.feature.product;
+package com.controller.product;
 
 import com.entities.Supplier;
 import com.model.SupplierModel;
@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class newSupplier implements Initializable {
+
     @FXML
     private Button addBtn;
 
@@ -39,6 +40,7 @@ public class newSupplier implements Initializable {
 
     @FXML
     private TextField tfSupplierPhone;
+
     @FXML
     private TableView<Supplier> tvSupplier;
 
@@ -68,90 +70,84 @@ public class newSupplier implements Initializable {
         updateBtn.setDisable(true);
         deleteBtn.setDisable(true);
 
-        addBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String name = tvSupplierName.getText().trim();
-                String address = taSupplierAddress.getText().trim();
-                String phone = tfSupplierPhone.getText().trim();
-                String email = tfSupplierEmail.getText().trim();
-                if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Add " + name + " To Supplier lists?");
-                    Optional<ButtonType> option = alert.showAndWait();
+        addBtn.setOnAction(event -> {
+            String name = tvSupplierName.getText().trim();
+            String address = taSupplierAddress.getText().trim();
+            String phone = tfSupplierPhone.getText().trim();
+            String email = tfSupplierEmail.getText().trim();
+            if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Add " + name + " To Supplier lists?");
+                Optional<ButtonType> option = alert.showAndWait();
 
-                    if (option.get().equals(ButtonType.OK)) {
-                        Supplier supplier = new Supplier(name,address,phone,email);
-                        DBAdd(supplier);
-                        showTable();
-                        clearTextField();
-                    }
-                }else {
-                    Alert inValid = new Alert(Alert.AlertType.ERROR);
-                    inValid.setContentText("Please fill product information correctly");
-                    inValid.showAndWait();
+                if (option.get().equals(ButtonType.OK)) {
+                    Supplier supplier = new Supplier(name,address,phone,email);
+                    DBAdd(supplier);
+                    showTable();
+                    clearTextField();
                 }
+            }else {
+                Alert inValid = new Alert(Alert.AlertType.ERROR);
+                inValid.setContentText("Please fill product information correctly");
+                inValid.showAndWait();
             }
         });
-        deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String name = tfSupplierName.getText().trim();
-                String address = taSupplierAddress.getText().trim();
-                String phone = tfSupplierPhone.getText().trim();
-                String email = tfSupplierEmail.getText().trim();
-                Integer id = Integer.valueOf(tfSupplierId.getText());
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Delete " + name);
-                    Optional<ButtonType> option = alert.showAndWait();
 
-                    if (option.get().equals(ButtonType.OK)) {
-                        Supplier supplier = new Supplier(id,name,address,phone,email);
-                        DBDelete(supplier);
-                        showTable();
-                        clearTextField();
+        deleteBtn.setOnAction(event -> {
+            String name = tfSupplierName.getText().trim();
+            String address = taSupplierAddress.getText().trim();
+            String phone = tfSupplierPhone.getText().trim();
+            String email = tfSupplierEmail.getText().trim();
+            Integer id = Integer.valueOf(tfSupplierId.getText());
+
+            try {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Delete " + name);
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    Supplier supplier = new Supplier(id,name,address,phone,email);
+                    DBDelete(supplier);
+                    showTable();
+                    clearTextField();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
-        updateBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String name = tfSupplierName.getText().trim();
-                String address = taSupplierAddress.getText().trim();
-                String phone = tfSupplierPhone.getText().trim();
-                String email = tfSupplierEmail.getText().trim();
-                Integer id = Integer.valueOf(tfSupplierId.getText());
-                if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Add " + name + " To Supplier lists?");
-                    Optional<ButtonType> option = alert.showAndWait();
+        updateBtn.setOnAction(event -> {
+            String name = tfSupplierName.getText().trim();
+            String address = taSupplierAddress.getText().trim();
+            String phone = tfSupplierPhone.getText().trim();
+            String email = tfSupplierEmail.getText().trim();
+            Integer id = Integer.valueOf(tfSupplierId.getText());
+            if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Add " + name + " To Supplier lists?");
+                Optional<ButtonType> option = alert.showAndWait();
 
-                    if (option.get().equals(ButtonType.OK)) {
-                        Supplier supplier = new Supplier(id,name,address,phone,email);
-                        DBUpdate(supplier);
-                        showTable();
-                        clearTextField();
-                    }
-                }else {
-                    Alert inValid = new Alert(Alert.AlertType.ERROR);
-                    inValid.setContentText("Please fill product information correctly");
-                    inValid.showAndWait();
+                if (option.get().equals(ButtonType.OK)) {
+                    Supplier supplier = new Supplier(id,name,address,phone,email);
+                    DBUpdate(supplier);
+                    showTable();
+                    clearTextField();
                 }
+            }else {
+                Alert inValid = new Alert(Alert.AlertType.ERROR);
+                inValid.setContentText("Please fill product information correctly");
+                inValid.showAndWait();
             }
         });
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clearTextField();
-            }
-        });
+
+        cancelBtn.setOnAction(event -> clearTextField());
+
         tvSupplier.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 tfSupplierId.setText(String.valueOf(newValue.getId()));
@@ -179,7 +175,6 @@ public class newSupplier implements Initializable {
         updateBtn.setDisable(true);
     }
 
-
     public void showTable(){
         ObservableList<Supplier> supplierObservableList = FXCollections.observableList(new SupplierModel().getData());
         tvSupplierId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -189,6 +184,7 @@ public class newSupplier implements Initializable {
         tvSupplierEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tvSupplier.setItems(supplierObservableList);
     }
+
     public static void DBAdd(Supplier supplier){
         boolean check = new SupplierModel().insertSupplier(supplier);
         System.out.println(check);
@@ -203,6 +199,7 @@ public class newSupplier implements Initializable {
             failed.showAndWait();
         }
     }
+
     public static void DBDelete(Supplier supplier){
         boolean check = new SupplierModel().deleteSupplier(supplier);
 
@@ -218,6 +215,7 @@ public class newSupplier implements Initializable {
             failed.showAndWait();
         }
     }
+
     public static void DBUpdate(Supplier supplier){
         boolean check = new SupplierModel().updateSupplier(supplier);
         System.out.println(check);

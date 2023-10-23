@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="509.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.storage.ImportProduct">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.storage.ImportProduct">
    <Label layoutX="214.0" layoutY="26.0" text="Import Product">
       <font>
          <Font size="24.0"/>

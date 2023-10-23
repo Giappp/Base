@@ -1,8 +1,11 @@
-package com.controller.feature.customer;
+package com.controller.customer;
 
 import com.controller.AlertMessages;
 import com.db.dao.JDBCConnect;
 import com.entities.Customer;
+import com.entities.Product;
+import com.model.CustomerModel;
+import com.model.ProductModel;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,13 +17,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -31,9 +32,6 @@ public class CustomerController {
 
     @FXML
     private ComboBox<String> searchComboBox;
-
-    @FXML
-    private AnchorPane dashboardCustomer;
 
     @FXML
     private TextField idTextField;
@@ -108,6 +106,25 @@ public class CustomerController {
             if (!isNumeric(event.getCharacter())) {
                 event.consume();
             }
+        });
+
+        cancelCustomerBtn.setOnAction(event -> {
+            tfAddCusname.clear();
+            tfAddAddress.clear();
+            tfAddPhone.clear();
+            tfAddEmail.clear();
+        });
+
+        addCustomerBtn.setOnAction(event -> {
+            addCustomerToDatabase();
+        });
+
+        updateCustomerBtn.setOnAction(event -> {
+            updateCustomerToDatabase();
+        });
+
+        deleteCustomerBtn.setOnAction(event -> {
+            deleteCustomerFromDatabase();
         });
     }
 
@@ -216,7 +233,7 @@ public class CustomerController {
         customerTblv.getItems().addAll(customerObservableList.subList(fromIndex, toIndex));
     }
 
-    public void deleteCustomerFromDatabase() {
+    private void deleteCustomerFromDatabase() {
         String sql = "DELETE FROM customer WHERE id = ?";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
@@ -254,7 +271,7 @@ public class CustomerController {
         return -1;
     }
 
-    public void addCustomerToDatabase() {
+    private void addCustomerToDatabase() {
         String sql = "INSERT INTO customer(name, address, phone, email) VALUES (?,?,?,?,)";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
@@ -280,7 +297,7 @@ public class CustomerController {
         }
     }
 
-    public void updateCustomerToDatabase() {
+    private void updateCustomerToDatabase() {
         String sql = "UPDATE customer SET name = ?,address = ?, phone = ?, email = ? WHERE id = ?";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {

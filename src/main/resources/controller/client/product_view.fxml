@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="dashboardProduct" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.product.ProductController">
+<AnchorPane fx:id="dashboardProduct" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.product.ProductController">
    <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product">
       <font>
          <Font name="Segoe UI Bold" size="24.0" />
@@ -22,14 +22,13 @@
    <AnchorPane fx:id="updateScene" layoutX="14.0" layoutY="46.0" prefHeight="660.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <TableView fx:id="tblvProduct" layoutX="21.0" layoutY="298.0" prefHeight="366.0" prefWidth="964.0">
          <columns>
-            <TableColumn fx:id="productColId" prefWidth="51.20002555847168" text="ID" />
-            <TableColumn fx:id="productColType" minWidth="4.0" prefWidth="92.79998779296875" text="Type" />
+            <TableColumn fx:id="productColId" prefWidth="69.60000991821289" text="ID" />
+            <TableColumn fx:id="productColType" minWidth="4.0" prefWidth="92.0" text="Type" />
             <TableColumn fx:id="productColBrand" prefWidth="202.40000915527344" text="Brand" />
-            <TableColumn fx:id="productColName" prefWidth="218.4000244140625" text="Name" />
-            <TableColumn fx:id="productColAmount" prefWidth="109.5999755859375" text="Amount" />
-            <TableColumn fx:id="productColImportedPrice" prefWidth="122.39996337890625" text="Import Price" />
-            <TableColumn fx:id="productColPrice" prefWidth="87.9998779296875" text="Price" />
-            <TableColumn fx:id="productColStatus" prefWidth="76.0" text="Status" />
+            <TableColumn fx:id="productColName" prefWidth="223.99996948242188" text="Name" />
+            <TableColumn fx:id="productColAmount" prefWidth="152.0" text="Amount" />
+            <TableColumn fx:id="productColPrice" prefWidth="112.79998779296875" text="Price" />
+            <TableColumn fx:id="productColStatus" prefWidth="114.4000244140625" text="Status" />
          </columns>
       </TableView>
       <AnchorPane fx:id="addProductScene" layoutX="18.0" layoutY="67.0" prefHeight="215.0" prefWidth="964.0" style="-fx-background-color: white;">

@@ -12,7 +12,7 @@
 
 <AnchorPane fx:id="addProductScene" prefHeight="561.0" prefWidth="674.0" style="-fx-background-color: white;"
             xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.feature.product.ProductController">
+            fx:controller="com.controller.product.ProductController">
    <TextField fx:id="addProductNameTf" layoutX="239.0" layoutY="331.0" prefHeight="26.0" prefWidth="317.0"/>
    <Text layoutX="117.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT"
          wrappingWidth="102.19726562500011">

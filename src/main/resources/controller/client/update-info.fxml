@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="580.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.feature.account.UpdateInfo">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.account.UpdateInfo">
    <Label layoutX="105.0" layoutY="98.0" prefHeight="30.0" prefWidth="240.0" text="Edit User Information"
           textFill="#00a7d5">
       <font>
