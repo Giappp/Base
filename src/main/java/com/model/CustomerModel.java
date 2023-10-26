@@ -8,29 +8,54 @@ import javafx.collections.ObservableList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CustomerModel {
 
-    private ObservableList<Customer> getCustomerObservableList() {
-        ObservableList<Customer> observableList = FXCollections.observableArrayList();
-        String sql = "SELECT id, name, address, phone, email FROM customer";
-        try (Connection con = JDBCConnect.getJDBCConnection();
-             PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                String phone = rs.getString("phone");
-                String email = rs.getString("email");
-
-                observableList.add(new Customer(id, name, address, phone, email));
+    public static int getNumberRecords() {
+        String sql = "SELECT COUNT(*) FROM customer";
+        int count = 0;
+        try (Connection connection = JDBCConnect.getJDBCConnection()) {
+            assert connection != null;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    count = resultSet.getInt(1); // Retrieve the count value
+                }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return observableList;
+        return count;
+    }
+
+    public List<Customer> getListCustomer(int offset, int limit){
+        String sql = "SELECT * from customer LIMIT ? OFFSET ?";
+        List<Customer> customers = new ArrayList<>();
+        try(Connection connection = JDBCConnect.getJDBCConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setInt(1,limit);
+            preparedStatement.setInt(2,offset);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Customer customer = new Customer();
+                customer.setId(resultSet.getInt("id"));
+                customer.setName(resultSet.getString("name"));
+                customer.setEmail(resultSet.getString("email"));
+                customer.setPhone(resultSet.getString("phone"));
+                customer.setAddress(resultSet.getString("address"));
+                customers.add(customer);
+            }
+            if(!resultSet.isClosed()){
+                resultSet.close();
+            }
+            return customers;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
