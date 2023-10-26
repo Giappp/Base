@@ -23,15 +23,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public class CustomerController {
 
     @FXML
     private Text actionStatusLabel;
-
-    @FXML
-    private ComboBox<String> searchComboBox;
 
     @FXML
     private TextField idTextField;
@@ -100,7 +98,6 @@ public class CustomerController {
         setupPagination();
         setIdAdd();
         selectedRecord();
-        addSearchByToComboBox();
 
         tfAddPhone.addEventFilter(KeyEvent.KEY_TYPED, event -> {
             if (!isNumeric(event.getCharacter())) {
@@ -130,11 +127,6 @@ public class CustomerController {
 
     private boolean isNumeric(String str) {
         return str.matches("\\d*"); // Check if the given string contains only digits
-    }
-
-    private void addSearchByToComboBox() {
-        searchComboBox.getItems().addAll("Name", "Email", "Phone");
-        searchComboBox.setValue("Name");
     }
 
     private ObservableList<Customer> getCustomerObservableList() {
@@ -173,16 +165,18 @@ public class CustomerController {
 
         // listen to the changes in the search_customer to update table view
         searchCustomer.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredList.setPredicate(Customer -> {
-
-                String searchKeyword = newValue.toLowerCase();
-                String searchBy = searchComboBox.getValue().toLowerCase();
-
-                if (searchBy.equals("name") && Customer.getName().toLowerCase().contains(searchKeyword)) {
+            filteredList.setPredicate((Predicate<? super Customer>) cust -> {
+                if (newValue == null) {
                     return true;
-                } else if (searchBy.equals("phone") && Customer.getPhone().toLowerCase().contains(searchKeyword)) {
+                }
+                String toLowerCaseFilter = newValue.toLowerCase();
+                if (cust.getName().toLowerCase().contains(toLowerCaseFilter)) {
                     return true;
-                } else return searchBy.equals("email") && Customer.getEmail().toLowerCase().contains(searchKeyword);
+                } else if (cust.getEmail().toLowerCase().contains(toLowerCaseFilter)) {
+                    return true;
+                } else if (cust.getPhone().toLowerCase().contains(toLowerCaseFilter)) {
+                    return true;
+                } else return cust.getAddress().toLowerCase().contains(toLowerCaseFilter);
             });
             // update pagination
             updatePagination(filteredList);

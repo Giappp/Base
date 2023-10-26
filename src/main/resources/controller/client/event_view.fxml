@@ -13,9 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.event.EventController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.event.EventController">
    <Text fill="#00a7d5" layoutX="21.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
       <font>
          <Font name="Segoe UI Bold" size="24.0" />
@@ -130,11 +128,11 @@
          <TableColumn fx:id="eventColEndTime" minWidth="0.0" prefWidth="165.0" text="End Time" />
       </columns>
    </TableView>
-   <TextField fx:id="searchEvent" layoutX="825.0" layoutY="266.0" promptText="Search">
+   <TextField fx:id="searchEvent" layoutX="800.0" layoutY="266.0" prefHeight="23.0" prefWidth="175.0" promptText="Search">
       <font>
          <Font name="Segoe UI" size="12.0" />
       </font>
    </TextField>
-   <FontAwesomeIconView glyphName="SEARCH" layoutX="794.0" layoutY="285.0" size="18" />
+   <FontAwesomeIconView glyphName="SEARCH" layoutX="774.0" layoutY="284.0" size="18" />
    <Pagination fx:id="eventPg" layoutX="24.0" layoutY="651.0" prefHeight="58.0" prefWidth="951.0" />
 </AnchorPane>
