@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class EventController {
 
@@ -276,10 +277,20 @@ public class EventController {
 
         // listen to changes in the searchKeyword to update the tableView
         searchEvent.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredList.setPredicate(events -> {
-                String searchKeyword = newValue.toLowerCase();
-
-                return events.getEventName().toLowerCase().contains(searchKeyword);
+            filteredList.setPredicate((Predicate<? super Event>) events -> {
+                if (newValue == null) {
+                    return true;
+                }
+                String toLowerCaseFilter = newValue.toLowerCase();
+                if (events.getEventName().contains(toLowerCaseFilter)) {
+                    return true;
+                } else if (events.getStartDate().contains(toLowerCaseFilter)) {
+                    return true;
+                } else if (events.getStartTime().contains(toLowerCaseFilter)) {
+                    return true;
+                } else if (events.getEndDate().contains(toLowerCaseFilter)) {
+                    return true;
+                } else return events.getEndTime().contains(toLowerCaseFilter);
             });
             // update pagination
             updatePagination(filteredList);
