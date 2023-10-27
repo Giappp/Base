@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class ClientController {
 
     @FXML
-    private AnchorPane fullBorderPane;
+    private BorderPane fullBorderPane;
 
     @FXML
     private Label usernameLabel;
@@ -64,7 +65,7 @@ public class ClientController {
             e.printStackTrace();
             System.out.println("Cannot navigation page");
         }
-//        fullBorderPane.setCenter(root);
+        fullBorderPane.setCenter(root);
     }
 
     private void setActiveButton (Button button){

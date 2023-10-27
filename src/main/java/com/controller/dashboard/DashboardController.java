@@ -149,8 +149,8 @@ public class DashboardController implements Initializable {
 
         String sql = "SELECT DAY(dateRecorded) AS day, IFNULL(SUM(totalAmount), 0) AS revenue " +
                 "FROM `order` " +
-                "WHERE YEAR(orderRecorded) = ? AND MONTH(orderRecorded) = ? " +
-                "GROUP BY DAY(orderRecorded)";
+                "WHERE YEAR(dateRecorded) = ? AND MONTH(dateRecorded) = ? " +
+                "GROUP BY DAY(dateRecorded)";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement psThisMonth = Objects.requireNonNull(con).prepareStatement(sql)) {
@@ -269,8 +269,8 @@ public class DashboardController implements Initializable {
 
         String sql = "SELECT DAY(dateRecorded) AS day, IFNULL(COUNT(*), 0) AS totalOrders " +
                 "FROM `order` " +
-                "WHERE YEAR(orderRecorded) = ? AND MONTH(orderRecorded) = ? " +
-                "GROUP BY DAY(orderRecorded)";
+                "WHERE YEAR(dateRecorded) = ? AND MONTH(dateRecorded) = ? " +
+                "GROUP BY DAY(dateRecorded)";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement psThisMonth = Objects.requireNonNull(con).prepareStatement(sql)) {

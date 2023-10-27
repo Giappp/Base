@@ -110,7 +110,7 @@ public class OrderController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        setUpPagination();
     }
     public void setUpTableOrder(int offset,int limit,int pageIndex){
         ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));

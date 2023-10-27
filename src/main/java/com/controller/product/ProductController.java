@@ -10,6 +10,8 @@ import com.model.SupplierModel;
 import com.mysql.cj.protocol.Resultset;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -46,7 +48,7 @@ public class ProductController implements Initializable {
 
     Stage window;
 
-    private static final int ITEMS_PER_PAGE = 10;
+    private static final int itemPerPages = 12;
 
     private final ProductModel productModel = new ProductModel();
 
@@ -130,6 +132,8 @@ public class ProductController implements Initializable {
 
     @FXML
     private ImageView addproductImageView;
+    @FXML
+    private TextField searchTf;
 
     private String imageUrl;
 
@@ -137,6 +141,7 @@ public class ProductController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setUpPagination();
         ObservableList<String> listbrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
         ObservableList<String> listtypes = FXCollections.observableArrayList(new ProductCategoryModel().getType());
         addProductBrandCb.setItems(listbrands);
@@ -318,9 +323,9 @@ public class ProductController implements Initializable {
                 tblvProduct.getSelectionModel().clearSelection();
                 clearTextFields(dashboardProduct);
                 int pageIndex = productPg.getCurrentPageIndex();
-                int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+                int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
                 productPg.setPageCount(pageCount);
-                ShowListDataProduct(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, productModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
+                ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
             }
         });
     }
@@ -347,20 +352,65 @@ public class ProductController implements Initializable {
         productDeleteBtn.setDisable(true);
         clearTextFields(dashboardProduct);
         int pageIndex = productPg.getCurrentPageIndex();
-        int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
-        ShowListDataProduct(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, productModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
+        ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
     }
 
     public void ShowListDataProduct(int offset,int limit,int pageIndex) {
-        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
+        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));
         productColId.setCellValueFactory(new PropertyValueFactory<>("id"));
         productColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
+        productColName.setCellValueFactory(new PropertyValueFactory<>("name"));
         productColBrand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         productColType.setCellValueFactory(new PropertyValueFactory<>("productType"));
         productColPrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
+        searchTf.textProperty().addListener((observable,oldvalue, newvalue) -> {
+            filteredList.setPredicate(product -> {
+                if(newvalue == null || newvalue.trim().isBlank()){
+                    return true;
+                }
+                String searchKeyWord = newvalue.toLowerCase();
+                return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
+                        || product.getSupplierName().toLowerCase().contains(searchKeyWord);
+            });
+            updatePagination(filteredList,newvalue);
+        });
         tblvProduct.setItems(products);
+    }
+    public void setUpPagination(){
+        int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
+        productPg.setPageCount(pageCount);
+        productPg.setPageFactory(pageIndex -> {
+            ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
+            return tblvProduct;
+        });
+    }
+
+    private void updatePagination(FilteredList<Product> filteredList, String newvalue){
+        int totalItems = filteredList.size();
+        int pageCount;
+        if(newvalue == null || newvalue.trim().isEmpty()){
+            pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
+        }else if(totalItems == 0){
+            pageCount = 1;
+        }
+        else{
+            pageCount = (totalItems + itemPerPages-1)/itemPerPages;
+        }
+        productPg.setPageCount(pageCount);
+        if (productPg.getCurrentPageIndex() >= pageCount) {
+            productPg.setCurrentPageIndex(pageCount - 1);
+        }
+        int fromIndex = productPg.getCurrentPageIndex() * itemPerPages;
+        int toIndex = Math.min(fromIndex + itemPerPages, totalItems);
+
+        SortedList<Product> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(tblvProduct.comparatorProperty());
+
+        tblvProduct.setItems(FXCollections.observableArrayList(sortedList.subList(fromIndex, toIndex)));
     }
 
     static void DBAdd(Product product) {

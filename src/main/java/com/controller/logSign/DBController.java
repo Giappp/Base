@@ -36,8 +36,6 @@ public class DBController {
         try{
             FXMLLoader loader = new FXMLLoader(DBController.class.getResource("/controller/client/client.fxml"));
             root = loader.load();
-
-            DashboardController dashBoardController = loader.getController();
         }catch (IOException e){
             e.printStackTrace();
         }

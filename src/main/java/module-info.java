@@ -19,6 +19,10 @@ module Base {
     exports com.controller.event to javafx.fxml;
     opens com.controller.event to javafx.fxml;
     exports com.controller.product to javafx.fxml;
+
+    exports com.controller.order to javafx.fxml;
+    opens com.controller.order to javafx.fxml;
+
     opens com.controller.product to javafx.fxml;
     exports com.controller.dashboard to javafx.fxml;
     opens com.controller.dashboard to javafx.fxml;
