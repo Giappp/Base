@@ -17,47 +17,53 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SelectCus implements Initializable {
+
     private static final int ITEMS_PER_PAGE = 10;
+
     CustomerModel customerModel = new CustomerModel();
-    @FXML
-    private Button accept_btn;
 
     @FXML
-    private Button cancel_btn;
+    private Button acceptBtn;
 
     @FXML
-    private TextArea customer_address_ta;
+    private Button cancelBtn;
 
     @FXML
-    private TableColumn<Customer, String> customer_col_address;
+    private TextArea customerAddressTa;
 
     @FXML
-    private TableColumn<Customer, String> customer_col_email;
+    private TableColumn<Customer, String> customerColAddress;
 
     @FXML
-    private TableColumn<Customer, Integer> customer_col_id;
+    private TableColumn<Customer, String> customerColEmail;
 
     @FXML
-    private TableColumn<Customer, String> customer_col_name;
+    private TableColumn<Customer, Integer> customerColId;
 
     @FXML
-    private TableColumn<Customer, String> customer_col_phone;
+    private TableColumn<Customer, String> customerColName;
 
     @FXML
-    private TextField customer_email_tf;
+    private TableColumn<Customer, String> customerColPhone;
 
     @FXML
-    private TextField customer_name_tf;
+    private TextField customerEmailTf;
 
     @FXML
-    private Pagination customer_pag;
+    private TextField customerNameTf;
 
     @FXML
-    private TextField customer_phone_tf;
+    private Pagination customerPag;
+
     @FXML
-    private TextField customer_id_tf;
+    private TextField customerPhoneTf;
+
     @FXML
-    private TableView<Customer> customer_tb;
+    private TextField customerIdTf;
+
+    @FXML
+    private TableView<Customer> customerTb;
+
     private Customer customer;
 
     public Customer getCustomer() {
@@ -71,33 +77,35 @@ public class SelectCus implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         int pageCount = (CustomerModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
-        customer_pag.setPageCount(pageCount);
-        customer_pag.setPageFactory(pageIndex -> {
+        customerPag.setPageCount(pageCount);
+        customerPag.setPageFactory(pageIndex -> {
             setDataTable(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, CustomerModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
-            return customer_tb;
+            return customerTb;
         });
-        customer_tb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+        customerTb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                customer_id_tf.setText(String.valueOf(newValue.getId()));
-                customer_name_tf.setText(newValue.getName());
-                customer_email_tf.setText(newValue.getEmail());
-                customer_phone_tf.setText(newValue.getPhone());
-                customer_address_ta.setText(newValue.getAddress());
+                customerIdTf.setText(String.valueOf(newValue.getId()));
+                customerNameTf.setText(newValue.getName());
+                customerEmailTf.setText(newValue.getEmail());
+                customerPhoneTf.setText(newValue.getPhone());
+                customerAddressTa.setText(newValue.getAddress());
             } else {
                 resetField();
             }
         });
-        accept_btn.setOnAction(new EventHandler<ActionEvent>() {
+
+        acceptBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (validateFields()) {
                     customer = new Customer();
-                    customer.setId(Integer.parseInt(customer_id_tf.getText()));
-                    customer.setName(customer_name_tf.getText());
-                    customer.setEmail(customer_email_tf.getText());
-                    customer.setPhone(customer_phone_tf.getText());
-                    customer.setAddress(customer_address_ta.getText());
-                    Stage stage = (Stage) accept_btn.getScene().getWindow();
+                    customer.setId(Integer.parseInt(customerIdTf.getText()));
+                    customer.setName(customerNameTf.getText());
+                    customer.setEmail(customerEmailTf.getText());
+                    customer.setPhone(customerPhoneTf.getText());
+                    customer.setAddress(customerAddressTa.getText());
+                    Stage stage = (Stage) acceptBtn.getScene().getWindow();
                     stage.close();
                 } else {
                     AlertMessages alertMessages = new AlertMessages();
@@ -109,23 +117,23 @@ public class SelectCus implements Initializable {
 
     public void setDataTable(int offset, int limit, int pageIndex) {
         ObservableList<Customer> customerObservableList = FXCollections.observableList(customerModel.getListCustomer(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
-        customer_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        customer_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        customer_col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        customer_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        customer_col_address.setCellValueFactory(new PropertyValueFactory<>("address"));
-        customer_tb.setItems(customerObservableList);
+        customerColId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        customerColName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        customerColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        customerColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        customerColAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        customerTb.setItems(customerObservableList);
     }
 
     public void resetField() {
-        customer_name_tf.setText(null);
-        customer_email_tf.setText(null);
-        customer_col_phone.setText(null);
-        customer_address_ta.setText(null);
+        customerNameTf.setText(null);
+        customerEmailTf.setText(null);
+        customerPhoneTf.setText(null);
+        customerAddressTa.setText(null);
     }
 
     public boolean validateFields() {
-        return !customer_email_tf.getText().isBlank() && !customer_name_tf.getText().isBlank() &&
-                !customer_phone_tf.getText().isBlank() && !customer_address_ta.getText().isBlank();
+        return !customerEmailTf.getText().isBlank() && !customerNameTf.getText().isBlank() &&
+                !customerPhoneTf.getText().isBlank() && !customerAddressTa.getText().isBlank();
     }
 }

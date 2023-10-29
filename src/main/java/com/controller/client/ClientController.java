@@ -2,6 +2,7 @@ package com.controller.client;
 
 import com.controller.data;
 import com.controller.logSign.DBController;
+import com.entities.Users;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,7 +52,8 @@ public class ClientController {
     private Button activeButton; // variable to store the active status of a button
 
     private void loadPage(String page) {
-        usernameLabel.setText(data.username);
+        Users.setUsername(data.username);
+        usernameLabel.setText(Users.getUsername());
         Parent root = null;
         try {
             // Create a file object for the FXML file

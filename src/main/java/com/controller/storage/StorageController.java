@@ -1,107 +1,142 @@
 package com.controller.storage;
 
+import com.db.dao.JDBCConnect;
+import com.entities.Customer;
 import com.entities.Product;
 import com.model.ProductModel;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class StorageController implements Initializable {
 
-    Parent root;
+    @FXML
+    private Label totalItems;
 
-    Scene fxmlFile;
+    @FXML
+    private TextField productFieldSearch;
 
-    Stage window;
+    @FXML
+    private TableView<Product> tbvGoods;
+
+    @FXML
+    private TableColumn<Product, Integer> goodsColId;
+
+    @FXML
+    private TableColumn<Product, String> goodsColName;
+
+    @FXML
+    private TableColumn<Product, String> goodsColType;
+
+    @FXML
+    private TableColumn<Product, String> goodsColSupplier;
+
+    @FXML
+    private TableColumn<Product, Double> goodsColPrice;
+
+    @FXML
+    private TableColumn<Product, String> goodsColStatus;
+
+    @FXML
+    private TableColumn<Product, Integer> goodsColAmount;
+
+    @FXML
+    private TableColumn<Product, Double> goodsColTotal;
+
+    @FXML
+    private Button importProductBtn;
+
+    @FXML
+    private Button historyBtn;
+
+    @FXML
+    private Pagination storagePg;
 
     private static final int ITEMS_PER_PAGE = 10;
 
-    public AnchorPane dashboardStorage;
-
-    public TextField productFieldSearch;
-
-    public TableView<Product> tbvGoods;
-
-    public TableColumn<Product, Integer> goodsColId;
-
-    public TableColumn<Product, String> goodsColName;
-
-    public TableColumn<Product, String> goodsColType;
-
-    public TableColumn<Product, String> goodsColSupplier;
-
-    public TableColumn<Product, Double> goodsColPrice;
-
-    public TableColumn<Product, String> goodsColStatus;
-
-    public TableColumn<Product, Integer> goodsColAmount;
-
-    public TableColumn<Product, Double> goodsColTotal;
-
-    public Button importProductBtn;
-
-    public Button historyBtn;
-
-    public Pagination storagePg;
+    private ObservableList<Product> productObservableList = FXCollections.observableArrayList();
 
     ProductModel productModel = new ProductModel();
+
+    Stage window;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        importProductBtn.setOnAction(event -> {
-            try {
-                openModalWindow("/controller/client/importProduct.fxml", "Import Product");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        importProductBtn.setOnAction(event -> openModalWindow("/controller/client/importProduct.fxml", "Import Product"));
 
-        historyBtn.setOnAction(event -> {
-            try {
-                openModalWindow("/controller/client/importHistory.fxml", "Import History");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        historyBtn.setOnAction(event -> openModalWindow("/controller/client/importHistory.fxml", "Import History"));
 
-        int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
-        storagePg.setPageCount(pageCount);
-        storagePg.setPageFactory(pageIndex -> {
-            storageList(pageIndex * ITEMS_PER_PAGE, Math.min(pageIndex * ITEMS_PER_PAGE, productModel.getNumberRecords() - (pageIndex * ITEMS_PER_PAGE)), pageIndex);
-            return tbvGoods;
+        setupTable();
+        setupPagination();
+
+        allProducts.addAll(productModel.getProductList2(0, productModel.getNumberRecords()));
+
+        //Create a filter for the search box
+        productFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = newValue.toLowerCase();
+            productObservableList.setAll(getFilteredProducts(searchText));
         });
 
     }
 
-    private void openModalWindow (String resource, String title) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
-        fxmlFile = new Scene(root);
-        window = new Stage();
-        window.setScene(fxmlFile);
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setIconified(false);
-        window.setTitle(title);
-        window.showAndWait();
+    List<Product> allProducts = new ArrayList<>();
+
+    private ObservableList<Product> getProducts() {
+        return FXCollections.observableList(allProducts);
     }
 
-    public void storageList( int offset, int limit, int pageIndex){
-        ObservableList<Product> storageList = FXCollections.observableList(productModel.getProductList2(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
+    private List<Product> getFilteredProducts(String searchText) {
+        if (searchText.isEmpty()) {
+            return allProducts;
+        }
+
+        return allProducts.stream()
+                .filter(product ->
+                        product.getName().toLowerCase().contains(searchText) ||
+                                product.getProductType().toLowerCase().contains(searchText) ||
+                                product.getSupplierName().toLowerCase().contains(searchText) ||
+                                product.getStatus().toLowerCase().contains(searchText))
+                .collect(Collectors.toList());
+    }
+
+
+    private void openModalWindow(String resource, String title) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
+            Scene fxmlFile = new Scene(root);
+            window = new Stage();
+            window.setScene(fxmlFile);
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setIconified(false);
+            window.setTitle(title);
+            window.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupTable() {
         goodsColId.setCellValueFactory(new PropertyValueFactory<>("id"));
         goodsColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         goodsColSupplier.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
@@ -118,6 +153,28 @@ public class StorageController implements Initializable {
             );
             return totalBinding.asObject();
         });
-        tbvGoods.setItems(storageList);
+
+        productObservableList = getProducts(0); // get default product
+        tbvGoods.setItems(productObservableList);
+    }
+
+    private ObservableList<Product> getProducts(int offset) {
+        return FXCollections.observableList(productModel.getProductList2(offset, StorageController.ITEMS_PER_PAGE));
+    }
+
+    private void setupPagination() {
+        int pageCount = (productModel.getNumberRecords() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        storagePg.setPageCount(pageCount);
+
+        int totalItemCount = productModel.getNumberRecords();
+        totalItems.setText("Total: " + totalItemCount);
+
+        storagePg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            int pageIndex = newValue.intValue();
+            int offset = pageIndex * ITEMS_PER_PAGE;
+//            productObservableList = getProducts(offset);
+//            tbvGoods.setItems(productObservableList);
+            productObservableList.setAll(allProducts.subList(offset, Math.min(offset + ITEMS_PER_PAGE, allProducts.size())));
+        });
     }
 }

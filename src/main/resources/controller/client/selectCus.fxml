@@ -13,54 +13,52 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.order.SelectCus">
-    <TableView fx:id="customer_tb" layoutX="304.0" layoutY="52.0" prefHeight="361.0" prefWidth="438.0">
+    <TableView fx:id="customerTb" layoutX="304.0" layoutY="52.0" prefHeight="361.0" prefWidth="438.0">
         <columns>
-            <TableColumn fx:id="customer_col_id" prefWidth="39.20001220703125" text="ID" />
-            <TableColumn fx:id="customer_col_name" prefWidth="94.39996337890625" text="Name" />
-            <TableColumn fx:id="customer_col_address" prefWidth="92.800048828125" text="Address" />
-            <TableColumn fx:id="customer_col_phone" prefWidth="99.20001220703125" text="Phone" />
-            <TableColumn fx:id="customer_col_email" prefWidth="109.60003662109375" text="Email" />
+            <TableColumn fx:id="customerColId" prefWidth="39.20001220703125" text="ID" />
+            <TableColumn fx:id="customerColName" prefWidth="94.39996337890625" text="Name" />
+            <TableColumn fx:id="customerColAddress" prefWidth="92.800048828125" text="Address" />
+            <TableColumn fx:id="customerColPhone" prefWidth="99.20001220703125" text="Phone" />
+            <TableColumn fx:id="customerColEmail" prefWidth="109.60003662109375" text="Email" />
         </columns>
     </TableView>
     <HBox layoutX="304.0" layoutY="40.0" prefHeight="418.0" prefWidth="438.0">
-        <children>
-            <Pagination fx:id="customer_pag" prefHeight="428.0" prefWidth="438.0" />
-        </children>
+        <Pagination fx:id="customerPag" prefHeight="428.0" prefWidth="438.0"/>
     </HBox>
     <Pane layoutY="53.0" prefHeight="362.0" prefWidth="291.0">
-        <children>
-            <Label layoutX="14.0" layoutY="32.0" text="Name:">
-                <font>
-                    <Font name="Segoe UI" size="14.0" />
-                </font>
-            </Label>
-            <TextField fx:id="customer_name_tf" layoutX="76.0" layoutY="29.0" prefHeight="25.0" prefWidth="185.0" />
-            <Label layoutX="14.0" layoutY="70.0" text="Phone:">
-                <font>
-                    <Font name="Segoe UI" size="14.0" />
-                </font>
-            </Label>
-            <TextField fx:id="customer_phone_tf" layoutX="76.0" layoutY="67.0" prefHeight="25.0" prefWidth="185.0" />
-            <Label layoutX="14.0" layoutY="111.0" text="Email:">
-                <font>
-                    <Font name="Segoe UI" size="14.0" />
-                </font>
-            </Label>
-            <TextField fx:id="customer_email_tf" layoutX="76.0" layoutY="108.0" prefHeight="25.0" prefWidth="185.0" />
-            <Label layoutX="14.0" layoutY="150.0" text="Address:">
-                <font>
-                    <Font name="Segoe UI" size="14.0" />
-                </font>
-            </Label>
-            <TextArea fx:id="customer_address_ta" layoutX="76.0" layoutY="150.0" prefHeight="89.0" prefWidth="185.0" />
-            <Button fx:id="accept_btn" layoutX="50.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Accept" />
-            <Button fx:id="cancel_btn" layoutX="158.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Cancel" />
-        </children>
+        <Label layoutX="14.0" layoutY="32.0" text="Name:">
+            <font>
+                <Font name="Segoe UI" size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="customerNameTf" layoutX="76.0" layoutY="29.0" prefHeight="25.0" prefWidth="185.0"/>
+        <Label layoutX="14.0" layoutY="70.0" text="Phone:">
+            <font>
+                <Font name="Segoe UI" size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="customerPhoneTf" layoutX="76.0" layoutY="67.0" prefHeight="25.0" prefWidth="185.0"/>
+        <Label layoutX="14.0" layoutY="111.0" text="Email:">
+            <font>
+                <Font name="Segoe UI" size="14.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="customerEmailTf" layoutX="76.0" layoutY="108.0" prefHeight="25.0" prefWidth="185.0"/>
+        <Label layoutX="14.0" layoutY="150.0" text="Address:">
+            <font>
+                <Font name="Segoe UI" size="14.0"/>
+            </font>
+        </Label>
+        <TextArea fx:id="customerAddressTa" layoutX="76.0" layoutY="150.0" prefHeight="89.0" prefWidth="185.0"/>
+        <Button fx:id="acceptBtn" layoutX="50.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="55.0" text="Accept"/>
+        <Button fx:id="cancelBtn" layoutX="158.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="55.0" text="Cancel"/>
     </Pane>
     <Label layoutX="98.0" layoutY="40.0" prefHeight="23.0" prefWidth="120.0" text="Customer Info">
         <font>
             <Font name="Segoe UI" size="18.0" />
         </font>
     </Label>
-    <TextField fx:id="customer_id_tf" layoutX="72.0" layoutY="50.0" prefHeight="25.0" prefWidth="185.0" visible="false" />
+    <TextField fx:id="customerIdTf" layoutX="72.0" layoutY="50.0" prefHeight="25.0" prefWidth="185.0" visible="false" />
 </AnchorPane>

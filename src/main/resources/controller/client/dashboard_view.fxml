@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.dashboard.DashboardController">
+<AnchorPane prefHeight="720.0" prefWidth="1000.0" style="-fx-background-color: #EAEAF0;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.dashboard.DashboardController">
    <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
       <font>
          <Font name="Segoe UI Bold" size="24.0" />
@@ -21,7 +27,7 @@
       </Text>
       <Text fx:id="earningText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
          <font>
-            <Font name="Segoe UI" size="20.0" />
+            <Font name="Segoe UI" size="30.0" />
          </font>
       </Text>
       <FontAwesomeIconView fill="WHITE" glyphName="DOLLAR" layoutX="160.0" layoutY="40.0" scaleX="2.0" scaleY="2.0" size="18" />
@@ -37,7 +43,7 @@
       </Text>
       <Text fx:id="productImportText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
          <font>
-            <Font name="Segoe UI" size="20.0" />
+            <Font name="Segoe UI" size="30.0" />
          </font>
       </Text>
       <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="155.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
@@ -53,7 +59,7 @@
       </Text>
       <Text fx:id="totalOrderText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
          <font>
-            <Font name="Segoe UI" size="20.0" />
+            <Font name="Segoe UI" size="30.0" />
          </font>
       </Text>
       <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="159.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
@@ -69,7 +75,7 @@
       </Text>
       <Text fx:id="totalCustomerText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
          <font>
-            <Font name="Segoe UI" size="20.0" />
+            <Font name="Segoe UI" size="30.0" />
          </font>
       </Text>
       <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="159.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
@@ -92,12 +98,12 @@
                <Font name="Segoe UI Bold" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="revenueLabel" layoutX="209.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0">
+         <Label fx:id="revenueLabel" layoutX="209.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="compareRevenueLabel" layoutX="138.0" layoutY="45.0" prefHeight="22.0" prefWidth="226.0">
+         <Label fx:id="compareRevenueLabel" layoutX="209.0" layoutY="45.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>
@@ -109,12 +115,12 @@
                <Font name="Segoe UI Bold" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="totalOrdersLabel" layoutX="209.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0">
+         <Label fx:id="totalOrdersLabel" layoutX="209.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="compareTotalOrdersLabel" layoutX="138.0" layoutY="45.0" prefHeight="22.0" prefWidth="226.0">
+         <Label fx:id="compareTotalOrdersLabel" layoutX="209.0" layoutY="45.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>

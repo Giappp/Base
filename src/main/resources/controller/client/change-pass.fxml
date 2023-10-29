@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.account.ChangePassword">
+<AnchorPane prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.account.ChangePassword">
     <Label layoutX="131.0" layoutY="84.0" prefHeight="30.0" prefWidth="188.0" text="Change Password" textFill="#00a7d5">
         <font>
           <Font name="Segoe UI" size="24.0" />
@@ -38,4 +37,5 @@
          <Font name="Segoe UI" size="18.0" />
       </font></PasswordField>
    <FontAwesomeIconView fill="#00a7d5" glyphName="LOCK" layoutX="202.0" layoutY="74.0" size="70" />
+   <Label fx:id="tfId" layoutX="192.0" layoutY="132.0" visible="false" />
 </AnchorPane>

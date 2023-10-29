@@ -13,8 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -23,54 +21,52 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class OrderController implements Initializable {
+
     ProductModel productModel = new ProductModel();
+
     private final int itemPerPages = 10;
-    ObservableList<Product> productObservableList;
 
     @FXML
     private Button addProductToOrder;
 
     @FXML
-    private TextField cusAddress_tf;
+    private TextField cusAddressTf;
 
     @FXML
-    private TextField cusEmail_tf;
+    private TextField cusEmailTf;
 
     @FXML
-    private TextField cusName_tf;
+    private TextField cusNameTf;
 
     @FXML
-    private TextField cusPhone_tf;
+    private TextField cusPhoneTf;
 
     @FXML
-    private AnchorPane dashboardOrder;
+    private Button orderClearBtn;
 
     @FXML
-    private Button orderClear_btn;
+    private Button orderDeleteProductBtn;
 
     @FXML
-    private Button order_deleteProduct_btn;
+    private Pagination orderPag;
 
     @FXML
-    private Pagination order_pag;
+    private TextField orderProductIdTf;
 
     @FXML
-    private TextField order_productId_tf;
+    private TextField orderProductNameTf;
 
     @FXML
-    private TextField order_productName_tf;
+    private ListView<?> orderProductView;
 
     @FXML
-    private ListView<?> order_productView;
+    private TextField orderQuantityTf;
 
     @FXML
-    private TextField order_quantity_tf;
+    private TextField orderTotalPaidTf;
 
     @FXML
-    private TextField order_totalPaid_tf;
-
-    @FXML
-    private Button order_updateProduct_btn;
+    private Button orderUpdateProductBtn;
 
     @FXML
     private ComboBox<String> paymentComboBox;
@@ -100,18 +96,19 @@ public class OrderController implements Initializable {
     private TextField searchProduct;
 
     @FXML
-    private Button selectCus_btn;
+    private Button selectCusBtn;
 
     @FXML
     private TableView<Product> tableViewProduct;
 
     @FXML
-    private Button viewOrder_btn;
+    private Button viewOrderBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpPagination();
     }
+
     public void setUpTableOrder(int offset,int limit,int pageIndex){
         ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));
         productColId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -123,33 +120,33 @@ public class OrderController implements Initializable {
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
-        searchProduct.textProperty().addListener((observable,oldvalue, newvalue) -> {
+        searchProduct.textProperty().addListener((observable,oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
-                if(newvalue == null || newvalue.trim().isBlank()){
+                if(newValue == null || newValue.trim().isBlank()){
                     return true;
                 }
-                String searchKeyWord = newvalue.toLowerCase();
+                String searchKeyWord = newValue.toLowerCase();
                 return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
                         || product.getSupplierName().toLowerCase().contains(searchKeyWord);
             });
-            updatePagination(filteredList,newvalue);
+            updatePagination(filteredList,newValue);
         });
 
         tableViewProduct.setItems(products);
     }
     public void setUpPagination(){
         int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
-        order_pag.setPageCount(pageCount);
-        order_pag.setPageFactory(pageIndex -> {
+        orderPag.setPageCount(pageCount);
+        orderPag.setPageFactory(pageIndex -> {
             setUpTableOrder(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
             return tableViewProduct;
         });
     }
 
-    private void updatePagination(FilteredList<Product> filteredList,String newvalue){
+    private void updatePagination(FilteredList<Product> filteredList,String newValue){
         int totalItems = filteredList.size();
         int pageCount;
-        if(newvalue == null || newvalue.trim().isEmpty()){
+        if(newValue == null || newValue.trim().isEmpty()){
             pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
         }else if(totalItems == 0){
             pageCount = 1;
@@ -157,11 +154,11 @@ public class OrderController implements Initializable {
         else{
             pageCount = (totalItems + itemPerPages-1)/itemPerPages;
         }
-        order_pag.setPageCount(pageCount);
-        if (order_pag.getCurrentPageIndex() >= pageCount) {
-            order_pag.setCurrentPageIndex(pageCount - 1);
+        orderPag.setPageCount(pageCount);
+        if (orderPag.getCurrentPageIndex() >= pageCount) {
+            orderPag.setCurrentPageIndex(pageCount - 1);
         }
-        int fromIndex = order_pag.getCurrentPageIndex() * itemPerPages;
+        int fromIndex = orderPag.getCurrentPageIndex() * itemPerPages;
         int toIndex = Math.min(fromIndex + itemPerPages, totalItems);
 
         SortedList<Product> sortedList = new SortedList<>(filteredList);

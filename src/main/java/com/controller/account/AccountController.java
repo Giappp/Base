@@ -34,6 +34,9 @@ public class AccountController {
     private Label displayPhone;
 
     @FXML
+    private Label displayPass;
+
+    @FXML
     private Button updateAccountInfo;
 
     @FXML
@@ -51,7 +54,7 @@ public class AccountController {
                 displayUsername.setText(rs.getString("username"));
                 displayEmail.setText(rs.getString("email"));
                 displayPhone.setText(rs.getString("phone"));
-                changePassBtn.setText(rs.getString("password"));
+                displayPass.setText(rs.getString("password"));
                 displayDetail.setText(rs.getString("details"));
             }
         } catch (Exception e) {

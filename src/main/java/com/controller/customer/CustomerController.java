@@ -26,6 +26,9 @@ import java.util.regex.Pattern;
 public class CustomerController {
 
     @FXML
+    private Label totalItems;
+
+    @FXML
     private Text actionStatusLabel;
 
     @FXML
@@ -91,6 +94,7 @@ public class CustomerController {
     AlertMessages alertMessages;
 
     public void initialize() {
+        alertMessages = new AlertMessages();
         setupTable();
         setupPagination();
         setIdAdd();
@@ -157,13 +161,16 @@ public class CustomerController {
         customerColAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         customerColOrderNumber.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(customerTblv.getItems().indexOf(param.getValue()) + 1 + (currentPage - 1) * itemsPerPage));
 
+        totalItems.setText("Total: " + customerObservableList.size());
+
         // Create filter list
         FilteredList<Customer> filteredList = new FilteredList<>(customerObservableList, b -> true);
 
         // listen to the changes in the search_customer to update table view
         searchCustomer.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate((Predicate<? super Customer>) cust -> {
-                if (newValue == null) {
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    totalItems.setText("Total: " + customerObservableList.size());
                     return true;
                 }
                 String toLowerCaseFilter = newValue.toLowerCase();
@@ -173,7 +180,12 @@ public class CustomerController {
                     return true;
                 } else if (cust.getPhone().toLowerCase().contains(toLowerCaseFilter)) {
                     return true;
-                } else return cust.getAddress().toLowerCase().contains(toLowerCaseFilter);
+                } else if (cust.getAddress().toLowerCase().contains(toLowerCaseFilter)) {
+                    return true;
+                } else {
+                    totalItems.setText("Total: " + filteredList.size());
+                    return false;
+                }
             });
             // update pagination
             updatePagination(filteredList);
@@ -263,7 +275,7 @@ public class CustomerController {
     }
 
     private void addCustomerToDatabase() {
-        String sql = "INSERT INTO customer(name, address, phone, email) VALUES (?,?,?,?,)";
+        String sql = "INSERT INTO customer(name, address, phone, email) VALUES (?,?,?,?)";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
 
@@ -298,7 +310,7 @@ public class CustomerController {
                 ps.setString(2, tfAddAddress.getText());
                 ps.setString(3, tfAddPhone.getText());
                 ps.setString(4, tfAddEmail.getText());
-                ps.setString(6, idTextField.getText());
+                ps.setString(5, idTextField.getText());
 
                 ps.executeUpdate();
 

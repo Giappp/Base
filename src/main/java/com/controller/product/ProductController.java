@@ -42,6 +42,9 @@ import java.util.regex.Pattern;
 
 public class ProductController implements Initializable {
 
+    @FXML
+    private Label totalItems;
+
     Parent root;
 
     Scene fxmlFile;
@@ -357,8 +360,8 @@ public class ProductController implements Initializable {
         ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
     }
 
-    public void ShowListDataProduct(int offset,int limit,int pageIndex) {
-        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));
+    public void ShowListDataProduct(int offset, int limit, int pageIndex) {
+        ObservableList<Product> allProducts = FXCollections.observableList(productModel.getProductList2(0, productModel.getNumberRecords()));
         productColId.setCellValueFactory(new PropertyValueFactory<>("id"));
         productColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         productColName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -366,33 +369,45 @@ public class ProductController implements Initializable {
         productColType.setCellValueFactory(new PropertyValueFactory<>("productType"));
         productColPrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
-        searchTf.textProperty().addListener((observable,oldvalue, newvalue) -> {
+
+        FilteredList<Product> filteredList = new FilteredList<>(allProducts, b -> true);
+        searchTf.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
-                if(newvalue == null || newvalue.trim().isBlank()){
+                if (newValue == null || newValue.trim().isEmpty()) {
                     return true;
                 }
-                String searchKeyWord = newvalue.toLowerCase();
-                return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
-                        || product.getSupplierName().toLowerCase().contains(searchKeyWord);
+                String searchKeyword = newValue.toLowerCase();
+                if (product.getProductType().toLowerCase().contains(searchKeyword)
+                        || product.getName().toLowerCase().contains(searchKeyword)
+                        || product.getSupplierName().toLowerCase().contains(searchKeyword)) {
+                    return true;
+                }
+                return false;
             });
-            updatePagination(filteredList,newvalue);
+            updatePagination(filteredList, newValue);
         });
-        tblvProduct.setItems(products);
+        tblvProduct.setItems(allProducts);
+        totalItems.setText("Total: " + allProducts.size());
     }
-    public void setUpPagination(){
-        int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
+
+    public void setUpPagination() {
+        ObservableList<Product> allProducts = FXCollections.observableList(productModel.getProductList2(0, productModel.getNumberRecords()));
+        int totalItemCount = allProducts.size();
+        totalItems.setText("Total: " + totalItemCount);
+
+        int pageCount = (totalItemCount + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
+
         productPg.setPageFactory(pageIndex -> {
-            ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
+            ShowListDataProduct(pageIndex * itemPerPages, itemPerPages, pageIndex);
             return tblvProduct;
         });
     }
 
-    private void updatePagination(FilteredList<Product> filteredList, String newvalue){
+    private void updatePagination(FilteredList<Product> filteredList, String newValue){
         int totalItems = filteredList.size();
         int pageCount;
-        if(newvalue == null || newvalue.trim().isEmpty()){
+        if(newValue == null || newValue.trim().isEmpty()){
             pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
         }else if(totalItems == 0){
             pageCount = 1;

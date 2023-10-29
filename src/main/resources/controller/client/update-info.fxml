@@ -8,59 +8,61 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="580.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.account.UpdateInfo">
-   <Label layoutX="105.0" layoutY="98.0" prefHeight="30.0" prefWidth="240.0" text="Edit User Information"
-          textFill="#00a7d5">
+<AnchorPane prefHeight="580.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.account.UpdateInfo">
+   <Label layoutX="105.0" layoutY="98.0" prefHeight="30.0" prefWidth="240.0" text="Edit User Information" textFill="#00a7d5">
       <font>
-         <Font name="Segoe UI" size="24.0"/>
+         <Font name="Segoe UI" size="24.0" />
       </font>
    </Label>
-   <Label layoutX="70.0" layoutY="160.0" prefHeight="30.0" prefWidth="84.0" text="Username:" textFill="#00a7d5">
+   <Label layoutX="56.0" layoutY="189.0" prefHeight="30.0" prefWidth="84.0" text="Username:" textFill="#00a7d5">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="70.0" layoutY="210.0" prefHeight="30.0" prefWidth="84.0" text="Email:" textFill="#00a7d5">
+   <Label layoutX="56.0" layoutY="239.0" prefHeight="30.0" prefWidth="84.0" text="Email:" textFill="#00a7d5">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </Label>
-   <Label layoutX="70.0" layoutY="260.0" prefHeight="30.0" prefWidth="84.0" text="Phone:" textFill="#00a7d5">
+   <Label layoutX="56.0" layoutY="289.0" prefHeight="30.0" prefWidth="84.0" text="Phone:" textFill="#00a7d5">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </Label>
-   <Button fx:id="acceptNewInfoBtn" layoutX="113.0" layoutY="452.0" mnemonicParsing="false" prefHeight="38.0"
-           prefWidth="223.0" style="-fx-background-color: #00a7d5;" text="Change" textFill="WHITE">
+   <Button fx:id="acceptNewInfoBtn" layoutX="113.0" layoutY="490.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="223.0" style="-fx-background-color: #00a7d5;" text="Change" textFill="WHITE">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </Button>
-   <TextField fx:id="tfNewUsername" layoutX="183.0" layoutY="160.0">
+   <TextField fx:id="tfNewUsername" layoutX="169.0" layoutY="189.0">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </TextField>
-   <TextField fx:id="tfNewPhone" layoutX="183.0" layoutY="260.0">
+   <TextField fx:id="tfNewPhone" layoutX="169.0" layoutY="289.0">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </TextField>
-   <TextField fx:id="tfNewEmail" layoutX="183.0" layoutY="210.0">
+   <TextField fx:id="tfNewEmail" layoutX="169.0" layoutY="239.0">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </TextField>
-   <FontAwesomeIconView fill="#00a7d5" glyphName="USER" layoutX="200.0" layoutY="78.0" size="70" text=""/>
-   <Label layoutX="70.0" layoutY="310.0" prefHeight="30.0" prefWidth="84.0" text="Detail:" textFill="#00a7d5">
+   <FontAwesomeIconView fill="#00a7d5" glyphName="USER" layoutX="200.0" layoutY="78.0" size="70" text="" />
+   <Label layoutX="56.0" layoutY="339.0" prefHeight="30.0" prefWidth="84.0" text="Detail:" textFill="#00a7d5">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </Label>
-   <TextArea fx:id="taNewDetail" layoutX="183.0" layoutY="310.0" prefHeight="100.0" prefWidth="223.0">
+   <TextArea fx:id="taNewDetail" layoutX="169.0" layoutY="339.0" prefHeight="100.0" prefWidth="223.0">
       <font>
-         <Font name="Segoe UI" size="18.0"/>
+         <Font name="Segoe UI" size="18.0" />
       </font>
    </TextArea>
+   <Label fx:id="tfId" layoutX="169.0" layoutY="148.0" visible="false">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
 </AnchorPane>

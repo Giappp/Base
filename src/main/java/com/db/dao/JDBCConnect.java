@@ -55,4 +55,10 @@ public class JDBCConnect {
             System.out.println("Close PreparedStatement fails");
         }
     }
+
+    public static void main(String[] args) {
+
+        System.out.println(JDBCConnect.getJDBCConnection());
+
+    }
 }

@@ -10,7 +10,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -68,6 +67,44 @@ public class DashboardController implements Initializable {
 
     DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
 
+    public void initialize(URL location, ResourceBundle resourceBundle) {
+
+        LocalDate currentDate = LocalDate.now();
+        Month currentMonth = currentDate.getMonth();
+        String monthName = currentMonth.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        totalRevenueLabel.setText("Total Revenue " + monthName + ": ");
+        totalOrdersMonthLabel.setText("Total Orders " + monthName + ":");
+
+        displayTotalEarning();
+        displayTotalOrder();
+        displayTotalProductImport();
+        displayTotalCustomer();
+
+        // Populate the line chart when the view is initialized
+        revenueChart();
+
+        // Apply custom tooltips to each data point
+        for (XYChart.Series<String, Number> series : saleRevenueChart.getData()) {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                int totalOrders = data.getYValue().intValue();
+                Tooltip tooltip = createTooltipRevenue(totalOrders);
+                Tooltip.install(data.getNode(), tooltip);
+            }
+        }
+
+        // Populate the line chart when the view is initialized
+        orderChart();
+
+        // Apply custom tooltips to each data point
+        for (XYChart.Series<String, Number> series : saleOrderChart.getData()) {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                int totalOrders = data.getYValue().intValue();
+                Tooltip tooltip = createTooltipOrder(totalOrders);
+                Tooltip.install(data.getNode(), tooltip);
+            }
+        }
+    }
+
     public void displayTotalProductImport() {
         String sql = "SELECT COUNT(quantity) AS totalProductImport FROM goods_import";
 
@@ -84,7 +121,7 @@ public class DashboardController implements Initializable {
     }
 
     public void displayTotalEarning() {
-        String sql = "SELECT COUNT(totalPaid) AS totalEarning FROM invoice";
+        String sql = "SELECT SUM(totalPaid) AS totalEarning FROM invoice";
 
         try (Connection con = JDBCConnect.getJDBCConnection();
              Statement stmt = Objects.requireNonNull(con).createStatement()) {
@@ -147,8 +184,8 @@ public class DashboardController implements Initializable {
 
         int lastDay = java.time.YearMonth.of(currentYear, currentMonth).lengthOfMonth();
 
-        String sql = "SELECT DAY(dateRecorded) AS day, IFNULL(SUM(totalAmount), 0) AS revenue " +
-                "FROM `order` " +
+        String sql = "SELECT DAY(dateRecorded) AS day, IFNULL(SUM(totalPaid), 0) AS revenue " +
+                "FROM `invoice` " +
                 "WHERE YEAR(dateRecorded) = ? AND MONTH(dateRecorded) = ? " +
                 "GROUP BY DAY(dateRecorded)";
 
@@ -214,11 +251,11 @@ public class DashboardController implements Initializable {
             series.setName("Revenue " + fullMonthName);
 
             // Update revenueLabel and compareRevenueLabel
-            totalRevenueLabel.setText(String.format("%.2f", revenueThisMonth));
+            revenueLabel.setText(String.format("%.2f", revenueThisMonth));
             compareRevenueLabel.setText(decimalFormat.format(revenueThisMonth - revenueLastMonth));
 
             // Update revenueLabel and compareRevenueLabel
-            totalRevenueLabel.setText(decimalFormat.format(revenueThisMonth));
+            revenueLabel.setText(decimalFormat.format(revenueThisMonth));
 
             double compareRevenue = revenueThisMonth - revenueLastMonth;
 
@@ -367,43 +404,5 @@ public class DashboardController implements Initializable {
         tooltip.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
 
         return tooltip;
-    }
-
-    public void initialize(URL location, ResourceBundle resourceBundle) {
-
-        LocalDate currentDate = LocalDate.now();
-        Month currentMonth = currentDate.getMonth();
-        String monthName = currentMonth.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-        revenueLabel.setText("Total Revenue " + monthName + ": ");
-        totalOrdersMonthLabel.setText("Total Orders " + monthName + ":");
-
-        displayTotalEarning();
-        displayTotalOrder();
-        displayTotalProductImport();
-        displayTotalCustomer();
-
-        // Populate the line chart when the view is initialized
-        revenueChart();
-
-        // Apply custom tooltips to each data point
-        for (XYChart.Series<String, Number> series : saleRevenueChart.getData()) {
-            for (XYChart.Data<String, Number> data : series.getData()) {
-                int totalOrders = data.getYValue().intValue();
-                Tooltip tooltip = createTooltipRevenue(totalOrders);
-                Tooltip.install(data.getNode(), tooltip);
-            }
-        }
-
-        // Populate the line chart when the view is initialized
-        orderChart();
-
-        // Apply custom tooltips to each data point
-        for (XYChart.Series<String, Number> series : saleOrderChart.getData()) {
-            for (XYChart.Data<String, Number> data : series.getData()) {
-                int totalOrders = data.getYValue().intValue();
-                Tooltip tooltip = createTooltipOrder(totalOrders);
-                Tooltip.install(data.getNode(), tooltip);
-            }
-        }
     }
 }

@@ -30,6 +30,9 @@ import java.util.function.Predicate;
 public class EventController {
 
     @FXML
+    private Label totalItems;
+
+    @FXML
     private Text actionStatusLabel;
 
     @FXML
@@ -122,6 +125,7 @@ public class EventController {
     AlertMessages alertMessages;
 
     public void initialize() {
+        alertMessages = new AlertMessages();
         setIdAdd();
         selectedRecord();
         setupTable();
@@ -135,6 +139,18 @@ public class EventController {
         validateFields();
 
         cancelEventBtn.setOnAction(event -> clearInfo());
+
+        updateEventBtn.setOnAction(event -> {
+            updateToDatabase();
+        });
+
+        addEventBtn.setOnAction(event -> {
+            addToDatabase();
+        });
+
+        deleteEventBtn.setOnAction(event -> {
+            deleteFromDatabase();
+        });
     }
 
     private void clearInfo() {
@@ -154,9 +170,6 @@ public class EventController {
     }
 
     private void validateFields() {
-        eventColName.textProperty().addListener((observable, oldValue, newValue) -> {
-            validateName(newValue);
-        });
 
         // Add a listener to the discount text field for numeric input validation
         tfDiscountPercent.setTextFormatter(createDecimalTextFormatter());
@@ -166,21 +179,12 @@ public class EventController {
         return new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
             if (newText.matches("\\d*\\.?\\d*")) {
-                eventColDiscount.setStyle(""); // Clear any validation style
                 return change;
             } else {
-                tfDiscountPercent.setStyle("-fx-border-color: red;");
+                alertMessages.errorMessage("Wrong Format!");
                 return null; // Reject input that contains non-numeric characters or multiple decimal points
             }
         });
-    }
-
-    private void validateName(String newValue) {
-        if (newValue.isEmpty()) {
-            eventColName.setStyle("-fx-border-color: red;");
-        } else {
-            eventColName.setStyle(""); // Clear red border if valid
-        }
     }
 
     private ObservableList<Event> getListEvent() {
@@ -193,15 +197,15 @@ public class EventController {
             while (rs.next()) {
                 // iterate through the resultSet from db and add to list
                 int id = rs.getInt("id");
-                String event_name = rs.getString("eventName");
+                String eventName = rs.getString("eventName");
                 float discount = rs.getFloat("discount");
-                String start_date = rs.getString("startDate");
-                String start_time = rs.getString("startTime");
-                String end_date = rs.getString("endDate");
-                String end_time = rs.getString("endTime");
+                String startDate = rs.getString("startDate");
+                String startTime = rs.getString("startTime");
+                String endDate = rs.getString("endDate");
+                String endTime = rs.getString("endTime");
 
                 // add to list
-                observableList.add(new Event(id, event_name, discount, start_date, start_time, end_date, end_time));
+                observableList.add(new Event(id, eventName, discount, startDate, startTime, endDate, endTime));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,8 +224,10 @@ public class EventController {
         eventColEndTime.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         eventColOrderNumber.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(eventTblv.getItems().indexOf(param.getValue()) + 1 + (currentPage - 1) * itemsPerPage));
 
+        totalItems.setText("Total: " + eventObservableList.size());
+
         // Create a custom cell factory for the event_col_start_date
-        eventColStartTime.setCellFactory(new Callback<TableColumn<Event, String>, TableCell<Event, String>>() {
+        eventColStartDate.setCellFactory(new Callback<TableColumn<Event, String>, TableCell<Event, String>>() {
             @Override
             public TableCell<Event, String> call(TableColumn<Event, String> column) {
                 return new TableCell<Event, String>() {
@@ -278,7 +284,8 @@ public class EventController {
         // listen to changes in the searchKeyword to update the tableView
         searchEvent.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate((Predicate<? super Event>) events -> {
-                if (newValue == null) {
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    totalItems.setText("Total: " + eventObservableList.size());
                     return true;
                 }
                 String toLowerCaseFilter = newValue.toLowerCase();
@@ -290,7 +297,12 @@ public class EventController {
                     return true;
                 } else if (events.getEndDate().contains(toLowerCaseFilter)) {
                     return true;
-                } else return events.getEndTime().contains(toLowerCaseFilter);
+                } else if (events.getEndTime().contains(toLowerCaseFilter)) {
+                    return true;
+                } else {
+                    totalItems.setText("Total: " + filteredList.size());
+                    return false;
+                }
             });
             // update pagination
             updatePagination(filteredList);
@@ -367,31 +379,31 @@ public class EventController {
 
     private void setStartTimeNotationComboBox() {
         cbEventStartTimeNotation.getItems().addAll("A.M", "P.M");
-        cbEventStartTimeNotation.setValue("A.M");
+        cbEventStartTimeNotation.setValue("");
     }
 
     private void setEndTimeNotationComboBox() {
         cbEventEndTimeNotation.getItems().addAll("A.M", "P.M");
-        cbEventEndTimeNotation.setValue("A.M");
+        cbEventEndTimeNotation.setValue("");
     }
 
     private void setStartHourComboBox() {
         cbEventStartHour.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-        cbEventStartHour.setValue(7);
+        cbEventStartHour.setValue(0);
     }
 
     private void setEndHourComboBox() {
         cbEventEndHour.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-        cbEventEndHour.setValue(7);
+        cbEventEndHour.setValue(0);
     }
 
     private void setStartMinuteComboBox() {
-        cbEventStartMinute.getItems().addAll(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55);
+        cbEventStartMinute.getItems().addAll(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59);
         cbEventStartMinute.setValue(0);
     }
 
     private void setEndMinuteComboBox() {
-        cbEventEndMinute.getItems().addAll(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55);
+        cbEventEndMinute.getItems().addAll(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59);
         cbEventEndMinute.setValue(0);
     }
 
@@ -417,63 +429,60 @@ public class EventController {
     }
 
     private void selectedRecord() {
-        eventTblv.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Event>() {
-            @Override
-            public void changed(ObservableValue<? extends Event> observableValue, Event oldValue, Event newValue) {
-                if (newValue != null) {
-                    eventColId.setText(String.valueOf(newValue.getId()));
-                    eventColName.setText(String.valueOf(newValue.getEventName()));
-                    tfDiscountPercent.setText(String.valueOf(newValue.getDiscount()));
+        eventTblv.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null) {
+                idTextField.setText(String.valueOf(newValue.getId()));
+                tfEventName.setText(String.valueOf(newValue.getEventName()));
+                tfDiscountPercent.setText(String.valueOf(newValue.getDiscount()));
 
-                    // Set value for the startDateDatePicker
-                    String startDateString = String.valueOf(newValue.getStartDate());
-                    if (startDateString != null && !startDateString.isEmpty()) {
-                        LocalDate startDate = LocalDate.parse(startDateString);
-                        dpEventStartDate.setValue(startDate);
-                    } else {
-                        dpEventStartDate.setValue(null);
-                    }
-
-                    // Set value for the endDateDatePicker
-                    String endDateString = String.valueOf(newValue.getEndDate());
-                    if (endDateString != null && !endDateString.isEmpty()) {
-                        LocalDate endDate = LocalDate.parse(endDateString);
-                        dpEventEndDate.setValue(endDate);
-                    } else {
-                        dpEventEndDate.setValue(null);
-                    }
-
-
-                    String[] startTimeParts = newValue.getStartTime().split(":");
-                    int startHour = Integer.parseInt(startTimeParts[0]);
-                    int startMinute = Integer.parseInt(startTimeParts[1]);
-
-                    // Convert 24-hour format to 12-hour format
-                    int startHour12 = startHour > 12 ? startHour - 12 : (startHour == 0 ? 12 : startHour);
-                    String startTimeNotation = startHour >= 12 ? "P.M" : "A.M";
-
-                    cbEventStartHour.setValue(startHour12);
-                    cbEventStartMinute.setValue(startMinute);
-                    cbEventStartTimeNotation.setValue(startTimeNotation);
-
-                    String[] endTimeParts = newValue.getEndTime().split(":");
-                    int endHour = Integer.parseInt(endTimeParts[0]);
-                    int endMinute = Integer.parseInt(endTimeParts[1]);
-
-                    // Convert 24-hour format to 12-hour format
-                    int endHour12 = endHour > 12 ? endHour - 12 : (endHour == 0 ? 12 : endHour);
-                    String endTimeNotation = endHour >= 12 ? "P.M" : "A.M";
-
-                    cbEventEndHour.setValue(endHour12);
-                    cbEventEndMinute.setValue(endMinute);
-                    cbEventEndTimeNotation.setValue(endTimeNotation);
-
-                    addEventBtn.setDisable(true);
-                    updateEventBtn.setDisable(false);
-                    actionStatusLabel.setText("Updating Event");
+                // Set value for the startDateDatePicker
+                String startDateString = String.valueOf(newValue.getStartDate());
+                if (startDateString != null && !startDateString.isEmpty()) {
+                    LocalDate startDate = LocalDate.parse(startDateString);
+                    dpEventStartDate.setValue(startDate);
                 } else {
-                    resetForm();
+                    dpEventStartDate.setValue(null);
                 }
+
+                // Set value for the endDateDatePicker
+                String endDateString = String.valueOf(newValue.getEndDate());
+                if (endDateString != null && !endDateString.isEmpty()) {
+                    LocalDate endDate = LocalDate.parse(endDateString);
+                    dpEventEndDate.setValue(endDate);
+                } else {
+                    dpEventEndDate.setValue(null);
+                }
+
+
+                String[] startTimeParts = newValue.getStartTime().split(":");
+                int startHour = Integer.parseInt(startTimeParts[0]);
+                int startMinute = Integer.parseInt(startTimeParts[1]);
+
+                // Convert 24-hour format to 12-hour format
+                int startHour12 = startHour > 12 ? startHour - 12 : (startHour == 0 ? 12 : startHour);
+                String startTimeNotation = startHour >= 12 ? "P.M" : "A.M";
+
+                cbEventStartHour.setValue(startHour12);
+                cbEventStartMinute.setValue(startMinute);
+                cbEventStartTimeNotation.setValue(startTimeNotation);
+
+                String[] endTimeParts = newValue.getEndTime().split(":");
+                int endHour = Integer.parseInt(endTimeParts[0]);
+                int endMinute = Integer.parseInt(endTimeParts[1]);
+
+                // Convert 24-hour format to 12-hour format
+                int endHour12 = endHour > 12 ? endHour - 12 : (endHour == 0 ? 12 : endHour);
+                String endTimeNotation = endHour >= 12 ? "P.M" : "A.M";
+
+                cbEventEndHour.setValue(endHour12);
+                cbEventEndMinute.setValue(endMinute);
+                cbEventEndTimeNotation.setValue(endTimeNotation);
+
+                addEventBtn.setDisable(true);
+                updateEventBtn.setDisable(false);
+                actionStatusLabel.setText("Updating Event");
+            } else {
+                resetForm();
             }
         });
     }
