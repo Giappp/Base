@@ -58,4 +58,28 @@ public class CustomerModel {
         }
         return null;
     }
+    public List<Customer> getListCustomer(){
+        String sql = "SELECT * from customer";
+        List<Customer> customers = new ArrayList<>();
+        try(Connection connection = JDBCConnect.getJDBCConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Customer customer = new Customer();
+                customer.setId(resultSet.getInt("id"));
+                customer.setName(resultSet.getString("name"));
+                customer.setEmail(resultSet.getString("email"));
+                customer.setPhone(resultSet.getString("phone"));
+                customer.setAddress(resultSet.getString("address"));
+                customers.add(customer);
+            }
+            if(!resultSet.isClosed()){
+                resultSet.close();
+            }
+            return customers;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

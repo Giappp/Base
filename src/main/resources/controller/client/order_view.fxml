@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="dashboardOrder" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.order.OrderController">
    <children>
-      <Text fill="#00a7d5" layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
-         <font>
-            <Font name="Segoe UI Bold" size="24.0" />
-         </font>
-      </Text>
       <Pane layoutX="11.0" layoutY="14.0" prefHeight="677.0" prefWidth="983.0">
          <children>
             <Text fill="#00a7d5" layoutX="474.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
@@ -30,72 +26,18 @@
                   <Font name="Segoe UI Bold" size="24.0" />
                </font>
             </Text>
-            <Line endX="475.0" layoutX="165.0" layoutY="241.0" startX="-64.79998779296875" />
-            <Label layoutX="15.0" layoutY="229.0" text="Product">
+            <Line endX="475.0" layoutX="165.0" layoutY="258.0" startX="-64.79998779296875" />
+            <Label layoutX="15.0" layoutY="246.0" text="Product">
                <font>
                   <Font name="Segoe UI Bold" size="18.0" />
                </font>
             </Label>
-            <Line endX="475.0" endY="7.62939453125E-6" layoutX="171.0" layoutY="63.0" startX="-67.60003662109375" startY="7.62939453125E-6" />
-            <Label layoutX="14.0" layoutY="51.0" text="Customer">
+            <Line endX="475.0" endY="7.62939453125E-6" layoutX="171.0" layoutY="51.0" startX="-67.60003662109375" startY="7.62939453125E-6" />
+            <Label layoutX="14.0" layoutY="39.0" text="Customer">
                <font>
                   <Font name="Segoe UI Bold" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="selectCus_btn" alignment="CENTER" layoutX="14.0" layoutY="93.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="149.0" style="-fx-background-color: #00a7d5;" text="Add customer" textFill="WHITE">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Button>
-            <Label layoutX="15.0" layoutY="149.0" text="Name:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="cusName_tf" layoutX="60.0" layoutY="146.0" />
-            <Label layoutX="14.0" layoutY="183.0" text="Email:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="cusEmail_tf" layoutX="59.0" layoutY="180.0" prefHeight="25.0" prefWidth="150.0" />
-            <Label layoutX="239.0" layoutY="149.0" text="Phone:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="cusPhone_tf" layoutX="299.0" layoutY="146.0" prefHeight="25.0" prefWidth="162.0" />
-            <Label layoutX="239.0" layoutY="183.0" text="Address:">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="cusAddress_tf" layoutX="299.0" layoutY="180.0" prefHeight="25.0" prefWidth="162.0" />
-            <ListView fx:id="order_productView" layoutX="729.0" layoutY="57.0" prefHeight="246.0" prefWidth="238.0" />
-            <Button fx:id="order_deleteProduct_btn" disable="true" layoutX="730.0" layoutY="323.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" style="-fx-background-color: #ED0800;" text="Delete" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="order_updateProduct_btn" disable="true" layoutX="857.0" layoutY="323.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" style="-fx-background-color: #00a7d5;" text="Update" textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Button>
-            <TableView fx:id="tableViewProduct" layoutX="14.0" layoutY="311.0" prefHeight="322.0" prefWidth="667.0">
-               <columns>
-                  <TableColumn fx:id="productColId" prefWidth="32.0" text="ID" />
-                  <TableColumn fx:id="productColType" minWidth="4.0" prefWidth="100.0" text="Type" />
-                  <TableColumn fx:id="productColBrand" prefWidth="100.0" text="Brand" />
-                  <TableColumn fx:id="productColName" prefWidth="150.0" text="Name" />
-                  <TableColumn fx:id="productColAmount" prefWidth="100.0" text="Amount" />
-                  <TableColumn fx:id="productColPrice" prefWidth="100.0" text="Price" />
-                  <TableColumn fx:id="productColStatus" prefWidth="90.0" text="Status" />
-               </columns>
-            </TableView>
             <Button fx:id="viewOrder_btn" layoutX="836.0" layoutY="581.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" style="-fx-background-color: #transparent; -fx-background-color: black;" text="Preview order" textFill="WHITE">
                <font>
                   <Font name="Segoe UI" size="14.0" />
@@ -119,13 +61,12 @@
                   <Insets left="20.0" />
                </padding>
             </TextField>
-            <Pagination fx:id="order_pag" layoutX="13.0" layoutY="311.0" prefHeight="366.0" prefWidth="667.0" />
-            <Button fx:id="orderClear_btn" layoutX="186.0" layoutY="93.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="89.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear">
+            <Button fx:id="orderClear_btn" layoutX="842.0" layoutY="67.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="94.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="addProductToOrder" layoutX="701.0" layoutY="581.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Add To Cart" />
+            <Button fx:id="addProductToOrder" disable="true" layoutX="701.0" layoutY="581.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" text="Add To Cart" />
             <Label layoutX="690.0" layoutY="425.0" text="Name:">
                <font>
                   <Font name="Segoe UI" size="14.0" />
@@ -133,6 +74,75 @@
             </Label>
             <TextField fx:id="order_productName_tf" disable="true" layoutX="766.0" layoutY="424.0" prefHeight="25.0" prefWidth="179.0" />
             <TextField fx:id="order_productId_tf" disable="true" layoutX="767.0" layoutY="389.0" prefHeight="25.0" prefWidth="179.0" visible="false" />
+            <VBox layoutX="14.0" layoutY="69.0" prefHeight="174.0" prefWidth="544.0">
+               <children>
+                  <TableView fx:id="CustomerTable" prefHeight="286.0" prefWidth="544.0">
+                    <columns>
+                      <TableColumn fx:id="cusColID" prefWidth="28.79998779296875" text="ID" />
+                      <TableColumn fx:id="cusColName" prefWidth="180.00002670288086" text="Name" />
+                        <TableColumn fx:id="cusColPhone" prefWidth="135.19996643066406" text="Phone" />
+                        <TableColumn fx:id="cusColEmail" prefWidth="202.4000244140625" text="Email" />
+                    </columns>
+                  </TableView>
+                  <Pagination fx:id="cusPag" prefHeight="119.0" prefWidth="544.0" />
+               </children>
+            </VBox>
+            <TextField fx:id="searchCustomer" layoutX="570.0" layoutY="69.0" prefHeight="26.0" prefWidth="203.0" promptText="Search Customer">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </TextField>
+            <FontAwesomeIconView glyphName="SEARCH" layoutX="449.0" layoutY="291.0" size="14" />
+            <FontAwesomeIconView glyphName="SEARCH" layoutX="573.0" layoutY="87.0" size="14" />
+            <Button fx:id="addCustomerBtn" layoutX="794.0" layoutY="211.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" style="-fx-background-color: #33b249;" text="Add new customer" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI" size="14.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS" selectionStart="0" size="16" />
+               </graphic>
+            </Button>
+            <Label layoutX="572.0" layoutY="109.0" text="Customer Name:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="570.0" layoutY="142.0" text="Phone number:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="570.0" layoutY="175.0" text="Email:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="customerName" disable="true" layoutX="686.0" layoutY="107.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent;" />
+            <TextField fx:id="customerPhone" disable="true" layoutX="684.0" layoutY="140.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent;" />
+            <TextField fx:id="customerEmail" disable="true" layoutX="686.0" layoutY="172.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent;" />
+            <Pane layoutX="730.0" layoutY="274.0" prefHeight="130.0" prefWidth="179.0">
+               <children>
+                  <ImageView fx:id="productImage" fitHeight="130.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <TextField fx:id="customerId" disable="true" layoutX="566.0" layoutY="211.0" visible="false" />
+            <TextField fx:id="productSalePrice" disable="true" layoutX="692.0" layoutY="392.0" visible="false" />
+            <VBox layoutX="15.0" layoutY="310.0" prefHeight="366.0" prefWidth="667.0">
+               <children>
+                  <TableView fx:id="tableViewProduct" prefHeight="322.0" prefWidth="667.0">
+                     <columns>
+                        <TableColumn fx:id="productColId" prefWidth="32.0" text="ID" />
+                        <TableColumn fx:id="productColType" minWidth="4.0" prefWidth="100.0" text="Type" />
+                        <TableColumn fx:id="productColBrand" prefWidth="100.0" text="Brand" />
+                        <TableColumn fx:id="productColName" prefWidth="150.0" text="Name" />
+                        <TableColumn fx:id="productColAmount" prefWidth="100.0" text="Amount" />
+                        <TableColumn fx:id="productColPrice" prefWidth="100.0" text="Price" />
+                        <TableColumn fx:id="productColStatus" prefWidth="90.0" text="Status" />
+                     </columns>
+                  </TableView>
+                  <Pagination fx:id="order_pag" prefHeight="44.0" prefWidth="667.0" />
+               </children>
+            </VBox>
          </children>
       </Pane>
    </children>

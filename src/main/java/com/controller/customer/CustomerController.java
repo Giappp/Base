@@ -88,7 +88,7 @@ public class CustomerController {
 
     private final int itemsPerPage = 12;
 
-    AlertMessages alertMessages;
+    AlertMessages alertMessages = new AlertMessages();
 
     public void initialize() {
         setupTable();
@@ -263,7 +263,7 @@ public class CustomerController {
     }
 
     private void addCustomerToDatabase() {
-        String sql = "INSERT INTO customer(name, address, phone, email) VALUES (?,?,?,?,)";
+        String sql = "INSERT INTO customer(name, address, phone, email) VALUES (?,?,?,?)";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
 

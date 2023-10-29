@@ -2,6 +2,7 @@ package com.controller.product;
 
 import com.controller.AlertMessages;
 import com.controller.dashboard.DashboardController;
+import com.controller.data;
 import com.db.dao.JDBCConnect;
 import com.entities.Product;
 import com.model.ProductCategoryModel;
@@ -138,14 +139,18 @@ public class ProductController implements Initializable {
     private String imageUrl;
 
     AlertMessages alertMessages;
+    ObservableList<Product> products;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setupTable();
         setUpPagination();
         ObservableList<String> listbrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
         ObservableList<String> listtypes = FXCollections.observableArrayList(new ProductCategoryModel().getType());
         addProductBrandCb.setItems(listbrands);
         addProductTypeCb.setItems(listtypes);
+        List<String> statuslist = Arrays.asList("Available", "Unavailable");
+        cbStatus.setItems(FXCollections.observableList(statuslist));
 
         addProductNewBrandBtn.setOnAction(event -> {
             try {
@@ -155,8 +160,6 @@ public class ProductController implements Initializable {
             }
             ObservableList<String> listBrands = FXCollections.observableArrayList(new SupplierModel().getBrands());
             addProductBrandCb.setItems(listBrands);
-            List<String> status = Arrays.asList("Available", "Unavailable");
-            cbStatus.setItems(FXCollections.observableList(status));
             ObservableList<String> listCategory = FXCollections.observableArrayList(new ProductCategoryModel().getType());
             addProductTypeCb.setItems(listCategory);
         });
@@ -297,7 +300,7 @@ public class ProductController implements Initializable {
                 addProductTypeCb.setItems(listCategory);
 
                 addProductAddBtn.setDisable(true);
-                updateScene.setDisable(false);
+                addProductUpdatebtn.setDisable(false);
                 productDeleteBtn.setDisable(false);
 
                 if (checkImageUrl(newValue.getImage())) {
@@ -314,7 +317,7 @@ public class ProductController implements Initializable {
                 addProductNameTf.setText(newValue.getName());
                 addProductSalespriceTf.setText(String.valueOf(newValue.getSalePrice()));
                 cbStatus.getSelectionModel().select(newValue.getStatus());
-                productColId.setText(String.valueOf(newValue.getId()));
+                addProductId.setText(String.valueOf(newValue.getId()));
                 addProductImportedpriceTf.setText(String.valueOf(newValue.getImportedPrice()));
             } else {
                 addProductAddBtn.setDisable(false);
@@ -325,7 +328,6 @@ public class ProductController implements Initializable {
                 int pageIndex = productPg.getCurrentPageIndex();
                 int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
                 productPg.setPageCount(pageCount);
-                ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
             }
         });
     }
@@ -347,25 +349,27 @@ public class ProductController implements Initializable {
     }
 
     private void resetTable() {
+        data.reset();
+        setupTable();
+        setUpPagination();
         addProductAddBtn.setDisable(false);
         addProductUpdatebtn.setDisable(true);
         productDeleteBtn.setDisable(true);
         clearTextFields(dashboardProduct);
-        int pageIndex = productPg.getCurrentPageIndex();
         int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
-        ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
     }
 
-    public void ShowListDataProduct(int offset,int limit,int pageIndex) {
-        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));
+    public void setupTable(){
+        products = data.products;
         productColId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        productColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
         productColName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
+        productColPrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         productColBrand.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         productColType.setCellValueFactory(new PropertyValueFactory<>("productType"));
-        productColPrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
         searchTf.textProperty().addListener((observable,oldvalue, newvalue) -> {
             filteredList.setPredicate(product -> {
@@ -378,38 +382,63 @@ public class ProductController implements Initializable {
             });
             updatePagination(filteredList,newvalue);
         });
-        tblvProduct.setItems(products);
+
+        updatePagination(filteredList,"");
     }
     public void setUpPagination(){
-        int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
+        int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
-        productPg.setPageFactory(pageIndex -> {
-            ShowListDataProduct(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
-            return tblvProduct;
+        productPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            updateProductData(newValue.intValue());
         });
     }
 
-    private void updatePagination(FilteredList<Product> filteredList, String newvalue){
+    private void updateProductData(int pageIndex){
+        int fromIndex = pageIndex * itemPerPages;
+        int toIndex = Math.min(fromIndex + itemPerPages, products.size());
+        tblvProduct.setItems(FXCollections.observableArrayList(products.subList(fromIndex, toIndex)));
+    }
+
+    private void updatePagination(FilteredList<Product> filteredList, String newvalue) {
+        // Calculate the total number of items in the filtered list
         int totalItems = filteredList.size();
+
+        // Update the page count based on the total items
         int pageCount;
-        if(newvalue == null || newvalue.trim().isEmpty()){
-            pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
-        }else if(totalItems == 0){
+        if (newvalue == null || newvalue.trim().isEmpty()) {
+            pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
+        } else if (totalItems == 0) {
             pageCount = 1;
+        } else {
+            pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
         }
-        else{
-            pageCount = (totalItems + itemPerPages-1)/itemPerPages;
-        }
+
         productPg.setPageCount(pageCount);
         if (productPg.getCurrentPageIndex() >= pageCount) {
             productPg.setCurrentPageIndex(pageCount - 1);
         }
+
+        // Calculate the indices for the current page
         int fromIndex = productPg.getCurrentPageIndex() * itemPerPages;
         int toIndex = Math.min(fromIndex + itemPerPages, totalItems);
 
-        SortedList<Product> sortedList = new SortedList<>(filteredList);
+        // Create a new FilteredList that filters the entire 'products' list
+        FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
+        String searchKeyWord = newvalue.toLowerCase();
+        updatedFilteredList.setPredicate(product -> {
+            if (newvalue == null || newvalue.trim().isBlank()) {
+                return true;
+            }
+            return product.getProductType().toLowerCase().contains(searchKeyWord)
+                    || product.getName().toLowerCase().contains(searchKeyWord)
+                    || product.getSupplierName().toLowerCase().contains(searchKeyWord);
+        });
+
+        // Sort the updated filtered list
+        SortedList<Product> sortedList = new SortedList<>(updatedFilteredList);
         sortedList.comparatorProperty().bind(tblvProduct.comparatorProperty());
 
+        // Set the data to display in the table based on the updated filtered list
         tblvProduct.setItems(FXCollections.observableArrayList(sortedList.subList(fromIndex, toIndex)));
     }
 

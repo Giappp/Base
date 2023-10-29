@@ -1,11 +1,18 @@
 package com.controller.order;
 
+import com.controller.AlertMessages;
+import com.controller.data;
+import com.entities.Customer;
 import com.entities.Product;
+import com.entities.ProductInOrder;
+import com.model.CustomerModel;
 import com.model.ProductModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,34 +20,59 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OrderController implements Initializable {
     ProductModel productModel = new ProductModel();
+    CustomerModel customerModel = new CustomerModel();
     private final int itemPerPages = 10;
-    ObservableList<Product> productObservableList;
+
+    @FXML
+    private TableView<Customer> CustomerTable;
+    @FXML
+    private TableColumn<Customer, String> cusColEmail;
+
+    @FXML
+    private TableColumn<Customer, Integer> cusColID;
+
+    @FXML
+    private TableColumn<Customer, String> cusColName;
+
+    @FXML
+    private TableColumn<Customer, String> cusColPhone;
+
+    @FXML
+    private Pagination cusPag;
+    @FXML
+    private Button addCustomerBtn;
+    @FXML
+    private TextField customerId;
+    @FXML
+    private TextField customerEmail;
+
+    @FXML
+    private TextField customerName;
+
+    @FXML
+    private TextField customerPhone;
 
     @FXML
     private Button addProductToOrder;
-
-    @FXML
-    private TextField cusAddress_tf;
-
-    @FXML
-    private TextField cusEmail_tf;
-
-    @FXML
-    private TextField cusName_tf;
-
-    @FXML
-    private TextField cusPhone_tf;
 
     @FXML
     private AnchorPane dashboardOrder;
@@ -56,6 +88,8 @@ public class OrderController implements Initializable {
 
     @FXML
     private TextField order_productId_tf;
+    @FXML
+    private TextField productSalePrice;
 
     @FXML
     private TextField order_productName_tf;
@@ -98,22 +132,175 @@ public class OrderController implements Initializable {
 
     @FXML
     private TextField searchProduct;
-
     @FXML
-    private Button selectCus_btn;
+    private ImageView productImage;
+    @FXML
+    private TextField searchCustomer;
 
     @FXML
     private TableView<Product> tableViewProduct;
 
     @FXML
     private Button viewOrder_btn;
+    private ObservableList<Product> products;
+    private ObservableList<Customer> customers;
+    private final int cusPerPages = 2;
+    private Product currentSelectProduct;
+    private Customer currentSelectCustomer;
+    private List<Product> cartList = new ArrayList<>();
+
+    private List<ProductInOrder> productInOrderList = new ArrayList<>();
+    AlertMessages alertMessages = new AlertMessages();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setUpTableOrder();
         setUpPagination();
+        selectProduct();
+
+        selectCustomer();
+        setupCustomerTable();
+        setupCustomerPagination();
+
+        addProductToOrderAction();
+        viewOrderAction();
     }
-    public void setUpTableOrder(int offset,int limit,int pageIndex){
-        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));
+
+    private void setupCustomerTable() {
+        customers = data.customers;
+        cusColID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cusColName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cusColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        cusColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        FilteredList<Customer> filteredList = new FilteredList<>(customers, b -> true);
+
+        searchCustomer.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(customer -> {
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+                return customer.getName().toLowerCase().contains(searchKeyword) || customer.getPhone().toLowerCase().contains(searchKeyword)
+                        || customer.getEmail().toLowerCase().contains(searchKeyword);
+            });
+            // update pagination
+            updateCustomerPagination(filteredList,newValue);
+
+        });
+        // update pagination
+        updateCustomerPagination(filteredList,"");
+    }
+
+    private void updateCustomerTableData(int pageIndex) {
+        int fromIndex = pageIndex * cusPerPages;
+        int toIndex = Math.min(fromIndex + cusPerPages, customers.size());
+        CustomerTable.setItems(FXCollections.observableArrayList(customers.subList(fromIndex, toIndex)));
+    }
+
+    private void setupCustomerPagination() {
+        int pageCount = (customers.size() + cusPerPages - 1) / cusPerPages;
+        cusPag.setPageCount(pageCount);
+        cusPag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            updateCustomerTableData(newValue.intValue());
+        });
+    }
+
+
+    private void updateCustomerPagination(FilteredList<Customer> filteredList,String newvalue) {
+        int totalItems = filteredList.size();
+
+        // Update the page count based on the total items
+        int pageCount;
+        if (newvalue == null || newvalue.trim().isEmpty()) {
+            pageCount = (totalItems + cusPerPages - 1) / cusPerPages;
+        } else if (totalItems == 0) {
+            pageCount = 1;
+        } else {
+            pageCount = (totalItems + cusPerPages - 1) / cusPerPages;
+        }
+
+        cusPag.setPageCount(pageCount);
+        if (cusPag.getCurrentPageIndex() >= pageCount) {
+            cusPag.setCurrentPageIndex(pageCount - 1);
+        }
+
+        // Calculate the indices for the current page
+        int fromIndex = cusPag.getCurrentPageIndex() * cusPerPages;
+        int toIndex = Math.min(fromIndex + cusPerPages, totalItems);
+
+        // Create a new FilteredList that filters the entire 'products' list
+        FilteredList<Customer> updatedFilteredList = new FilteredList<>(customers, b -> true);
+        String searchKeyWord = newvalue.toLowerCase();
+        updatedFilteredList.setPredicate(customer -> {
+            if (newvalue == null || newvalue.trim().isBlank()) {
+                return true;
+            }
+            return customer.getName().toLowerCase().contains(searchKeyWord) || customer.getPhone().toLowerCase().contains(searchKeyWord)
+                    || customer.getEmail().toLowerCase().contains(searchKeyWord);
+        });
+
+        // Sort the updated filtered list
+        SortedList<Customer> sortedList = new SortedList<>(updatedFilteredList);
+        sortedList.comparatorProperty().bind(CustomerTable.comparatorProperty());
+
+        // Set the data to display in the table based on the updated filtered list
+        CustomerTable.setItems(FXCollections.observableArrayList(sortedList.subList(fromIndex, toIndex)));
+    }
+
+    private void selectCustomer(){
+        CustomerTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                customerId.setText(String.valueOf(newValue.getId()));
+                customerName.setText(newValue.getName());
+                customerEmail.setText(newValue.getEmail());
+                customerPhone.setText(newValue.getPhone());
+            }
+        });
+    }
+
+    private void addProductToOrderAction(){
+        addProductToOrder.setOnAction(event -> {
+            if(currentSelectProduct != null && !order_quantity_tf.getText().trim().isEmpty()){
+                if(cartList.contains(currentSelectProduct)){
+                    alertMessages.errorMessage("Duplicate product");
+                    tableViewProduct.getSelectionModel().clearSelection();
+                }else{
+                    cartList.add(currentSelectProduct);
+                    ProductInOrder productInOrder = new ProductInOrder();
+                    productInOrder.setProductId(currentSelectProduct.getId());
+                    productInOrder.setQuantity(Integer.parseInt(order_quantity_tf.getText()));
+                    productInOrderList.add(productInOrder);
+                    System.out.println("add successfully");
+                    displayCartList();
+                    tableViewProduct.getSelectionModel().clearSelection();
+                }
+            }
+            currentSelectProduct = null;
+            addProductToOrder.setDisable(true);
+        });
+    }
+
+    private void viewOrderAction(){
+
+    }
+
+    private void displayCartList(){
+        if(!cartList.isEmpty() && !productInOrderList.isEmpty()) {
+            for (Product product : cartList) {
+                System.out.println(product.getId());
+                System.out.println(product.getName());
+                System.out.println(product.getSalePrice());
+            }
+            for(ProductInOrder productInOrder : productInOrderList){
+                System.out.println(productInOrder.getProductId());
+                System.out.println(productInOrder.getQuantity());
+            }
+        }
+    }
+
+    private void setUpTableOrder(){
+        products = data.products;
         productColId.setCellValueFactory(new PropertyValueFactory<>("id"));
         productColName.setCellValueFactory(new PropertyValueFactory<>("name"));
         productColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
@@ -135,41 +322,161 @@ public class OrderController implements Initializable {
             updatePagination(filteredList,newvalue);
         });
 
-        tableViewProduct.setItems(products);
+        updatePagination(filteredList,"");
     }
-    public void setUpPagination(){
-        int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
+    private void setUpPagination(){
+        int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
         order_pag.setPageCount(pageCount);
-        order_pag.setPageFactory(pageIndex -> {
-            setUpTableOrder(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
-            return tableViewProduct;
+        order_pag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            updateProductData(newValue.intValue());
         });
     }
 
-    private void updatePagination(FilteredList<Product> filteredList,String newvalue){
+    private void updateProductData(int pageIndex){
+        int fromIndex = pageIndex * itemPerPages;
+        int toIndex = Math.min(fromIndex + itemPerPages, products.size());
+        tableViewProduct.setItems(FXCollections.observableArrayList(products.subList(fromIndex, toIndex)));
+    }
+
+    private void updatePagination(FilteredList<Product> filteredList, String newvalue) {
+        // Calculate the total number of items in the filtered list
         int totalItems = filteredList.size();
+
+        // Update the page count based on the total items
         int pageCount;
-        if(newvalue == null || newvalue.trim().isEmpty()){
-            pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
-        }else if(totalItems == 0){
+        if (newvalue == null || newvalue.trim().isEmpty()) {
+            pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
+        } else if (totalItems == 0) {
             pageCount = 1;
+        } else {
+            pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
         }
-        else{
-            pageCount = (totalItems + itemPerPages-1)/itemPerPages;
-        }
+
         order_pag.setPageCount(pageCount);
         if (order_pag.getCurrentPageIndex() >= pageCount) {
             order_pag.setCurrentPageIndex(pageCount - 1);
         }
+
+        // Calculate the indices for the current page
         int fromIndex = order_pag.getCurrentPageIndex() * itemPerPages;
         int toIndex = Math.min(fromIndex + itemPerPages, totalItems);
 
-        SortedList<Product> sortedList = new SortedList<>(filteredList);
+        // Create a new FilteredList that filters the entire 'products' list
+        FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
+        String searchKeyWord = newvalue.toLowerCase();
+        updatedFilteredList.setPredicate(product -> {
+            if (newvalue == null || newvalue.trim().isBlank()) {
+                return true;
+            }
+            return product.getProductType().toLowerCase().contains(searchKeyWord)
+                    || product.getName().toLowerCase().contains(searchKeyWord)
+                    || product.getSupplierName().toLowerCase().contains(searchKeyWord);
+        });
+
+        // Sort the updated filtered list
+        SortedList<Product> sortedList = new SortedList<>(updatedFilteredList);
         sortedList.comparatorProperty().bind(tableViewProduct.comparatorProperty());
 
+        // Set the data to display in the table based on the updated filtered list
         tableViewProduct.setItems(FXCollections.observableArrayList(sortedList.subList(fromIndex, toIndex)));
     }
-    public void openModalWindow(String resource, String title) throws IOException {
+
+    private void selectProduct(){
+        tableViewProduct.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                currentSelectProduct = newValue;
+                if (checkImageUrl(newValue.getImage())) {
+//                    Image img = new Image(newValue.getImage());
+//                    addproduct_imageview.setImage(img);
+                    String currentPath = System.getProperty("user.dir");
+                    productImage.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
+                } else if (newValue.getImage() == null) {
+                    String currentPath = System.getProperty("user.dir");
+                    productImage.setImage(new Image(currentPath + "\\src\\main\\resources\\controller\\images\\default.jpg"));
+                }
+                order_productId_tf.setText(String.valueOf(currentSelectProduct.getId()));
+                order_productName_tf.setText(currentSelectProduct.getName());
+                order_quantity_tf.setText("1");
+                productSalePrice.setText(String.valueOf(currentSelectProduct.getSalePrice()));
+                Integer enteredQuantity = Integer.valueOf(order_quantity_tf.getText());
+                Double price = newValue.getSalePrice();
+                Double totalPaid = Math.round(enteredQuantity * price * 100.0)/100.0;
+                order_quantity_tf.setStyle(null);
+                order_totalPaid_tf.setText(String.valueOf(totalPaid));
+                addProductToOrder.setDisable(false);
+                enterQuantity();
+            }
+        });
+    }
+
+    private boolean isNodeInsideTableView(EventTarget target, TableView<?> tableView) {
+        // Check if the target node or any of its ancestors are the TableView
+        while (target != null && !(target instanceof Scene)) {
+            if (target.equals(tableView)) {
+                return true; // Node is inside the TableView
+            }
+            target = ((javafx.scene.Node) target).getParent();
+        }
+        return false; // Node is outside the TableView
+    }
+
+    private void enterQuantity(){
+        order_quantity_tf.addEventFilter(KeyEvent.KEY_TYPED,(event)->{
+            if(!isNumeric(event.getCharacter())) {
+                event.consume();
+            }
+        });
+        order_quantity_tf.textProperty().addListener((observable,oldValue,newValue) -> {
+            if(newValue != null && !newValue.trim().isEmpty()){
+                if(isValidInput(order_quantity_tf.getText())){
+                    int enteredQuantity = Integer.parseInt(order_quantity_tf.getText());
+                    double price = Double.parseDouble(productSalePrice.getText());
+                    double totalPaid = Math.round(enteredQuantity * price * 100.0)/100.0;
+                    addProductToOrder.setDisable(false);
+                    order_quantity_tf.setStyle(null);
+                    order_totalPaid_tf.setText(String.valueOf(totalPaid));
+                }
+                else{
+                    order_quantity_tf.setText(String.valueOf(oldValue));
+                }
+            }
+        });
+    }
+
+    private boolean isValidInput(String input){
+        if(isNumeric(input) && !input.trim().isEmpty() && currentSelectProduct != null){
+            try {
+                int value = Integer.parseInt(input);
+                return value <= currentSelectProduct.getQuantityInStock();
+            } catch (NumberFormatException e) {
+                // Handle parsing issues (non-integer input)
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkImageUrl (String url){
+        String regex
+                = "(\\S+(\\.(?i)(jpe?g|png|gif|bmp))$)";
+
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+
+        if (url == null) {
+            return false;
+        }
+
+        Matcher m = p.matcher(url);
+
+        return m.matches();
+    }
+
+    private boolean isNumeric(String newValue) {
+        return newValue.matches("\\d*");
+    }
+
+    private void openModalWindow(String resource, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
         Parent modalWindow = loader.load();
         Stage window = new Stage();
@@ -177,5 +484,6 @@ public class OrderController implements Initializable {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setIconified(false);
         window.setTitle(title);
+        window.showAndWait();
     }
 }

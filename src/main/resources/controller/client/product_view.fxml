@@ -11,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -21,17 +22,22 @@
       </font>
    </Text>
    <AnchorPane fx:id="updateScene" layoutX="14.0" layoutY="46.0" prefHeight="660.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <TableView fx:id="tblvProduct" layoutX="21.0" layoutY="325.0" prefHeight="339.0" prefWidth="964.0">
-         <columns>
-            <TableColumn fx:id="productColId" prefWidth="69.60000991821289" text="ID" />
-            <TableColumn fx:id="productColType" minWidth="4.0" prefWidth="92.0" text="Type" />
-            <TableColumn fx:id="productColBrand" prefWidth="202.40000915527344" text="Brand" />
-            <TableColumn fx:id="productColName" prefWidth="223.99996948242188" text="Name" />
-            <TableColumn fx:id="productColAmount" prefWidth="152.0" text="Amount" />
-            <TableColumn fx:id="productColPrice" prefWidth="112.79998779296875" text="Price" />
-            <TableColumn fx:id="productColStatus" prefWidth="114.4000244140625" text="Status" />
-         </columns>
-      </TableView>
+      <VBox layoutX="20.0" layoutY="327.0" prefHeight="387.0" prefWidth="964.0">
+         <children>
+            <TableView fx:id="tblvProduct" prefHeight="339.0" prefWidth="964.0">
+               <columns>
+                  <TableColumn fx:id="productColId" prefWidth="69.60000991821289" text="ID" />
+                  <TableColumn fx:id="productColType" minWidth="4.0" prefWidth="92.0" text="Type" />
+                  <TableColumn fx:id="productColBrand" prefWidth="202.40000915527344" text="Brand" />
+                  <TableColumn fx:id="productColName" prefWidth="223.99996948242188" text="Name" />
+                  <TableColumn fx:id="productColAmount" prefWidth="152.0" text="Amount" />
+                  <TableColumn fx:id="productColPrice" prefWidth="112.79998779296875" text="Price" />
+                  <TableColumn fx:id="productColStatus" prefWidth="114.4000244140625" text="Status" />
+               </columns>
+            </TableView>
+            <Pagination fx:id="productPg" prefHeight="48.0" prefWidth="964.0" />
+         </children>
+      </VBox>
       <AnchorPane fx:id="addProductScene" layoutX="18.0" layoutY="67.0" prefHeight="215.0" prefWidth="964.0" style="-fx-background-color: white;">
          <TextField fx:id="addProductNameTf" layoutX="74.0" layoutY="97.0" prefHeight="26.0" prefWidth="179.0" style="-fx-background-color: transparent; -fx-border-style: solid; -fx-border-width: 0 0 1px 0; -fx-border-color: #00A7D5;">
             <font>
@@ -126,7 +132,6 @@
             </font>
          </TextField>
       </AnchorPane>
-      <Pagination fx:id="productPg" layoutX="21.0" layoutY="335.0" prefHeight="380.0" prefWidth="964.0" />
       <TextField fx:id="searchTf" layoutX="734.0" layoutY="292.0" prefHeight="26.0" prefWidth="244.0" promptText="Search">
          <padding>
             <Insets left="25.0" />
