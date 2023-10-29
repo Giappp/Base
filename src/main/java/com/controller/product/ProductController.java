@@ -374,7 +374,7 @@ public class ProductController implements Initializable {
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
-        searchTf.textProperty().addListener((observable,oldvalue, newvalue) -> {
+        searchTf.textProperty().addListener((observable,oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
                 if (newValue == null || newValue.trim().isEmpty()) {
                     return true;
@@ -392,6 +392,7 @@ public class ProductController implements Initializable {
 
         updatePagination(filteredList,"");
     }
+
     public void setUpPagination(){
         int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
@@ -406,13 +407,13 @@ public class ProductController implements Initializable {
         tblvProduct.setItems(FXCollections.observableArrayList(products.subList(fromIndex, toIndex)));
     }
 
-    private void updatePagination(FilteredList<Product> filteredList, String newvalue) {
+    private void updatePagination(FilteredList<Product> filteredList, String newValue) {
         // Calculate the total number of items in the filtered list
         int totalItems = filteredList.size();
 
         // Update the page count based on the total items
         int pageCount;
-        if (newvalue == null || newvalue.trim().isEmpty()) {
+        if (newValue == null || newValue.trim().isEmpty()) {
             pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
         } else if (totalItems == 0) {
             pageCount = 1;
@@ -431,9 +432,9 @@ public class ProductController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newvalue.toLowerCase();
+        String searchKeyWord = newValue.toLowerCase();
         updatedFilteredList.setPredicate(product -> {
-            if (newvalue == null || newvalue.trim().isBlank()) {
+            if (newValue == null || newValue.trim().isBlank()) {
                 return true;
             }
             return product.getProductType().toLowerCase().contains(searchKeyWord)
