@@ -12,6 +12,7 @@ module Base {
     exports com.view;
     opens com.view to javafx.fxml;
     exports com.entities;
+    exports  com.model;
     exports com.controller.account to javafx.fxml;
     opens com.controller.account to javafx.fxml;
     exports com.controller.storage to javafx.fxml;

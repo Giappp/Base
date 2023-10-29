@@ -91,7 +91,7 @@ public class CustomerController {
 
     private final int itemsPerPage = 12;
 
-    AlertMessages alertMessages;
+    AlertMessages alertMessages = new AlertMessages();
 
     public void initialize() {
         alertMessages = new AlertMessages();
