@@ -61,7 +61,7 @@
                   <Insets left="20.0" />
                </padding>
             </TextField>
-            <Button fx:id="orderClear_btn" layoutX="842.0" layoutY="67.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="94.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear">
+            <Button fx:id="orderClear_btn" layoutX="617.0" layoutY="212.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="94.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>

@@ -1,20 +1,15 @@
 package com.controller.product;
 
 import com.controller.AlertMessages;
-import com.controller.dashboard.DashboardController;
 import com.controller.data;
-import com.db.dao.JDBCConnect;
 import com.entities.Product;
 import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
-import com.mysql.cj.protocol.Resultset;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,9 +29,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,7 +95,7 @@ public class ProductController implements Initializable {
 
     @FXML
     private TextField addProductImportedpriceTf;
-    
+
     @FXML
     private AnchorPane addProductScene;
 
@@ -376,18 +368,14 @@ public class ProductController implements Initializable {
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
         searchTf.textProperty().addListener((observable,oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
-                if (newValue == null || newValue.trim().isEmpty()) {
+                if(newValue == null || newValue.trim().isBlank()){
                     return true;
                 }
-                String searchKeyword = newValue.toLowerCase();
-                if (product.getProductType().toLowerCase().contains(searchKeyword)
-                        || product.getName().toLowerCase().contains(searchKeyword)
-                        || product.getSupplierName().toLowerCase().contains(searchKeyword)) {
-                    return true;
-                }
-                return false;
+                String searchKeyWord = newValue.toLowerCase();
+                return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
+                        || product.getSupplierName().toLowerCase().contains(searchKeyWord);
             });
-            updatePagination(filteredList, newValue);
+            updatePagination(filteredList,newValue);
         });
 
         updatePagination(filteredList,"");
@@ -396,6 +384,10 @@ public class ProductController implements Initializable {
     public void setUpPagination(){
         int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
+
+        int totalItemCount = productModel.getNumberRecords();
+        totalItems.setText("Total: " + totalItemCount);
+
         productPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
             updateProductData(newValue.intValue());
         });

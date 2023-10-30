@@ -20,6 +20,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -32,52 +38,73 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OrderController implements Initializable {
-
     ProductModel productModel = new ProductModel();
-
+    CustomerModel customerModel = new CustomerModel();
     private final int itemPerPages = 10;
+
+    @FXML
+    private TableView<Customer> CustomerTable;
+    @FXML
+    private TableColumn<Customer, String> cusColEmail;
+
+    @FXML
+    private TableColumn<Customer, Integer> cusColID;
+
+    @FXML
+    private TableColumn<Customer, String> cusColName;
+
+    @FXML
+    private TableColumn<Customer, String> cusColPhone;
+
+    @FXML
+    private Pagination cusPag;
+    @FXML
+    private Button addCustomerBtn;
+    @FXML
+    private TextField customerId;
+    @FXML
+    private TextField customerEmail;
+
+    @FXML
+    private TextField customerName;
+
+    @FXML
+    private TextField customerPhone;
 
     @FXML
     private Button addProductToOrder;
 
     @FXML
-    private TextField cusAddressTf;
+    private AnchorPane dashboardOrder;
 
     @FXML
-    private TextField cusEmailTf;
+    private Button orderClear_btn;
 
     @FXML
-    private TextField cusNameTf;
+    private Button order_deleteProduct_btn;
 
     @FXML
-    private TextField cusPhoneTf;
+    private Pagination order_pag;
 
     @FXML
-    private Button orderClearBtn;
+    private TextField order_productId_tf;
+    @FXML
+    private TextField productSalePrice;
 
     @FXML
-    private Button orderDeleteProductBtn;
+    private TextField order_productName_tf;
 
     @FXML
-    private Pagination orderPag;
+    private ListView<?> order_productView;
 
     @FXML
-    private TextField orderProductIdTf;
+    private TextField order_quantity_tf;
 
     @FXML
-    private TextField orderProductNameTf;
+    private TextField order_totalPaid_tf;
 
     @FXML
-    private ListView<?> orderProductView;
-
-    @FXML
-    private TextField orderQuantityTf;
-
-    @FXML
-    private TextField orderTotalPaidTf;
-
-    @FXML
-    private Button orderUpdateProductBtn;
+    private Button order_updateProduct_btn;
 
     @FXML
     private ComboBox<String> paymentComboBox;
@@ -106,13 +133,24 @@ public class OrderController implements Initializable {
     @FXML
     private TextField searchProduct;
     @FXML
-    private Button selectCusBtn;
+    private ImageView productImage;
+    @FXML
+    private TextField searchCustomer;
 
     @FXML
     private TableView<Product> tableViewProduct;
 
     @FXML
-    private Button viewOrderBtn;
+    private Button viewOrder_btn;
+    private ObservableList<Product> products;
+    private ObservableList<Customer> customers;
+    private final int cusPerPages = 2;
+    private Product currentSelectProduct;
+    private Customer currentSelectCustomer;
+    private List<Product> cartList = new ArrayList<>();
+
+    private List<ProductInOrder> productInOrderList = new ArrayList<>();
+    AlertMessages alertMessages = new AlertMessages();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -128,8 +166,141 @@ public class OrderController implements Initializable {
         viewOrderAction();
     }
 
-    public void setUpTableOrder(int offset,int limit,int pageIndex){
-        ObservableList<Product> products = FXCollections.observableList(productModel.getProductList2(pageIndex * itemPerPages, itemPerPages));
+    private void setupCustomerTable() {
+        customers = data.customers;
+        cusColID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cusColName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cusColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        cusColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        FilteredList<Customer> filteredList = new FilteredList<>(customers, b -> true);
+
+        searchCustomer.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(customer -> {
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+                return customer.getName().toLowerCase().contains(searchKeyword) || customer.getPhone().toLowerCase().contains(searchKeyword)
+                        || customer.getEmail().toLowerCase().contains(searchKeyword);
+            });
+            // update pagination
+            updateCustomerPagination(filteredList,newValue);
+
+        });
+        // update pagination
+        updateCustomerPagination(filteredList,"");
+    }
+
+    private void updateCustomerTableData(int pageIndex) {
+        int fromIndex = pageIndex * cusPerPages;
+        int toIndex = Math.min(fromIndex + cusPerPages, customers.size());
+        CustomerTable.setItems(FXCollections.observableArrayList(customers.subList(fromIndex, toIndex)));
+    }
+
+    private void setupCustomerPagination() {
+        int pageCount = (customers.size() + cusPerPages - 1) / cusPerPages;
+        cusPag.setPageCount(pageCount);
+        cusPag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            updateCustomerTableData(newValue.intValue());
+        });
+    }
+
+
+    private void updateCustomerPagination(FilteredList<Customer> filteredList,String newValue) {
+        int totalItems = filteredList.size();
+
+        // Update the page count based on the total items
+        int pageCount;
+        if (newValue == null || newValue.trim().isEmpty()) {
+            pageCount = (totalItems + cusPerPages - 1) / cusPerPages;
+        } else if (totalItems == 0) {
+            pageCount = 1;
+        } else {
+            pageCount = (totalItems + cusPerPages - 1) / cusPerPages;
+        }
+
+        cusPag.setPageCount(pageCount);
+        if (cusPag.getCurrentPageIndex() >= pageCount) {
+            cusPag.setCurrentPageIndex(pageCount - 1);
+        }
+
+        // Calculate the indices for the current page
+        int fromIndex = cusPag.getCurrentPageIndex() * cusPerPages;
+        int toIndex = Math.min(fromIndex + cusPerPages, totalItems);
+
+        // Create a new FilteredList that filters the entire 'products' list
+        FilteredList<Customer> updatedFilteredList = new FilteredList<>(customers, b -> true);
+        String searchKeyWord = newValue.toLowerCase();
+        updatedFilteredList.setPredicate(customer -> {
+            if (newValue == null || newValue.trim().isBlank()) {
+                return true;
+            }
+            return customer.getName().toLowerCase().contains(searchKeyWord) || customer.getPhone().toLowerCase().contains(searchKeyWord)
+                    || customer.getEmail().toLowerCase().contains(searchKeyWord);
+        });
+
+        // Sort the updated filtered list
+        SortedList<Customer> sortedList = new SortedList<>(updatedFilteredList);
+        sortedList.comparatorProperty().bind(CustomerTable.comparatorProperty());
+
+        // Set the data to display in the table based on the updated filtered list
+        CustomerTable.setItems(FXCollections.observableArrayList(sortedList.subList(fromIndex, toIndex)));
+    }
+
+    private void selectCustomer(){
+        CustomerTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                customerId.setText(String.valueOf(newValue.getId()));
+                customerName.setText(newValue.getName());
+                customerEmail.setText(newValue.getEmail());
+                customerPhone.setText(newValue.getPhone());
+            }
+        });
+    }
+
+    private void addProductToOrderAction(){
+        addProductToOrder.setOnAction(event -> {
+            if(currentSelectProduct != null && !order_quantity_tf.getText().trim().isEmpty()){
+                if(cartList.contains(currentSelectProduct)){
+                    alertMessages.errorMessage("Duplicate product");
+                    tableViewProduct.getSelectionModel().clearSelection();
+                }else{
+                    cartList.add(currentSelectProduct);
+                    ProductInOrder productInOrder = new ProductInOrder();
+                    productInOrder.setProductId(currentSelectProduct.getId());
+                    productInOrder.setQuantity(Integer.parseInt(order_quantity_tf.getText()));
+                    productInOrderList.add(productInOrder);
+                    System.out.println("add successfully");
+                    displayCartList();
+                    tableViewProduct.getSelectionModel().clearSelection();
+                }
+            }
+            currentSelectProduct = null;
+            addProductToOrder.setDisable(true);
+        });
+    }
+
+    private void viewOrderAction(){
+
+    }
+
+    private void displayCartList(){
+        if(!cartList.isEmpty() && !productInOrderList.isEmpty()) {
+            for (Product product : cartList) {
+                System.out.println(product.getId());
+                System.out.println(product.getName());
+                System.out.println(product.getSalePrice());
+            }
+            for(ProductInOrder productInOrder : productInOrderList){
+                System.out.println(productInOrder.getProductId());
+                System.out.println(productInOrder.getQuantity());
+            }
+        }
+    }
+
+    private void setUpTableOrder(){
+        products = data.products;
         productColId.setCellValueFactory(new PropertyValueFactory<>("id"));
         productColName.setCellValueFactory(new PropertyValueFactory<>("name"));
         productColAmount.setCellValueFactory(new PropertyValueFactory<>("quantityInStock"));
@@ -153,42 +324,48 @@ public class OrderController implements Initializable {
 
         updatePagination(filteredList,"");
     }
-    public void setUpPagination(){
-        int pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
-        orderPag.setPageCount(pageCount);
-        orderPag.setPageFactory(pageIndex -> {
-            setUpTableOrder(pageIndex * itemPerPages, Math.min(pageIndex * itemPerPages, productModel.getNumberRecords() - (pageIndex * itemPerPages)), pageIndex);
-            return tableViewProduct;
+    private void setUpPagination(){
+        int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
+        order_pag.setPageCount(pageCount);
+        order_pag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            updateProductData(newValue.intValue());
         });
     }
 
-    private void updatePagination(FilteredList<Product> filteredList,String newValue){
+    private void updateProductData(int pageIndex){
+        int fromIndex = pageIndex * itemPerPages;
+        int toIndex = Math.min(fromIndex + itemPerPages, products.size());
+        tableViewProduct.setItems(FXCollections.observableArrayList(products.subList(fromIndex, toIndex)));
+    }
+
+    private void updatePagination(FilteredList<Product> filteredList, String newValue) {
+        // Calculate the total number of items in the filtered list
         int totalItems = filteredList.size();
 
         // Update the page count based on the total items
         int pageCount;
-        if(newValue == null || newValue.trim().isEmpty()){
-            pageCount = (productModel.getNumberRecords() + itemPerPages - 1) / itemPerPages;
-        }else if(totalItems == 0){
+        if (newValue == null || newValue.trim().isEmpty()) {
+            pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
+        } else if (totalItems == 0) {
             pageCount = 1;
         } else {
             pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
         }
-        else{
-            pageCount = (totalItems + itemPerPages-1)/itemPerPages;
+
+        order_pag.setPageCount(pageCount);
+        if (order_pag.getCurrentPageIndex() >= pageCount) {
+            order_pag.setCurrentPageIndex(pageCount - 1);
         }
-        orderPag.setPageCount(pageCount);
-        if (orderPag.getCurrentPageIndex() >= pageCount) {
-            orderPag.setCurrentPageIndex(pageCount - 1);
-        }
-        int fromIndex = orderPag.getCurrentPageIndex() * itemPerPages;
+
+        // Calculate the indices for the current page
+        int fromIndex = order_pag.getCurrentPageIndex() * itemPerPages;
         int toIndex = Math.min(fromIndex + itemPerPages, totalItems);
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newvalue.toLowerCase();
+        String searchKeyWord = newValue.toLowerCase();
         updatedFilteredList.setPredicate(product -> {
-            if (newvalue == null || newvalue.trim().isBlank()) {
+            if (newValue == null || newValue.trim().isBlank()) {
                 return true;
             }
             return product.getProductType().toLowerCase().contains(searchKeyWord)
