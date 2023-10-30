@@ -7,19 +7,29 @@ public class Order {
     private int id;
     private int customerId;
     private int userId;
-    private ArrayList<Product> productInOrder;
+    private ArrayList<ProductInOrder> productInOrder;
     private Date dateRecorded;
+    private int totalAmount;
     private int status;
 
     public Order() {}
 
-    public Order(int id, int customerId, int userId, ArrayList<Product> productInOrder, Date dateRecorded, int status) {
+    public Order(int id, int customerId, int userId, ArrayList<ProductInOrder> productInOrder, Date dateRecorded, int status,int totalAmount) {
         this.id = id;
         this.customerId = customerId;
         this.userId = userId;
         this.productInOrder = productInOrder;
         this.dateRecorded = dateRecorded;
         this.status = status;
+        this.totalAmount = totalAmount;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public int getId() {
@@ -30,11 +40,11 @@ public class Order {
         this.id = id;
     }
 
-    public ArrayList<Product> getProductInOrder() {
+    public ArrayList<ProductInOrder> getProductInOrder() {
         return productInOrder;
     }
 
-    public void setProductInOrder(ArrayList<Product> productInOrder) {
+    public void setProductInOrder(ArrayList<ProductInOrder> productInOrder) {
         this.productInOrder = productInOrder;
     }
 

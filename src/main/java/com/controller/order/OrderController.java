@@ -1,11 +1,13 @@
 package com.controller.order;
 
 import com.controller.AlertMessages;
+import com.controller.client.PreviewOrder;
 import com.controller.data;
 import com.entities.Customer;
 import com.entities.Product;
 import com.entities.ProductInOrder;
 import com.model.CustomerModel;
+import com.model.ProductInOrderModel;
 import com.model.ProductModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,16 +33,44 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class OrderController implements Initializable {
     ProductModel productModel = new ProductModel();
     CustomerModel customerModel = new CustomerModel();
-    private final int itemPerPages = 10;
+    private final int itemPerPages = 12;
+
+    @FXML
+    private TableView<Customer> CustomerTable;
+    @FXML
+    private TableColumn<Customer, String> cusColEmail;
+
+    @FXML
+    private TableColumn<Customer, Integer> cusColID;
+
+    @FXML
+    private TableColumn<Customer, String> cusColName;
+
+    @FXML
+    private TableColumn<Customer, String> cusColPhone;
+
+    @FXML
+    private Pagination cusPag;
+    @FXML
+    private Button addCustomerBtn;
+    @FXML
+    private TextField customerId;
+    @FXML
+    private TextField customerEmail;
+
+    @FXML
+    private TextField customerName;
+
+    @FXML
+    private TextField customerPhone;
 
     @FXML
     private TableView<Customer> CustomerTable;
@@ -142,14 +172,23 @@ public class OrderController implements Initializable {
 
     @FXML
     private Button viewOrder_btn;
+
+    @FXML
+    private Label productInCartCount;
+
+    @FXML
+    private Button clearCartButton;
+
+    PreviewOrder previewOrderController;
     private ObservableList<Product> products;
     private ObservableList<Customer> customers;
-    private final int cusPerPages = 2;
+    private final int cusPerPages = 4;
     private Product currentSelectProduct;
     private Customer currentSelectCustomer;
     private List<Product> cartList = new ArrayList<>();
 
     private List<ProductInOrder> productInOrderList = new ArrayList<>();
+    private FXMLLoader loader;
     AlertMessages alertMessages = new AlertMessages();
 
     @Override
@@ -164,6 +203,10 @@ public class OrderController implements Initializable {
 
         addProductToOrderAction();
         viewOrderAction();
+        setClearCartButton();
+        setCountProductInCart();
+
+        setOrderClearButton();
     }
 
     private void setupCustomerTable() {
@@ -251,6 +294,7 @@ public class OrderController implements Initializable {
     private void selectCustomer(){
         CustomerTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
+                currentSelectCustomer = newValue;
                 customerId.setText(String.valueOf(newValue.getId()));
                 customerName.setText(newValue.getName());
                 customerEmail.setText(newValue.getEmail());
@@ -263,17 +307,25 @@ public class OrderController implements Initializable {
         addProductToOrder.setOnAction(event -> {
             if(currentSelectProduct != null && !order_quantity_tf.getText().trim().isEmpty()){
                 if(cartList.contains(currentSelectProduct)){
-                    alertMessages.errorMessage("Duplicate product");
+                    alertMessages.errorMessage("Duplicate Product");
                     tableViewProduct.getSelectionModel().clearSelection();
                 }else{
                     cartList.add(currentSelectProduct);
                     ProductInOrder productInOrder = new ProductInOrder();
                     productInOrder.setProductId(currentSelectProduct.getId());
                     productInOrder.setQuantity(Integer.parseInt(order_quantity_tf.getText()));
+                    productInOrder.setPrice(currentSelectProduct.getSalePrice());
+                    productInOrder.setName(currentSelectProduct.getName());
+                    productInOrder.setSupplierName(currentSelectProduct.getSupplierName());
+                    int enteredQuantity = Integer.parseInt(order_quantity_tf.getText());
+                    double price = Double.parseDouble(productSalePrice.getText());
+                    double totalPaid = Math.round(enteredQuantity * price * 100.0)/100.0;
+                    products.remove(currentSelectProduct);
+                    setUpTableOrder();
+                    productInOrder.setTotalPrice(totalPaid);
                     productInOrderList.add(productInOrder);
-                    System.out.println("add successfully");
-                    displayCartList();
                     tableViewProduct.getSelectionModel().clearSelection();
+                    setCountProductInCart();
                 }
             }
             currentSelectProduct = null;
@@ -282,7 +334,64 @@ public class OrderController implements Initializable {
     }
 
     private void viewOrderAction(){
+        viewOrder_btn.setOnAction(event -> {
+            if(currentSelectCustomer == null){
+                alertMessages.errorMessage("Customer Information is null!");
+            }else if(productInOrderList.isEmpty()){
+                alertMessages.errorMessage("Product cart is empty");
+            }
+            else{
+                try {
+                    openModalWindow("/controller/client/previewOrder.fxml","Preview Order");
+                    // Pass the data to the method in the PreviewOrderController
+                    setCountProductInCart();
+                    setUpTableOrder();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
+    private void clearAll() {
+        products.addAll(cartList);
+        products.sort(Comparator.comparing(Product::getId));
+        setUpTableOrder();
+        productInOrderList.clear();
+        cartList.clear();
+        setCountProductInCart();
+        productImage.setImage(null);
+        order_totalPaid_tf.clear();
+        order_quantity_tf.clear();
+        order_productName_tf.clear();
+        order_productId_tf.clear();
+        setCountProductInCart();
+        currentSelectProduct = null;
+        currentSelectCustomer = null;
+        CustomerTable.getSelectionModel().clearSelection();
+        customerPhone.clear();
+        customerEmail.clear();
+        customerName.clear();
+        customerId.clear();
+    }
+
+    private void setCountProductInCart(){
+        productInCartCount.setText(String.valueOf(productInOrderList.size()));
+    }
+    private void setOrderClearButton(){
+        orderClear_btn.setOnAction(event -> {
+            clearAll();
+        });
+    }
+    private void setClearCartButton(){
+        clearCartButton.setOnAction(event -> {
+            products.addAll(cartList);
+            products.sort(Comparator.comparing(Product::getId));
+            setUpTableOrder();
+            productInOrderList.clear();
+            cartList.clear();
+            setCountProductInCart();
+        });
     }
 
     private void displayCartList(){
@@ -310,16 +419,16 @@ public class OrderController implements Initializable {
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
-        searchProduct.textProperty().addListener((observable,oldValue, newValue) -> {
+        searchProduct.textProperty().addListener((observable,oldvalue, newvalue) -> {
             filteredList.setPredicate(product -> {
-                if(newValue == null || newValue.trim().isBlank()){
+                if(newvalue == null || newvalue.trim().isBlank()){
                     return true;
                 }
-                String searchKeyWord = newValue.toLowerCase();
+                String searchKeyWord = newvalue.toLowerCase();
                 return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
                         || product.getSupplierName().toLowerCase().contains(searchKeyWord);
             });
-            updatePagination(filteredList,newValue);
+            updatePagination(filteredList,newvalue);
         });
 
         updatePagination(filteredList,"");
@@ -477,8 +586,10 @@ public class OrderController implements Initializable {
     }
 
     private void openModalWindow(String resource, String title) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+        loader = new FXMLLoader(getClass().getResource(resource));
         Parent modalWindow = loader.load();
+        previewOrderController = loader.getController();
+        previewOrderController.setData(cartList, productInOrderList,currentSelectCustomer,products);
         Stage window = new Stage();
         window.setScene(new Scene(modalWindow));
         window.initModality(Modality.APPLICATION_MODAL);
@@ -487,3 +598,4 @@ public class OrderController implements Initializable {
         window.showAndWait();
     }
 }
+

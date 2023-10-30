@@ -5,7 +5,11 @@ import java.sql.*;
 import com.db.dao.JDBCConnect;
 import com.entities.Order;
 import com.entities.Product;
+import com.entities.ProductInOrder;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderManage {
 
@@ -35,9 +39,9 @@ public class OrderManage {
                 JDBCConnect.closePreparedStatement(ps);
                 ps = conn.prepareStatement(sql);
                 rs = ps.executeQuery();
-                ArrayList<Product> productList = new ArrayList<Product>();
+                ArrayList<ProductInOrder> productList = new ArrayList<ProductInOrder>();
                 ProductModel productModel = new ProductModel();
-                while (rs.next()) productList.add(productModel.getProduct(rs.getInt("productId")));
+
                 orderResult.setProductInOrder(productList);
             }
         } catch (SQLException e) {
@@ -50,7 +54,32 @@ public class OrderManage {
         return result ? orderResult : null;
     }
 
-    private boolean add(Order order) {
+    public boolean addOrder(Order order, List<ProductInOrder> productInOrderList) {
+        String sql = "INSERT INTO `order`(customerId,userId,dateRecorded,totalAmount,status) VALUES(?,?,?,?,?)";
+        int orderId = -1;
+        try(Connection connection = JDBCConnect.getJDBCConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+            preparedStatement.setInt(1,order.getCustomerId());
+            preparedStatement.setInt(2,2);
+            Date instantDate = Date.valueOf(LocalDate.now());
+            preparedStatement.setDate(3,instantDate);
+            preparedStatement.setInt(4,order.getTotalAmount());
+            preparedStatement.setInt(5,order.getStatus());
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        orderId = generatedKeys.getInt(1); // Retrieve the generated ID
+                        ProductInOrderModel productInOrderModel = new ProductInOrderModel();
+                        return productInOrderModel.addProductToOrder(productInOrderList, orderId);
+                    } else {
+                        // Handle if no generated keys found
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }
