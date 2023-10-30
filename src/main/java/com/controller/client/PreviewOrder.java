@@ -1,13 +1,16 @@
 package com.controller.client;
 
 import com.controller.AlertMessages;
+import com.controller.data;
 import com.db.dao.JDBCConnect;
 import com.entities.Customer;
 import com.entities.Order;
 import com.entities.Product;
 import com.entities.ProductInOrder;
 import com.model.OrderManage;
+import com.model.ProductModel;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
@@ -15,6 +18,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+
 import java.sql.Date;
 
 import java.net.URL;
@@ -22,10 +27,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PreviewOrder implements Initializable {
 
@@ -106,21 +110,26 @@ public class PreviewOrder implements Initializable {
     private List<ProductInOrder> productInOrderList = new ArrayList<>();
     private Customer customer = new Customer();
     private ProductInOrder currentProductInOrder = new ProductInOrder();
+
+    private ObservableList<Product> products;
+
     private Order order = new Order();
     private boolean isDeleteColumnAdded = false;
     private TableColumn<ProductInOrder, Void> deleteButtonCol;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setDataCustomer();
-        setDataForTable();
         updateButton();
         selectOrderView();
         setUpSearch();
+        enterQuantity();
     }
-    public void setData(List<Product> cartList, List<ProductInOrder> productInOrderList,Customer customer) {
+
+
+    public void setData(List<Product> cartList, List<ProductInOrder> productInOrderList, Customer customer, ObservableList<Product> products) {
         this.cartList = cartList;
         this.productInOrderList = productInOrderList;
         this.customer = customer;
+        this.products = products;
         setDataCustomer();
         setDataForTable();
         setPriceAll();
@@ -210,6 +219,8 @@ public class PreviewOrder implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            products.add(new ProductModel().getProduct(product.getProductId()));
+            products.sort(Comparator.comparing(Product::getId));
             productInOrderList.remove(product);
             setPriceAll();
             setTotalItems();
@@ -238,11 +249,10 @@ public class PreviewOrder implements Initializable {
 
     }
 
-    public void resetTableData(List<ProductInOrder> newProductInOrderList) {
-        orderView.getItems().clear(); // Clear the existing data
+    public void resetTableData() {
+        setDataForTable();
 
         // Set new data to the TableView
-        orderView.setItems(FXCollections.observableList(newProductInOrderList));
         setTotalItems();
         setPriceAll();
     }
@@ -314,11 +324,11 @@ public class PreviewOrder implements Initializable {
                 double totalPrice = quantity * currentProductInOrder.getPrice();
                 totalPrice = Math.round(totalPrice * 100.00) / 100.00;
                 productInOrderList.get(productInOrderList.indexOf(currentProductInOrder)).setTotalPrice(totalPrice);
-                resetTableData(productInOrderList);
+
                 clearTextField();
                 setUpOrder();
-                setPriceAll();
-                setTotalItems();
+
+                resetTableData();
             }
         });
     }
@@ -353,6 +363,13 @@ public class PreviewOrder implements Initializable {
         cancelButton.setDisable(true);
     }
     private void addToDatabase(){
+        if(productInOrderList.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Modal");
+            alert.setContentText("Product List is empty");
+            alert.showAndWait();
+            return;
+        }
         OrderManage orderManage = new OrderManage();
         boolean flag = orderManage.addOrder(order,productInOrderList);
         if(!flag){
@@ -366,5 +383,50 @@ public class PreviewOrder implements Initializable {
             alert.setContentText("Add Successfully");
             alert.showAndWait();
         }
+    }
+    private void enterQuantity(){
+        productQuantity.addEventFilter(KeyEvent.KEY_TYPED,(event)->{
+            if(!isNumeric(event.getCharacter())) {
+                event.consume();
+            }
+        });
+        productQuantity.textProperty().addListener((observable,oldValue,newValue) -> {
+            if(newValue != null && !newValue.trim().isEmpty() && currentProductInOrder != null){
+                if(isValidInput(productQuantity.getText(),searchProductInCart(currentProductInOrder.getProductId()))){
+                    int enteredQuantity = Integer.parseInt(productQuantity.getText());
+                    double price = currentProductInOrder.getPrice();
+                    double totalPaid = Math.round(enteredQuantity * price * 100.0)/100.0;
+                    totalPrice.setText(String.valueOf(totalPaid));
+                }
+                else{
+                    productQuantity.setText(String.valueOf(Objects.requireNonNull(searchProductInCart(currentProductInOrder.getProductId())).getQuantityInStock()));
+                }
+            }
+        });
+    }
+    private boolean isValidInput(String input,Product product){
+        if(isNumeric(input) && !input.trim().isEmpty() && product != null){
+            try {
+                int value = Integer.parseInt(input);
+                return value <= product.getQuantityInStock();
+            } catch (NumberFormatException e) {
+                // Handle parsing issues (non-integer input)
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private boolean isNumeric(String newValue) {
+        return newValue.matches("\\d*");
+    }
+
+    private Product searchProductInCart(int productId){
+        for (Product product : cartList) {
+            if (product.getId() == productId) {
+                return product; // Return the product if found
+            }
+        }
+        return null; // If no product with the given ID is found
     }
 }
