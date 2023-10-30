@@ -374,7 +374,7 @@ public class ProductController implements Initializable {
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
-        searchTf.textProperty().addListener((observable,oldvalue, newvalue) -> {
+        searchTf.textProperty().addListener((observable,oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
                 if (newValue == null || newValue.trim().isEmpty()) {
                     return true;
