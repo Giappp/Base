@@ -2,6 +2,7 @@ package com.controller.client;
 
 import com.controller.AlertMessages;
 import com.controller.data;
+import com.controller.order.OrderController;
 import com.db.dao.JDBCConnect;
 import com.entities.*;
 import com.model.InvoiceModel;
@@ -115,24 +116,28 @@ public class PreviewOrder implements Initializable {
 
     private Order order = new Order();
     private Invoice invoice = new Invoice();
-    private boolean orderFlag;
     private boolean isDeleteColumnAdded = false;
     private TableColumn<ProductInOrder, Void> deleteButtonCol;
+    private OrderController orderController;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateButton();
         selectOrderView();
         setUpSearch();
         enterQuantity();
+        cancelButton.setOnAction(event -> {
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+        });
     }
 
 
-    public void setData(List<Product> cartList, List<ProductInOrder> productInOrderList, Customer customer, ObservableList<Product> products,Boolean orderFlag) {
+    public void setData(OrderController orderController,List<Product> cartList, List<ProductInOrder> productInOrderList, Customer customer, ObservableList<Product> products) {
+        this.orderController = orderController;
         this.cartList = cartList;
         this.productInOrderList = productInOrderList;
         this.customer = customer;
         this.products = products;
-        this.orderFlag = orderFlag;
         setDataCustomer();
         setDataForTable();
         setPriceAll();
@@ -396,7 +401,7 @@ public class PreviewOrder implements Initializable {
             alert.setTitle("Confirm Modal");
             alert.setContentText("Add Successfully");
             alert.showAndWait();
-            orderFlag = true;
+            orderController.clearAll();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
         }

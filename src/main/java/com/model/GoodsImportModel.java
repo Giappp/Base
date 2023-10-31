@@ -17,11 +17,12 @@ public class GoodsImportModel {
             assert connection != null;
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setInt(1, goodsImport.getProductId());
-                preparedStatement.setInt(2, goodsImport.getQuantity());
-                preparedStatement.setDouble(3, goodsImport.getUnitPrice());
-                preparedStatement.setDouble(4, goodsImport.getTotalPrice());
-                preparedStatement.setDate(5, goodsImport.getDateImported());
-                preparedStatement.setInt(6,goodsImport.getUserId());
+                preparedStatement.setInt(2,2);
+                preparedStatement.setInt(3, goodsImport.getQuantity());
+                preparedStatement.setDouble(4, goodsImport.getUnitPrice());
+                preparedStatement.setDouble(5, goodsImport.getTotalPrice());
+                preparedStatement.setDate(6, goodsImport.getDateImported());
+
                 return preparedStatement.executeUpdate() > 0;
             }
         } catch (SQLException e) {

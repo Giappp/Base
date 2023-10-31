@@ -73,35 +73,6 @@ public class OrderController implements Initializable {
     private TextField customerPhone;
 
     @FXML
-    private TableView<Customer> CustomerTable;
-    @FXML
-    private TableColumn<Customer, String> cusColEmail;
-
-    @FXML
-    private TableColumn<Customer, Integer> cusColID;
-
-    @FXML
-    private TableColumn<Customer, String> cusColName;
-
-    @FXML
-    private TableColumn<Customer, String> cusColPhone;
-
-    @FXML
-    private Pagination cusPag;
-    @FXML
-    private Button addCustomerBtn;
-    @FXML
-    private TextField customerId;
-    @FXML
-    private TextField customerEmail;
-
-    @FXML
-    private TextField customerName;
-
-    @FXML
-    private TextField customerPhone;
-
-    @FXML
     private Button addProductToOrder;
 
     @FXML
@@ -345,9 +316,6 @@ public class OrderController implements Initializable {
                 try {
                     openModalWindow("/controller/client/previewOrder.fxml","Preview Order");
                     // Pass the data to the method in the PreviewOrderController
-                    if(orderFlag){
-                        clearAll();
-                    }
                     setCountProductInCart();
                     setUpTableOrder();
                 } catch (IOException e) {
@@ -357,9 +325,8 @@ public class OrderController implements Initializable {
         });
     }
 
-    private void clearAll() {
-        products.addAll(cartList);
-        products.sort(Comparator.comparing(Product::getId));
+    public void clearAll() {
+        data.reset();
         setUpTableOrder();
         productInOrderList.clear();
         cartList.clear();
@@ -592,7 +559,7 @@ public class OrderController implements Initializable {
         loader = new FXMLLoader(getClass().getResource(resource));
         Parent modalWindow = loader.load();
         previewOrderController = loader.getController();
-        previewOrderController.setData(cartList, productInOrderList,currentSelectCustomer,products,orderFlag);
+        previewOrderController.setData(this,cartList, productInOrderList,currentSelectCustomer,products);
         Stage window = new Stage();
         window.setScene(new Scene(modalWindow));
         window.initModality(Modality.APPLICATION_MODAL);
