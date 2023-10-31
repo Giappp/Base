@@ -3,10 +3,8 @@ package com.controller.client;
 import com.controller.AlertMessages;
 import com.controller.data;
 import com.db.dao.JDBCConnect;
-import com.entities.Customer;
-import com.entities.Order;
-import com.entities.Product;
-import com.entities.ProductInOrder;
+import com.entities.*;
+import com.model.InvoiceModel;
 import com.model.OrderManage;
 import com.model.ProductModel;
 import javafx.collections.FXCollections;
@@ -16,9 +14,11 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 import java.sql.Date;
 
@@ -114,6 +114,8 @@ public class PreviewOrder implements Initializable {
     private ObservableList<Product> products;
 
     private Order order = new Order();
+    private Invoice invoice = new Invoice();
+    private boolean orderFlag;
     private boolean isDeleteColumnAdded = false;
     private TableColumn<ProductInOrder, Void> deleteButtonCol;
     @Override
@@ -125,11 +127,12 @@ public class PreviewOrder implements Initializable {
     }
 
 
-    public void setData(List<Product> cartList, List<ProductInOrder> productInOrderList, Customer customer, ObservableList<Product> products) {
+    public void setData(List<Product> cartList, List<ProductInOrder> productInOrderList, Customer customer, ObservableList<Product> products,Boolean orderFlag) {
         this.cartList = cartList;
         this.productInOrderList = productInOrderList;
         this.customer = customer;
         this.products = products;
+        this.orderFlag = orderFlag;
         setDataCustomer();
         setDataForTable();
         setPriceAll();
@@ -137,6 +140,7 @@ public class PreviewOrder implements Initializable {
         setUpOrderPagination();
         setUpSearch();
         setUpOrder();
+        setUpInvoice();
         setUpCreateOrderButton();
     }
 
@@ -149,6 +153,16 @@ public class PreviewOrder implements Initializable {
             }
             order.setTotalAmount(total);
             order.setStatus(0);
+        }
+    }
+
+    private void setUpInvoice(){
+        if(customer != null && !productInOrderList.isEmpty()){
+            invoice.setTotalPrice(Double.parseDouble(totalPriceAll.getText()));
+            invoice.setCustomerId(customer.getId());
+            invoice.setUserId(2);
+            invoice.setPaymentType(1);
+            invoice.setTotalPaid(Double.parseDouble(totalPriceAll.getText()));
         }
     }
 
@@ -327,7 +341,7 @@ public class PreviewOrder implements Initializable {
 
                 clearTextField();
                 setUpOrder();
-
+                setUpInvoice();
                 resetTableData();
             }
         });
@@ -371,7 +385,7 @@ public class PreviewOrder implements Initializable {
             return;
         }
         OrderManage orderManage = new OrderManage();
-        boolean flag = orderManage.addOrder(order,productInOrderList);
+        boolean flag = orderManage.addOrder(order,productInOrderList,invoice);
         if(!flag){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Modal");
@@ -382,6 +396,9 @@ public class PreviewOrder implements Initializable {
             alert.setTitle("Confirm Modal");
             alert.setContentText("Add Successfully");
             alert.showAndWait();
+            orderFlag = true;
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
         }
     }
     private void enterQuantity(){

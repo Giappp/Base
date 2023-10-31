@@ -154,6 +154,7 @@ public class OrderController implements Initializable {
     private ObservableList<Product> products;
     private ObservableList<Customer> customers;
     private final int cusPerPages = 4;
+    Boolean orderFlag = false;
     private Product currentSelectProduct;
     private Customer currentSelectCustomer;
     private List<Product> cartList = new ArrayList<>();
@@ -315,6 +316,9 @@ public class OrderController implements Initializable {
                 try {
                     openModalWindow("/controller/client/previewOrder.fxml","Preview Order");
                     // Pass the data to the method in the PreviewOrderController
+                    if(orderFlag){
+                        clearAll();
+                    }
                     setCountProductInCart();
                     setUpTableOrder();
                 } catch (IOException e) {
@@ -356,8 +360,7 @@ public class OrderController implements Initializable {
     }
     private void setClearCartButton(){
         clearCartButton.setOnAction(event -> {
-            products.addAll(cartList);
-            products.sort(Comparator.comparing(Product::getId));
+            data.reset();
             setUpTableOrder();
             productInOrderList.clear();
             cartList.clear();
@@ -560,7 +563,7 @@ public class OrderController implements Initializable {
         loader = new FXMLLoader(getClass().getResource(resource));
         Parent modalWindow = loader.load();
         previewOrderController = loader.getController();
-        previewOrderController.setData(cartList, productInOrderList,currentSelectCustomer,products);
+        previewOrderController.setData(cartList, productInOrderList,currentSelectCustomer,products,orderFlag);
         Stage window = new Stage();
         window.setScene(new Scene(modalWindow));
         window.initModality(Modality.APPLICATION_MODAL);

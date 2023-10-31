@@ -3,6 +3,7 @@ package com.model;
 import java.sql.*;
 
 import com.db.dao.JDBCConnect;
+import com.entities.Invoice;
 import com.entities.Order;
 import com.entities.Product;
 import com.entities.ProductInOrder;
@@ -54,7 +55,7 @@ public class OrderManage {
         return result ? orderResult : null;
     }
 
-    public boolean addOrder(Order order, List<ProductInOrder> productInOrderList) {
+    public boolean addOrder(Order order, List<ProductInOrder> productInOrderList, Invoice invoice) {
         String sql = "INSERT INTO `order`(customerId,userId,dateRecorded,totalAmount,status) VALUES(?,?,?,?,?)";
         int orderId = -1;
         try(Connection connection = JDBCConnect.getJDBCConnection();
@@ -71,7 +72,12 @@ public class OrderManage {
                     if (generatedKeys.next()) {
                         orderId = generatedKeys.getInt(1); // Retrieve the generated ID
                         ProductInOrderModel productInOrderModel = new ProductInOrderModel();
-                        return productInOrderModel.addProductToOrder(productInOrderList, orderId);
+                        invoice.setOrderId(orderId);
+                        invoice.setDateRecorded(instantDate);
+                        InvoiceModel invoiceModel = new InvoiceModel();
+                        productInOrderModel.addProductToOrder(productInOrderList, orderId);
+                        return invoiceModel.addToDatabase(invoice);
+
                     } else {
                         // Handle if no generated keys found
                     }

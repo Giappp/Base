@@ -18,8 +18,9 @@ public class ProductInOrderModel {
                     preparedStatement.setInt(1,orderId);
                     preparedStatement.setInt(2,product.getProductId());
                     preparedStatement.setInt(3,product.getQuantity());
-                    preparedStatement.executeUpdate();
+                    preparedStatement.addBatch();
                 }
+                preparedStatement.executeBatch();
                 return true;
             }
         } catch (SQLException e){
