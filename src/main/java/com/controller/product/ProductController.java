@@ -1,20 +1,15 @@
 package com.controller.product;
 
 import com.controller.AlertMessages;
-import com.controller.dashboard.DashboardController;
 import com.controller.data;
-import com.db.dao.JDBCConnect;
 import com.entities.Product;
 import com.model.ProductCategoryModel;
 import com.model.ProductModel;
 import com.model.SupplierModel;
-import com.mysql.cj.protocol.Resultset;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,9 +29,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,7 +95,7 @@ public class ProductController implements Initializable {
 
     @FXML
     private TextField addProductImportedpriceTf;
-    
+
     @FXML
     private AnchorPane addProductScene;
 
@@ -376,25 +368,26 @@ public class ProductController implements Initializable {
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
         searchTf.textProperty().addListener((observable,oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
-                if (newValue == null || newValue.trim().isEmpty()) {
+                if(newValue == null || newValue.trim().isBlank()){
                     return true;
                 }
-                String searchKeyword = newValue.toLowerCase();
-                if (product.getProductType().toLowerCase().contains(searchKeyword)
-                        || product.getName().toLowerCase().contains(searchKeyword)
-                        || product.getSupplierName().toLowerCase().contains(searchKeyword)) {
-                    return true;
-                }
-                return false;
+                String searchKeyWord = newValue.toLowerCase();
+                return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
+                        || product.getSupplierName().toLowerCase().contains(searchKeyWord);
             });
-            updatePagination(filteredList, newValue);
+            updatePagination(filteredList,newValue);
         });
 
         updatePagination(filteredList,"");
     }
+
     public void setUpPagination(){
         int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
         productPg.setPageCount(pageCount);
+
+        int totalItemCount = productModel.getNumberRecords();
+        totalItems.setText("Total: " + totalItemCount);
+
         productPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
             updateProductData(newValue.intValue());
         });
@@ -406,13 +399,13 @@ public class ProductController implements Initializable {
         tblvProduct.setItems(FXCollections.observableArrayList(products.subList(fromIndex, toIndex)));
     }
 
-    private void updatePagination(FilteredList<Product> filteredList, String newvalue) {
+    private void updatePagination(FilteredList<Product> filteredList, String newValue) {
         // Calculate the total number of items in the filtered list
         int totalItems = filteredList.size();
 
         // Update the page count based on the total items
         int pageCount;
-        if (newvalue == null || newvalue.trim().isEmpty()) {
+        if (newValue == null || newValue.trim().isEmpty()) {
             pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
         } else if (totalItems == 0) {
             pageCount = 1;
@@ -431,9 +424,9 @@ public class ProductController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newvalue.toLowerCase();
+        String searchKeyWord = newValue.toLowerCase();
         updatedFilteredList.setPredicate(product -> {
-            if (newvalue == null || newvalue.trim().isBlank()) {
+            if (newValue == null || newValue.trim().isBlank()) {
                 return true;
             }
             return product.getProductType().toLowerCase().contains(searchKeyWord)

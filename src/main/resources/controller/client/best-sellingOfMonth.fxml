@@ -6,10 +6,12 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.dashboard.BestSellingController">
-    <PieChart fx:id="bestEllingChart" layoutX="80.0" layoutY="117.0" prefHeight="486.0" prefWidth="602.0" />
-    <Text fill="#00a7d5" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics of best-selling products during the month">
+    <Text fill="#00a7d5" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics of best-selling">
         <font>
           <Font name="Segoe UI Bold" size="24.0" />
         </font>
     </Text>
+    <AnchorPane layoutX="49.0" layoutY="63.0" prefHeight="594.0" prefWidth="902.0">
+        <PieChart fx:id="bestSellingChart" layoutX="150.0" layoutY="54.0" prefHeight="486.0" prefWidth="602.0" />
+    </AnchorPane>
 </AnchorPane>

@@ -152,6 +152,10 @@ END;
 
 DELIMITER ;
 
+CREATE INDEX user_id ON pos.goods_import ( user_id );
+
+CREATE INDEX goods_import_ibfk_3_idx ON pos.goods_import ( product_id );
+
 INSERT INTO pos.product_category (id, name, description) VALUES
                                                              (1, 'Rectifier Diode', 'Linh kiện điện tửDiode'),
                                                              (2, 'Capacitor', 'Linh kiện điện tử Capacitor'),
@@ -258,6 +262,3 @@ VALUES
     (4, 1, 3, 2, 800.0, 800.0, '2023-10-06'),
     (5, 3, 1, 1, 900.0, 900.0, '2023-10-07');
 
-CREATE INDEX user_id ON pos.goods_import ( user_id );
-
-CREATE INDEX goods_import_ibfk_3_idx ON pos.goods_import ( product_id );

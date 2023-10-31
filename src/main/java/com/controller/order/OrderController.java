@@ -73,6 +73,35 @@ public class OrderController implements Initializable {
     private TextField customerPhone;
 
     @FXML
+    private TableView<Customer> CustomerTable;
+    @FXML
+    private TableColumn<Customer, String> cusColEmail;
+
+    @FXML
+    private TableColumn<Customer, Integer> cusColID;
+
+    @FXML
+    private TableColumn<Customer, String> cusColName;
+
+    @FXML
+    private TableColumn<Customer, String> cusColPhone;
+
+    @FXML
+    private Pagination cusPag;
+    @FXML
+    private Button addCustomerBtn;
+    @FXML
+    private TextField customerId;
+    @FXML
+    private TextField customerEmail;
+
+    @FXML
+    private TextField customerName;
+
+    @FXML
+    private TextField customerPhone;
+
+    @FXML
     private Button addProductToOrder;
 
     @FXML
@@ -222,12 +251,12 @@ public class OrderController implements Initializable {
     }
 
 
-    private void updateCustomerPagination(FilteredList<Customer> filteredList,String newvalue) {
+    private void updateCustomerPagination(FilteredList<Customer> filteredList,String newValue) {
         int totalItems = filteredList.size();
 
         // Update the page count based on the total items
         int pageCount;
-        if (newvalue == null || newvalue.trim().isEmpty()) {
+        if (newValue == null || newValue.trim().isEmpty()) {
             pageCount = (totalItems + cusPerPages - 1) / cusPerPages;
         } else if (totalItems == 0) {
             pageCount = 1;
@@ -246,9 +275,9 @@ public class OrderController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Customer> updatedFilteredList = new FilteredList<>(customers, b -> true);
-        String searchKeyWord = newvalue.toLowerCase();
+        String searchKeyWord = newValue.toLowerCase();
         updatedFilteredList.setPredicate(customer -> {
-            if (newvalue == null || newvalue.trim().isBlank()) {
+            if (newValue == null || newValue.trim().isBlank()) {
                 return true;
             }
             return customer.getName().toLowerCase().contains(searchKeyWord) || customer.getPhone().toLowerCase().contains(searchKeyWord)
@@ -421,13 +450,13 @@ public class OrderController implements Initializable {
         tableViewProduct.setItems(FXCollections.observableArrayList(products.subList(fromIndex, toIndex)));
     }
 
-    private void updatePagination(FilteredList<Product> filteredList, String newvalue) {
+    private void updatePagination(FilteredList<Product> filteredList, String newValue) {
         // Calculate the total number of items in the filtered list
         int totalItems = filteredList.size();
 
         // Update the page count based on the total items
         int pageCount;
-        if (newvalue == null || newvalue.trim().isEmpty()) {
+        if (newValue == null || newValue.trim().isEmpty()) {
             pageCount = (totalItems + itemPerPages - 1) / itemPerPages;
         } else if (totalItems == 0) {
             pageCount = 1;
@@ -446,9 +475,9 @@ public class OrderController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newvalue.toLowerCase();
+        String searchKeyWord = newValue.toLowerCase();
         updatedFilteredList.setPredicate(product -> {
-            if (newvalue == null || newvalue.trim().isBlank()) {
+            if (newValue == null || newValue.trim().isBlank()) {
                 return true;
             }
             return product.getProductType().toLowerCase().contains(searchKeyWord)
