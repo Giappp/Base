@@ -100,6 +100,15 @@ public class ImportProduct implements Initializable {
                 }
             }
         });
+        amountSp.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                int amount = Integer.parseInt(amountSp.getEditor().getText());
+                double price = Double.parseDouble(importedPriceTf.getText());
+
+                double totalValue = amount * price;
+                totalLb.setText(String.valueOf(totalValue));
+            }
+        });
 
         supplierCb.valueProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){

@@ -65,9 +65,6 @@ public class OrderController implements Initializable {
     private TextField customerId;
 
     @FXML
-    private TextField customerEmail;
-
-    @FXML
     private TextField customerName;
 
     @FXML
@@ -143,6 +140,13 @@ public class OrderController implements Initializable {
     private Button clearCartButton;
 
     PreviewOrder previewOrderController;
+    private ObservableList<Product> products;
+    private ObservableList<Customer> customers;
+    private final int cusPerPages = 4;
+    Boolean orderFlag = false;
+    private Product currentSelectProduct;
+    private Customer currentSelectCustomer;
+    private List<Product> cartList = new ArrayList<>();
 
     private ObservableList<Product> products;
 
@@ -322,9 +326,8 @@ public class OrderController implements Initializable {
         });
     }
 
-    private void clearAll() {
-        products.addAll(cartList);
-        products.sort(Comparator.comparing(Product::getId));
+    public void clearAll() {
+        data.reset();
         setUpTableOrder();
         productInOrderList.clear();
         cartList.clear();
@@ -352,8 +355,7 @@ public class OrderController implements Initializable {
     }
     private void setClearCartButton(){
         clearCartButton.setOnAction(event -> {
-            products.addAll(cartList);
-            products.sort(Comparator.comparing(Product::getId));
+            data.reset();
             setUpTableOrder();
             productInOrderList.clear();
             cartList.clear();
@@ -554,7 +556,7 @@ public class OrderController implements Initializable {
         loader = new FXMLLoader(getClass().getResource("/controller/client/previewOrder.fxml"));
         Parent modalWindow = loader.load();
         previewOrderController = loader.getController();
-        previewOrderController.setData(cartList, productInOrderList,currentSelectCustomer,products);
+        previewOrderController.setData(this,cartList, productInOrderList,currentSelectCustomer,products);
         Stage window = new Stage();
         window.setScene(new Scene(modalWindow));
         window.initModality(Modality.APPLICATION_MODAL);

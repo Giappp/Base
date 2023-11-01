@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ProductInOrderModel {
-    public boolean addProductToOrder(List<ProductInOrder> productInOrderList,int orderId){
+    public void addProductToOrder(List<ProductInOrder> productInOrderList, int orderId){
         String sql = "INSERT INTO product_in_order(`orderId`,`productId`,`quantity`) VALUES(?,?,?)";
         try(Connection connection = JDBCConnect.getJDBCConnection()) {
             assert connection != null;
@@ -18,13 +18,12 @@ public class ProductInOrderModel {
                     preparedStatement.setInt(1,orderId);
                     preparedStatement.setInt(2,product.getProductId());
                     preparedStatement.setInt(3,product.getQuantity());
-                    preparedStatement.executeUpdate();
+                    preparedStatement.addBatch();
                 }
-                return true;
+                preparedStatement.executeBatch();
             }
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return false;
     }
 }

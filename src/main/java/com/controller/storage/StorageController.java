@@ -72,7 +72,7 @@ public class StorageController implements Initializable {
     @FXML
     private Pagination storagePg;
 
-    private static final int ITEMS_PER_PAGE = 10;
+    private static final int ITEMS_PER_PAGE = 18;
 
     private ObservableList<Product> productObservableList = FXCollections.observableArrayList();
 
@@ -151,7 +151,15 @@ public class StorageController implements Initializable {
                     product.unitPriceProperty(),
                     product.getQuantityInStockProperty()
             );
-            return totalBinding.asObject();
+            DoubleBinding roundedTotalBinding = Bindings.createDoubleBinding(() ->
+                            Math.round(totalBinding.get() * 100.0) / 100.0,
+                    totalBinding
+            );
+
+            return Bindings.createObjectBinding(
+                    () -> roundedTotalBinding.get(),
+                    roundedTotalBinding
+            );
         });
 
         productObservableList = getProducts(0); // get default product
