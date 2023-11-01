@@ -161,16 +161,15 @@
                <Font name="Segoe UI" size="14.0" />
             </font>
             <graphic>
-               <Pane prefHeight="200.0" prefWidth="200.0">
-                  <children>
-                     <FontAwesomeIconView fill="WHITE" layoutX="20.0" layoutY="28.0" size="24" text="" textAlignment="RIGHT" />
-                     <Label layoutX="56.0" layoutY="11.0" text="check" textFill="WHITE">
-                        <font>
-                           <Font name="Segoe UI" size="14.0" />
-                        </font>
-                     </Label>
-                  </children>
-               </Pane>
+                <Pane prefHeight="200.0" prefWidth="200.0">
+                    <FontAwesomeIconView fill="WHITE" layoutX="20.0" layoutY="28.0" size="24" text=""
+                                         textAlignment="RIGHT"/>
+                    <Label layoutX="56.0" layoutY="11.0" text="check" textFill="WHITE">
+                       <font>
+                           <Font name="Segoe UI" size="14.0"/>
+                       </font>
+                    </Label>
+                </Pane>
             </graphic>
          </Button>
          <Line endX="100.0" startX="-100.0" stroke="WHITE" />

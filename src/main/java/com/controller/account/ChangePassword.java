@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -17,6 +18,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ChangePassword implements Initializable {
+
+    Stage closeWin;
 
     @FXML
     private Label tfId;
@@ -64,7 +67,13 @@ public class ChangePassword implements Initializable {
                 ps.setString(1, pfChangeNewPass.getText());
                 ps.setInt(2, Integer.parseInt(tfId.getText())); // Use id to change pass
                 ps.executeUpdate();
+
+                // Automatically close the interface after successfully changing the password
                 alert.successMessage("Change Password Successfully!");
+
+                // Initialize closeWin with the current stage
+                closeWin = (Stage) acceptNewPassBtn.getScene().getWindow();
+                closeWin.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

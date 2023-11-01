@@ -7,13 +7,11 @@ import com.entities.Customer;
 import com.entities.Product;
 import com.entities.ProductInOrder;
 import com.model.CustomerModel;
-import com.model.ProductInOrderModel;
 import com.model.ProductModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,9 +23,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -36,15 +31,18 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class OrderController implements Initializable {
+
     ProductModel productModel = new ProductModel();
+
     CustomerModel customerModel = new CustomerModel();
+
     private final int itemPerPages = 12;
 
     @FXML
     private TableView<Customer> CustomerTable;
+
     @FXML
     private TableColumn<Customer, String> cusColEmail;
 
@@ -59,39 +57,13 @@ public class OrderController implements Initializable {
 
     @FXML
     private Pagination cusPag;
+
     @FXML
     private Button addCustomerBtn;
+
     @FXML
     private TextField customerId;
-    @FXML
-    private TextField customerEmail;
 
-    @FXML
-    private TextField customerName;
-
-    @FXML
-    private TextField customerPhone;
-
-    @FXML
-    private TableView<Customer> CustomerTable;
-    @FXML
-    private TableColumn<Customer, String> cusColEmail;
-
-    @FXML
-    private TableColumn<Customer, Integer> cusColID;
-
-    @FXML
-    private TableColumn<Customer, String> cusColName;
-
-    @FXML
-    private TableColumn<Customer, String> cusColPhone;
-
-    @FXML
-    private Pagination cusPag;
-    @FXML
-    private Button addCustomerBtn;
-    @FXML
-    private TextField customerId;
     @FXML
     private TextField customerEmail;
 
@@ -105,19 +77,14 @@ public class OrderController implements Initializable {
     private Button addProductToOrder;
 
     @FXML
-    private AnchorPane dashboardOrder;
-
-    @FXML
     private Button orderClear_btn;
-
-    @FXML
-    private Button order_deleteProduct_btn;
 
     @FXML
     private Pagination order_pag;
 
     @FXML
     private TextField order_productId_tf;
+
     @FXML
     private TextField productSalePrice;
 
@@ -125,16 +92,10 @@ public class OrderController implements Initializable {
     private TextField order_productName_tf;
 
     @FXML
-    private ListView<?> order_productView;
-
-    @FXML
     private TextField order_quantity_tf;
 
     @FXML
     private TextField order_totalPaid_tf;
-
-    @FXML
-    private Button order_updateProduct_btn;
 
     @FXML
     private ComboBox<String> paymentComboBox;
@@ -162,8 +123,10 @@ public class OrderController implements Initializable {
 
     @FXML
     private TextField searchProduct;
+
     @FXML
     private ImageView productImage;
+
     @FXML
     private TextField searchCustomer;
 
@@ -180,15 +143,23 @@ public class OrderController implements Initializable {
     private Button clearCartButton;
 
     PreviewOrder previewOrderController;
-    private ObservableList<Product> products;
-    private ObservableList<Customer> customers;
-    private final int cusPerPages = 4;
-    private Product currentSelectProduct;
-    private Customer currentSelectCustomer;
-    private List<Product> cartList = new ArrayList<>();
 
-    private List<ProductInOrder> productInOrderList = new ArrayList<>();
-    private FXMLLoader loader;
+    private ObservableList<Product> products;
+
+    private ObservableList<Customer> customers;
+
+    private final int cusPerPages = 4;
+
+    private Product currentSelectProduct;
+
+    private Customer currentSelectCustomer;
+
+    List<Product> cartList = new ArrayList<>();
+
+    List<ProductInOrder> productInOrderList = new ArrayList<>();
+
+    FXMLLoader loader;
+
     AlertMessages alertMessages = new AlertMessages();
 
     @Override
@@ -244,9 +215,7 @@ public class OrderController implements Initializable {
     private void setupCustomerPagination() {
         int pageCount = (customers.size() + cusPerPages - 1) / cusPerPages;
         cusPag.setPageCount(pageCount);
-        cusPag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
-            updateCustomerTableData(newValue.intValue());
-        });
+        cusPag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updateCustomerTableData(newValue.intValue()));
     }
 
 
@@ -274,7 +243,7 @@ public class OrderController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Customer> updatedFilteredList = new FilteredList<>(customers, b -> true);
-        String searchKeyWord = newValue.toLowerCase();
+        String searchKeyWord = (newValue != null) ? newValue.toLowerCase() : "";
         updatedFilteredList.setPredicate(customer -> {
             if (newValue == null || newValue.trim().isBlank()) {
                 return true;
@@ -342,7 +311,7 @@ public class OrderController implements Initializable {
             }
             else{
                 try {
-                    openModalWindow("/controller/client/previewOrder.fxml","Preview Order");
+                    openModalWindow();
                     // Pass the data to the method in the PreviewOrderController
                     setCountProductInCart();
                     setUpTableOrder();
@@ -379,9 +348,7 @@ public class OrderController implements Initializable {
         productInCartCount.setText(String.valueOf(productInOrderList.size()));
     }
     private void setOrderClearButton(){
-        orderClear_btn.setOnAction(event -> {
-            clearAll();
-        });
+        orderClear_btn.setOnAction(event -> clearAll());
     }
     private void setClearCartButton(){
         clearCartButton.setOnAction(event -> {
@@ -419,16 +386,16 @@ public class OrderController implements Initializable {
         productColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         FilteredList<Product> filteredList = new FilteredList<>(products,b -> true);
-        searchProduct.textProperty().addListener((observable,oldvalue, newvalue) -> {
+        searchProduct.textProperty().addListener((observable,oldValue, newValue) -> {
             filteredList.setPredicate(product -> {
-                if(newvalue == null || newvalue.trim().isBlank()){
+                if(newValue == null || newValue.trim().isBlank()){
                     return true;
                 }
-                String searchKeyWord = newvalue.toLowerCase();
+                String searchKeyWord = newValue.toLowerCase();
                 return product.getProductType().toLowerCase().contains(searchKeyWord) || product.getName().toLowerCase().contains(searchKeyWord)
                         || product.getSupplierName().toLowerCase().contains(searchKeyWord);
             });
-            updatePagination(filteredList,newvalue);
+            updatePagination(filteredList,newValue);
         });
 
         updatePagination(filteredList,"");
@@ -436,9 +403,7 @@ public class OrderController implements Initializable {
     private void setUpPagination(){
         int pageCount = (products.size() + itemPerPages - 1) / itemPerPages;
         order_pag.setPageCount(pageCount);
-        order_pag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
-            updateProductData(newValue.intValue());
-        });
+        order_pag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updateProductData(newValue.intValue()));
     }
 
     private void updateProductData(int pageIndex){
@@ -472,7 +437,7 @@ public class OrderController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newValue.toLowerCase();
+        String searchKeyWord = (newValue != null) ? newValue.toLowerCase() : "";
         updatedFilteredList.setPredicate(product -> {
             if (newValue == null || newValue.trim().isBlank()) {
                 return true;
@@ -585,8 +550,8 @@ public class OrderController implements Initializable {
         return newValue.matches("\\d*");
     }
 
-    private void openModalWindow(String resource, String title) throws IOException {
-        loader = new FXMLLoader(getClass().getResource(resource));
+    private void openModalWindow() throws IOException {
+        loader = new FXMLLoader(getClass().getResource("/controller/client/previewOrder.fxml"));
         Parent modalWindow = loader.load();
         previewOrderController = loader.getController();
         previewOrderController.setData(cartList, productInOrderList,currentSelectCustomer,products);
@@ -594,7 +559,7 @@ public class OrderController implements Initializable {
         window.setScene(new Scene(modalWindow));
         window.initModality(Modality.APPLICATION_MODAL);
         window.setIconified(false);
-        window.setTitle(title);
+        window.setTitle("Preview Order");
         window.showAndWait();
     }
 }

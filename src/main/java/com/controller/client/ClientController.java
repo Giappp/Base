@@ -10,7 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -138,7 +137,7 @@ public class ClientController {
                 alert.setContentText("Are you sure want to logout?");
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.get().equals(ButtonType.OK)) {
+                if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                     DBController.changeScene(event, "/controller/logSign/log-in.fxml");
                 }
             } catch (Exception e) {
