@@ -121,8 +121,7 @@ public class DashboardController implements Initializable {
     }
 
     public void displayTotalEarning() {
-        String sql = "SELECT SUM(totalPaid) AS totalEarning FROM invoice";
-
+        String sql = "SELECT SUM(totalPaid) AS totalEarning FROM invoice WHERE MONTH(dateRecorded) = MONTH(NOW())";
         try (Connection con = JDBCConnect.getJDBCConnection();
              Statement stmt = Objects.requireNonNull(con).createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
@@ -252,15 +251,17 @@ public class DashboardController implements Initializable {
 
             // Update revenueLabel and compareRevenueLabel
             revenueLabel.setText(String.format("%.2f", revenueThisMonth));
-            compareRevenueLabel.setText(decimalFormat.format(revenueThisMonth - revenueLastMonth));
+//            compareRevenueLabel.setText(decimalFormat.format(revenueThisMonth - revenueLastMonth));
+            compareRevenueLabel.setText(decimalFormat.format(revenueThisMonth));
 
             // Update revenueLabel and compareRevenueLabel
             revenueLabel.setText(decimalFormat.format(revenueThisMonth));
 
-            double compareRevenue = revenueThisMonth - revenueLastMonth;
+//            double compareRevenue = revenueThisMonth - revenueLastMonth;
+            double compareRevenue = revenueThisMonth;
 
             // Set the text fill based on compareRevenue value
-            if (compareRevenue > 0) {
+            if (compareRevenue >= 0) {
                 compareRevenueLabel.setText("+" + decimalFormat.format(compareRevenue));
                 compareRevenueLabel.setTextFill(Color.GREEN);
             } else {
@@ -372,15 +373,17 @@ public class DashboardController implements Initializable {
 
             // Update revenueLabel and compareRevenueLabel
             totalOrdersLabel.setText(String.valueOf(ordersThisMonth));
-            compareTotalOrdersLabel.setText(String.valueOf(ordersThisMonth - ordersLastMonth));
+//            compareTotalOrdersLabel.setText(String.valueOf(ordersThisMonth - ordersLastMonth));
+            compareTotalOrdersLabel.setText(String.valueOf(ordersThisMonth));
 
             totalOrdersLabel.setText(String.valueOf(ordersThisMonth));
 
-            int compareOrders = ordersThisMonth - ordersLastMonth;
+//            int compareOrders = ordersThisMonth - ordersLastMonth;
+            int compareOrders = ordersThisMonth;
 
 
             // Set the text fill based on compareRevenue value
-            if (compareOrders > 0) {
+            if (compareOrders >= 0) {
                 compareTotalOrdersLabel.setText("+" + compareOrders);
                 compareTotalOrdersLabel.setTextFill(Color.GREEN);
             } else {

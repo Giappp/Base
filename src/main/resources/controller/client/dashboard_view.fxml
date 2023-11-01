@@ -25,7 +25,7 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="earningText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+      <Text fx:id="earningText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
          <font>
             <Font name="Segoe UI" size="30.0" />
          </font>
@@ -41,7 +41,7 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="productImportText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+      <Text fx:id="productImportText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
          <font>
             <Font name="Segoe UI" size="30.0" />
          </font>
@@ -57,7 +57,7 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="totalOrderText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+      <Text fx:id="totalOrderText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
          <font>
             <Font name="Segoe UI" size="30.0" />
          </font>
@@ -73,7 +73,7 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="totalCustomerText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+      <Text fx:id="totalCustomerText" fill="WHITE" layoutX="13.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
          <font>
             <Font name="Segoe UI" size="30.0" />
          </font>
@@ -98,7 +98,7 @@
                <Font name="Segoe UI Bold" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="revenueLabel" layoutX="209.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
+         <Label fx:id="revenueLabel" layoutX="227.0" layoutY="23.0" prefHeight="22.0" prefWidth="208.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>

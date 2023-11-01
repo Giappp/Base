@@ -94,10 +94,10 @@ public class ClientController {
             setActiveButton(homeBtn);
         });
 
-        checkbtn.setOnAction(event -> {
-            loadPage("best-sellingOfMonth");
-            setActiveButton(checkbtn);
-        });
+//        checkbtn.setOnAction(event -> {
+//            loadPage("best-sellingOfMonth");
+//            setActiveButton(checkbtn);
+//        });
 
         accountBtn.setOnAction(event -> {
             loadPage("account_view");

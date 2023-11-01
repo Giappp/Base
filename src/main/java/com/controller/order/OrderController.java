@@ -34,6 +34,9 @@ import java.util.regex.Pattern;
 
 public class OrderController implements Initializable {
 
+    @FXML
+    private TextField customerEmail;
+
     ProductModel productModel = new ProductModel();
 
     CustomerModel customerModel = new CustomerModel();
@@ -140,13 +143,6 @@ public class OrderController implements Initializable {
     private Button clearCartButton;
 
     PreviewOrder previewOrderController;
-    private ObservableList<Product> products;
-    private ObservableList<Customer> customers;
-    private final int cusPerPages = 4;
-    Boolean orderFlag = false;
-    private Product currentSelectProduct;
-    private Customer currentSelectCustomer;
-    private List<Product> cartList = new ArrayList<>();
 
     private ObservableList<Product> products;
 
