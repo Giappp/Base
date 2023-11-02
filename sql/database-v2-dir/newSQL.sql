@@ -9,19 +9,19 @@ CREATE  TABLE `POS`.customer (
 
 CREATE  TABLE `POS`.invoice ( 
 	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-	order_id             INT       ,
-	customer_id          INT       ,
-	user_id              INT       ,
-	payment_type         INT       ,
-	total_price          DOUBLE       ,
-	total_paid           DOUBLE       ,
-	date_recorded        DATE       ,
-	CONSTRAINT unq_invoice UNIQUE ( order_id ) 
+	orderId             INT       ,
+	customerId          INT       ,
+	userId              INT       ,
+	paymentType         INT       ,
+	totalPrice          DOUBLE       ,
+	totalPaid           DOUBLE       ,
+	dateRecorded        DATE       ,
+	CONSTRAINT unq_invoice UNIQUE ( orderId )
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX customer_id ON `POS`.invoice ( customer_id );
+CREATE INDEX customerId ON `POS`.invoice ( customerId );
 
-CREATE INDEX user_id ON `POS`.invoice ( user_id );
+CREATE INDEX userId ON `POS`.invoice ( userId );
 
 CREATE  TABLE `POS`.product_category ( 
 	id                   INT  NOT NULL     PRIMARY KEY,
@@ -49,58 +49,58 @@ CREATE  TABLE `POS`.users (
 
 CREATE  TABLE `POS`.`order` ( 
 	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-	customer_id          INT       ,
-	user_id              INT       ,
-	date_recorded        DATE       ,
+	customerId          INT       ,
+	userId              INT       ,
+	dateRecorded        DATE       ,
 	`status`             TINYINT       
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX customer_id ON `POS`.`order` ( customer_id );
+CREATE INDEX customerId ON `POS`.`order` ( customerId );
 
-CREATE INDEX user_id ON `POS`.`order` ( user_id );
+CREATE INDEX userId ON `POS`.`order` ( userId );
 
 CREATE  TABLE `POS`.product ( 
 	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
 	name                 VARCHAR(255)       ,
-	supplier_id          INT       ,
-	product_type_id      INT       ,
-	quantity_in_stock    INT       ,
-	sale_price           FLOAT       ,
-	imported_price       FLOAT       ,
-	discount_percentage  FLOAT       ,
+	supplierId          INT       ,
+	productTypeId      INT       ,
+	quantityInStock    INT       ,
+	salePrice           FLOAT       ,
+	importedPrice       FLOAT       ,
+	discountPercentage  FLOAT       ,
 	description          TEXT       ,
 	`status`             TINYINT       ,
 	image                VARCHAR(255)       
  ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX product_type_id ON `POS`.product ( product_type_id );
+CREATE INDEX productTypeId ON `POS`.product ( productTypeId );
 
-CREATE INDEX supplier_id ON `POS`.product ( supplier_id );
+CREATE INDEX supplierId ON `POS`.product ( supplierId );
 
 CREATE INDEX id ON `POS`.product ( id );
 
 CREATE  TABLE `POS`.product_in_order ( 
-	order_id             INT       ,
-	product_id           INT       ,
+	orderId             INT       ,
+	productId           INT       ,
 	quantity             INT       
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE INDEX order_id ON `POS`.product_in_order ( order_id );
+CREATE INDEX orderId ON `POS`.product_in_order ( orderId );
 
-CREATE INDEX product_id ON `POS`.product_in_order ( product_id );
+CREATE INDEX productId ON `POS`.product_in_order ( productId );
 
 CREATE  TABLE `POS`.goods_import ( 
 	id                   INT  NOT NULL   AUTO_INCREMENT  PRIMARY KEY,
-	product_id           INT       ,
+	productId           INT       ,
 	quantity             INT       ,
-	unit_price           DOUBLE       ,
-	total_price          DOUBLE       ,
-	date_imported        DATE       ,
-	user_id              INT       
+	unitPrice           DOUBLE       ,
+	totalPrice          DOUBLE       ,
+	dateImported        DATE       ,
+	userId              INT
  ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO pos.product_category (id, name, description) VALUES
-                                                             (1, 'Rectifier Diode', 'Linh kiện điện tửDiode'),
+                                                             (1, 'Rectifier Diode', 'Linh kiện điện tử Diode'),
                                                              (2, 'Capacitor', 'Linh kiện điện tử Capacitor'),
                                                              (3, 'Transistors', 'Linh kiện điện tử Transistors'),
                                                              (4, 'IC - Microchip', 'Linh kiện điện tử IC - Microchip'),
@@ -109,7 +109,7 @@ INSERT INTO pos.product_category (id, name, description) VALUES
                                                              (7, 'Relays', 'Linh kiện điện tử Relays'),
                                                              (8, 'MOSFET', 'Linh kiện điện tử MOSFET');
 
-INSERT INTO pos.product (id, name, supplier_id, product_type_id, quantity_in_stock, sale_price, imported_price, `status`, image)
+INSERT INTO pos.product (id, name, supplierId, productTypeId, quantityInStock, salePrice, importedPrice, `status`, image)
 VALUES
     (1, 'Rectifier Diode', 1, 1, 100, 1.5, 1.0, 1, 'image_path_1.png'),
     (2, 'Schottky Diode', 1, 1, 200, 1.8, 1.2, 1, 'image_path_2.png'),
@@ -168,15 +168,16 @@ VALUES
     (48, 'N-MOSFET', 1, 8, 80, 1.5, 1.2, 1, 'image_path_48.png'),
     (49, 'P-MOSFET', 1, 8, 600, 0.6, 0.4, 1, 'image_path_49.png');
 
-INSERT INTO pos.goods_import (product_id, quantity, unit_price, total_price, date_imported, user_id) VALUES
-                                                                                                         (1, 200, 1.0, 200.0, '2023-10-05', 1),
-                                                                                                         (2, 300, 1.2, 360.0, '2023-10-05', 1),
-                                                                                                         (3, 150, 0.8, 120.0, '2023-10-05', 1),
-                                                                                                         (4, 180, 0.9, 162.0, '2023-10-05', 1);
+INSERT INTO pos.goods_import (productId, userId, quantity, unitPrice, totalPrice, dateImported) VALUES
+                                                                                                         (1, 1, 200, 1.0, 200.0, '2023-10-05'),
+                                                                                                         (2, 2, 300, 1.2, 360.0, '2023-10-05'),
+                                                                                                         (3, 3, 150, 0.8, 120.0, '2023-10-05'),
+                                                                                                         (4, 2, 180, 0.9, 162.0, '2023-10-05');
 
 INSERT INTO pos.users (id, username, password, phone, email, details) VALUES
+                                                                          (1, 'thanh', '1', '0912345678', 'thanh@gmail.com', 'Thanh details'),
                                                                           (2, 'admin', 'admin', '0939306888', 'admin@gmail.com', 'Admin details'),
-                                                                          (3, 'jame', 'jame123', '0123456789', 'jame@gmail.com', 'Jame details'),
+                                                                          (3, 'jame', 'jame123', '0953750413', 'jame@gmail.com', 'Jame details'),
                                                                           (4, 'alice', 'alice101', '0987654321', 'alice@gmail.com', 'Alice details');
 
 INSERT INTO pos.customer (id, name, address, phone, email) VALUES
@@ -185,11 +186,11 @@ INSERT INTO pos.customer (id, name, address, phone, email) VALUES
                                                                (3, ' urgot', '789 Oak St', '0369696969', 'urgotC@gmail.com');
 
 INSERT INTO pos.supplier (id, name, address, phone, email, details) VALUES
-                                                                        (1, 'Glasc Industies', '789 Supplier Rd', '0123456789', 'renata-glasc@gmail.com', 'Glasc Industries details'),
+                                                                        (1, 'Glasc Industries', '789 Supplier Rd', '0123456789', 'renata-glasc@gmail.com', 'Glasc Industries details'),
                                                                         (2, 'ZAIA Enterprise', '456 Supplier Ave', '0987654321', '1000percent@gmail.com', 'ZAIA Enterprise details'),
-                                                                        (3, 'Hiden Intellproductigence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
+                                                                        (3, 'Hiden Intelligence', '123 Supplier Blvd', '0369696969', 'zero-oneZ@gmail.com', 'Hiden Intelligence details');
 
-INSERT INTO pos.`order` (id, customer_id, user_id, date_recorded, `status`)
+INSERT INTO pos.`order` (id, customerId, userId, dateRecorded, `status`)
 VALUES
     (1, 1, 1, '2023-10-05', 1),
     (2,2, 2, '2023-10-05', 1),
@@ -197,7 +198,7 @@ VALUES
     (4,2, 1, '2023-10-06', 1),
     (5,1, 3, '2023-10-07', 1);
 
-INSERT INTO pos.invoice (order_id, customer_id, user_id, payment_type, total_price, total_paid, date_recorded)
+INSERT INTO pos.invoice (orderId, customerId, userId, paymentType, totalPrice, totalPaid, dateRecorded)
 VALUES
     (1, 1, 1, 1, 500.0, 500.0, '2023-10-05'),
     (2, 2, 1, 2, 600.0, 600.0, '2023-10-05'),
@@ -205,29 +206,29 @@ VALUES
     (4, 1, 3, 2, 800.0, 800.0, '2023-10-06'),
     (5, 3, 1, 1, 900.0, 900.0, '2023-10-07');
 
-CREATE INDEX user_id ON `POS`.goods_import ( user_id );
+CREATE INDEX userId ON `POS`.goods_import ( userId );
 
-CREATE INDEX goods_import_ibfk_3_idx ON `POS`.goods_import ( product_id );
+CREATE INDEX goods_import_ibfk_3_idx ON `POS`.goods_import ( productId );
 
-ALTER TABLE `POS`.goods_import ADD CONSTRAINT goods_import_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES `POS`.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.goods_import ADD CONSTRAINT goods_import_ibfk_2 FOREIGN KEY ( userId ) REFERENCES `POS`.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.goods_import ADD CONSTRAINT goods_import_ibfk_3 FOREIGN KEY ( product_id ) REFERENCES `POS`.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.goods_import ADD CONSTRAINT goods_import_ibfk_3 FOREIGN KEY ( productId ) REFERENCES `POS`.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.invoice ADD CONSTRAINT invoice_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES `POS`.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.invoice ADD CONSTRAINT invoice_ibfk_1 FOREIGN KEY ( customerId ) REFERENCES `POS`.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.`order` ADD CONSTRAINT order_ibfk_1 FOREIGN KEY ( customer_id ) REFERENCES `POS`.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.`order` ADD CONSTRAINT order_ibfk_1 FOREIGN KEY ( customerId ) REFERENCES `POS`.customer( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.`order` ADD CONSTRAINT order_ibfk_2 FOREIGN KEY ( user_id ) REFERENCES `POS`.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.`order` ADD CONSTRAINT order_ibfk_2 FOREIGN KEY ( userId ) REFERENCES `POS`.users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.`order` ADD CONSTRAINT fk_order_invoice FOREIGN KEY ( id ) REFERENCES `POS`.invoice( order_id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.`order` ADD CONSTRAINT fk_order_invoice FOREIGN KEY ( id ) REFERENCES `POS`.invoice( orderId ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.product ADD CONSTRAINT product_ibfk_1 FOREIGN KEY ( product_type_id ) REFERENCES `POS`.product_category( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.product ADD CONSTRAINT product_ibfk_1 FOREIGN KEY ( productTypeId ) REFERENCES `POS`.product_category( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.product ADD CONSTRAINT product_ibfk_2 FOREIGN KEY ( supplier_id ) REFERENCES `POS`.supplier( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.product ADD CONSTRAINT product_ibfk_2 FOREIGN KEY ( supplierId ) REFERENCES `POS`.supplier( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.product_in_order ADD CONSTRAINT product_in_order_ibfk_1 FOREIGN KEY ( order_id ) REFERENCES `POS`.`order`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.product_in_order ADD CONSTRAINT product_in_order_ibfk_1 FOREIGN KEY ( orderId ) REFERENCES `POS`.`order`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `POS`.product_in_order ADD CONSTRAINT product_in_order_ibfk_2 FOREIGN KEY ( product_id ) REFERENCES `POS`.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `POS`.product_in_order ADD CONSTRAINT product_in_order_ibfk_2 FOREIGN KEY ( productId ) REFERENCES `POS`.product( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 DELIMITER //
 
@@ -235,12 +236,12 @@ CREATE TRIGGER pos.goods_import_AFTER_INSERT AFTER INSERT ON goods_import FOR EA
 BEGIN
     DECLARE product_count INT;
 
-    SELECT COUNT(*) INTO product_count FROM product WHERE id = NEW.product_id;
+    SELECT COUNT(*) INTO product_count FROM product WHERE id = NEW.productId;
 
     IF product_count = 0 THEN
-        INSERT INTO product (`id`, `quantity_in_stock`) VALUES (NEW.product_id, NEW.quantity);
+        INSERT INTO product (`id`, `quantityInStock`) VALUES (NEW.productId, NEW.quantity);
     ELSE
-        UPDATE product SET `quantity_in_stock` = `quantity_in_stock` + NEW.quantity WHERE id = NEW.product_id;
+        UPDATE product SET `quantityInStock` = `quantityInStock` + NEW.quantity WHERE id = NEW.productId;
     END IF;
 END;
 //
@@ -254,9 +255,9 @@ CREATE TRIGGER pos.product_in_order_AFTER_DELETE AFTER DELETE ON product_in_orde
 BEGIN
     DECLARE quantity_to_add INT;
 
-    SELECT `quantity` INTO quantity_to_add FROM product_in_order WHERE product_id = OLD.product_id;
+    SELECT `quantity` INTO quantity_to_add FROM product_in_order WHERE productId = OLD.productId;
 
-    UPDATE product SET `amount` = `amount` + quantity_to_add WHERE id = OLD.product_id;
+    UPDATE product SET `amount` = `amount` + quantity_to_add WHERE id = OLD.productId;
 END;
 //
 
@@ -269,9 +270,9 @@ CREATE TRIGGER pos.product_in_order_AFTER_INSERT AFTER INSERT ON product_in_orde
 BEGIN
     DECLARE quantity_to_subtract INT;
 
-    SELECT `quantity` INTO quantity_to_subtract FROM product_in_order WHERE product_id = NEW.product_id;
+    SELECT `quantity` INTO quantity_to_subtract FROM product_in_order WHERE productId = NEW.productId;
 
-    UPDATE product SET `amount` = `amount` - quantity_to_subtract WHERE id = NEW.product_id;
+    UPDATE product SET `amount` = `amount` - quantity_to_subtract WHERE id = NEW.productId;
 END;
 //
 
