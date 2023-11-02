@@ -163,5 +163,4 @@
             <Button fx:id="clearCartButton" layoutX="848.0" layoutY="537.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear Cart" />
          </children>
       </Pane>
-   </children>
 </AnchorPane>

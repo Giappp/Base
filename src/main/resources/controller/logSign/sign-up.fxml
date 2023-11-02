@@ -12,119 +12,97 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.logSign.SignUpController">
+<AnchorPane prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.logSign.SignUpController">
     <AnchorPane prefHeight="500.0" prefWidth="650.0">
-        <Label fx:id="lblErrorPass" layoutX="128.0" layoutY="174.0" prefHeight="18.0" prefWidth="200.0"/>
-        <TextField fx:id="tfUsername" layoutX="358.0" layoutY="94.0" prefHeight="31.0" prefWidth="270.0"
-                   promptText="Username"
-                   style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
+        <Label fx:id="lblErrorPass" layoutX="365.0" layoutY="174.0" prefHeight="18.0" prefWidth="200.0" textFill="RED" />
+        <TextField fx:id="tfUsername" layoutX="358.0" layoutY="94.0" prefHeight="31.0" prefWidth="270.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
             <font>
-                <Font name="Segoe UI" size="16.0"/>
+                <Font name="Segoe UI" size="16.0" />
             </font>
         </TextField>
-        <Label alignment="CENTER" layoutX="399.0" layoutY="28.0" prefHeight="44.0" prefWidth="187.0"
-               text="Sign Up Form" textAlignment="CENTER">
+        <Label alignment="CENTER" layoutX="399.0" layoutY="28.0" prefHeight="44.0" prefWidth="187.0" text="Sign Up Form" textAlignment="CENTER">
             <font>
-                <Font name="Segoe UI Bold" size="24.0"/>
+                <Font name="Segoe UI Bold" size="24.0" />
             </font>
             <textFill>
-                <LinearGradient endX="0.5643939393939394" endY="0.3030303174799139" startX="0.5643939475218456"
-                                startY="0.6742424314672297">
+                <LinearGradient endX="0.5643939393939394" endY="0.3030303174799139" startX="0.5643939475218456" startY="0.6742424314672297">
                     <stops>
                         <Stop>
                             <color>
-                                <Color green="0.6549019813537598" blue="0.8352941274642944"/>
+                                <Color green="0.6549019813537598" blue="0.8352941274642944" />
                             </color>
                         </Stop>
                         <Stop offset="1.0">
                             <color>
-                                <Color red="0.13333334028720856" blue="1.0"/>
+                                <Color red="0.13333334028720856" blue="1.0" />
                             </color>
                         </Stop>
                     </stops>
                 </LinearGradient>
             </textFill>
         </Label>
-        <Button fx:id="btnSignup" layoutX="399.0" layoutY="347.0" mnemonicParsing="false" prefHeight="44.0"
-                prefWidth="173.0" style="-fx-background-color: #00a7d5; -fx-cursor: hand;" text="Sign Up"
-                textFill="WHITE">
+        <Button fx:id="btnSignup" layoutX="399.0" layoutY="347.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="173.0" style="-fx-background-color: #00a7d5; -fx-cursor: hand;" text="Sign Up" textFill="WHITE">
             <font>
-                <Font name="Segoe UI Bold" size="18.0"/>
+                <Font name="Segoe UI Bold" size="18.0" />
             </font>
         </Button>
         <Label layoutX="399.0" layoutY="409.0" prefHeight="18.0" prefWidth="128.0" text="Have an account?">
             <font>
-                <Font name="Segoe UI" size="14.0"/>
+                <Font name="Segoe UI" size="14.0" />
             </font>
         </Label>
-        <Button fx:id="btnLogin" layoutX="493.0" layoutY="402.0" mnemonicParsing="false" pickOnBounds="false"
-                prefHeight="31.0" prefWidth="78.0" style="-fx-background-color: transparent; -fx-cursor: hand;"
-                text="Login" textFill="BLUE" underline="true">
+        <Button fx:id="btnLogin" layoutX="493.0" layoutY="402.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="31.0" prefWidth="78.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Login" textFill="BLUE" underline="true">
             <font>
-                <Font name="Segoe UI Bold" size="14.0"/>
+                <Font name="Segoe UI Bold" size="14.0" />
             </font>
         </Button>
-        <PasswordField fx:id="pfPassword" layoutX="358.0" layoutY="143.0" prefHeight="31.0" prefWidth="270.0"
-                       promptText="Password"
-                       style="-fx-border-color: #00A7D5; -fx-background-color: transparent; -fx-border-width: 0 0 1px 0;">
+        <PasswordField fx:id="pfPassword" layoutX="358.0" layoutY="143.0" prefHeight="31.0" prefWidth="270.0" promptText="Password" style="-fx-border-color: #00A7D5; -fx-background-color: transparent; -fx-border-width: 0 0 1px 0;">
             <font>
-                <Font name="Segoe UI" size="16.0"/>
+                <Font name="Segoe UI" size="16.0" />
             </font>
         </PasswordField>
-        <PasswordField fx:id="pfConfirmPassword" layoutX="358.0" layoutY="193.0" prefHeight="31.0"
-                       prefWidth="270.0" promptText="Confirm Password"
-                       style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
+        <PasswordField fx:id="pfConfirmPassword" layoutX="358.0" layoutY="193.0" prefHeight="31.0" prefWidth="270.0" promptText="Confirm Password" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
             <font>
-                <Font name="Segoe UI" size="16.0"/>
+                <Font name="Segoe UI" size="16.0" />
             </font>
         </PasswordField>
-        <TextField fx:id="tfEmail" layoutX="358.0" layoutY="242.0" prefHeight="31.0" prefWidth="270.0"
-                   promptText="Email"
-                   style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
+        <TextField fx:id="tfEmail" layoutX="358.0" layoutY="242.0" prefHeight="31.0" prefWidth="270.0" promptText="Email" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
             <font>
-                <Font name="Segoe UI" size="16.0"/>
+                <Font name="Segoe UI" size="16.0" />
             </font>
         </TextField>
-        <FontAwesomeIconView fill="#00a7d5" glyphName="USER" layoutX="326.0" layoutY="121.0" selectionFill="#00a7d5"
-                             size="24" text=""/>
-        <FontAwesomeIconView fill="#00a7d5" glyphName="KEY" layoutX="323.0" layoutY="169.0" size="24"/>
-        <FontAwesomeIconView fill="#00a7d5" glyphName="KEY" layoutX="325.0" layoutY="219.0" size="24"/>
-        <FontAwesomeIconView fill="#00a7d5" glyphName="INBOX" layoutX="327.0" layoutY="268.0" size="24" text=""/>
-        <TextField fx:id="tfPhone" layoutX="358.0" layoutY="294.0" prefHeight="31.0" prefWidth="270.0"
-                   promptText="Phone"
-                   style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
+        <FontAwesomeIconView fill="#00a7d5" glyphName="USER" layoutX="326.0" layoutY="121.0" selectionFill="#00a7d5" size="24" text="" />
+        <FontAwesomeIconView fill="#00a7d5" glyphName="KEY" layoutX="323.0" layoutY="169.0" size="24" />
+        <FontAwesomeIconView fill="#00a7d5" glyphName="KEY" layoutX="325.0" layoutY="219.0" size="24" />
+        <FontAwesomeIconView fill="#00a7d5" glyphName="ENVELOPE" layoutX="327.0" layoutY="268.0" size="24" />
+        <TextField fx:id="tfPhone" layoutX="358.0" layoutY="294.0" prefHeight="31.0" prefWidth="270.0" promptText="Phone" style="-fx-background-color: transparent; -fx-border-color: #00A7D5; -fx-border-width: 0 0 1px 0;">
             <font>
-                <Font name="Segoe UI" size="16.0"/>
+                <Font name="Segoe UI" size="16.0" />
             </font>
         </TextField>
-        <FontAwesomeIconView fill="#00a7d5" glyphName="PHONE" layoutX="331.0" layoutY="321.0" size="24"/>
+        <FontAwesomeIconView fill="#00a7d5" glyphName="PHONE" layoutX="331.0" layoutY="321.0" size="24" />
     </AnchorPane>
     <AnchorPane prefHeight="506.0" prefWidth="300.0" style="-fx-background-color: #00A7D5;">
         <Label layoutX="94.0" layoutY="333.0" text="0912-345-678" textFill="WHITE">
             <font>
-                <Font name="Segoe UI" size="18.0"/>
+                <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="40.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com"
-               textFill="WHITE">
+        <Label layoutX="40.0" layoutY="366.0" prefHeight="23.0" prefWidth="219.0" text="ElectriLogix@support.com" textFill="WHITE">
             <font>
-                <Font name="Segoe UI" size="18.0"/>
+                <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
-        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="38.0" layoutY="164.0" strokeType="OUTSIDE"
-              strokeWidth="0.0" text="ElectriLogiX">
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="38.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ElectriLogiX">
             <font>
-                <Font name="Segoe UI Bold" size="40.0"/>
+                <Font name="Segoe UI Bold" size="40.0" />
             </font>
         </Text>
-        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="83.0" layoutY="213.0" strokeType="OUTSIDE"
-              strokeWidth="0.0" text="Join Us!">
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="83.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Join Us!">
             <font>
-                <Font name="Segoe UI" size="36.0"/>
+                <Font name="Segoe UI" size="36.0" />
             </font>
         </Text>
-        <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="100.0" layoutY="100.0" size="100" text=""/>
+        <FontAwesomeIconView fill="WHITE" glyphName="TRUCK" layoutX="100.0" layoutY="100.0" size="100" text="" />
     </AnchorPane>
 </AnchorPane>

@@ -83,6 +83,7 @@ public class AccountController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            viewProfile();
         });
 
         updateAccountInfo.setOnAction(event -> {
@@ -91,6 +92,7 @@ public class AccountController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            viewProfile();
         });
     }
 }

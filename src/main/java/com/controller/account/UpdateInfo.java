@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -18,6 +19,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class UpdateInfo implements Initializable {
+
+    Stage closeWin;
 
     @FXML
     private Label tfId;
@@ -81,6 +84,9 @@ public class UpdateInfo implements Initializable {
                 alert.successMessage("Update Information Successfully!");
 
                 data.username = tfNewUsername.getText();
+
+                closeWin = (Stage) acceptNewInfoBtn.getScene().getWindow();
+                closeWin.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
