@@ -5,8 +5,6 @@ import com.db.dao.JDBCConnect;
 import com.entities.Customer;
 import com.entities.Event;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -23,11 +21,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
 public class EventController {
+
+    @FXML
+    private Button sendEventMailBtn;
 
     @FXML
     private Label totalItems;
@@ -140,16 +143,26 @@ public class EventController {
 
         cancelEventBtn.setOnAction(event -> clearInfo());
 
-        updateEventBtn.setOnAction(event -> {
-            updateToDatabase();
-        });
+        updateEventBtn.setOnAction(event -> updateToDatabase());
 
-        addEventBtn.setOnAction(event -> {
-            addToDatabase();
-        });
+        addEventBtn.setOnAction(event -> addToDatabase());
 
-        deleteEventBtn.setOnAction(event -> {
-            deleteFromDatabase();
+        deleteEventBtn.setOnAction(event -> deleteFromDatabase());
+
+        sendEventMailBtn.setOnAction(event -> {
+            Event selectedEvent = eventTblv.getSelectionModel().getSelectedItem();
+            if (selectedEvent != null) {
+                String eventName = selectedEvent.getEventName();
+                double discount = selectedEvent.getDiscount();
+                String startDate = selectedEvent.getStartDate();
+                String startTime = selectedEvent.getStartTime();
+                String endDate = selectedEvent.getEndDate();
+                String endTime = selectedEvent.getEndTime();
+                sendMail(eventName, discount, startDate, startTime, endDate, endTime);
+            } else {
+                // Alert the user to select an event first
+                alertMessages.warningMessage("Please select an event to send mail.");
+            }
         });
     }
 
@@ -167,6 +180,7 @@ public class EventController {
         addEventBtn.setDisable(false);
         deleteEventBtn.setDisable(true);
         updateEventBtn.setDisable(true);
+        actionStatusLabel.setText("Adding New Event");
     }
 
     private void validateFields() {
@@ -227,10 +241,10 @@ public class EventController {
         totalItems.setText("Total: " + eventObservableList.size());
 
         // Create a custom cell factory for the event_col_start_date
-        eventColStartDate.setCellFactory(new Callback<TableColumn<Event, String>, TableCell<Event, String>>() {
+        eventColStartDate.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Event, String> call(TableColumn<Event, String> column) {
-                return new TableCell<Event, String>() {
+                return new TableCell<>() {
                     private final DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                     private final DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -253,10 +267,10 @@ public class EventController {
         });
 
         // Create a custom cell factory for the event_col_end_date
-        eventColEndDate.setCellFactory(new Callback<TableColumn<Event, String>, TableCell<Event, String>>() {
+        eventColEndDate.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Event, String> call(TableColumn<Event, String> column) {
-                return new TableCell<Event, String>() {
+                return new TableCell<>() {
                     private final DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                     private final DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -326,15 +340,11 @@ public class EventController {
         int totalPages = (eventObservableList.size() / itemsPerPage) + (eventObservableList.size() % itemsPerPage > 0 ? 1 : 0);
         eventPg.setPageCount(totalPages);
 
-        eventPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
-            updateTableData(newValue.intValue());
-        });
+        eventPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updateTableData(newValue.intValue()));
     }
 
     private void updatePagination(FilteredList<Event> filteredList) {
-        eventPg.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
-            currentPage = newIndex.intValue() + 1;
-        });
+        eventPg.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> currentPage = newIndex.intValue() + 1);
 
         int totalItems = filteredList.size();
         int pageCount = (totalItems + itemsPerPage - 1) / itemsPerPage;
@@ -359,7 +369,7 @@ public class EventController {
         eventTblv.setItems(FXCollections.observableArrayList(sortedList.subList(fromIndex, toIndex)));
     }
 
-    private int setIdAdd() {
+    private void setIdAdd() {
         String sql = "SELECT id FROM event ORDER BY id DESC LIMIT 1";
         try (Connection con = JDBCConnect.getJDBCConnection();
              Statement statement = Objects.requireNonNull(con).createStatement()) {
@@ -369,12 +379,10 @@ public class EventController {
             if (resultSet.next()) {
                 int eventIdIncrease = resultSet.getInt("id") + 1;
                 eventColId.setText(String.valueOf(eventIdIncrease));
-                return eventIdIncrease;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1;
     }
 
     private void setStartTimeNotationComboBox() {
@@ -622,4 +630,99 @@ public class EventController {
             e.printStackTrace();
         }
     }
+
+    private void sendMail(String eventName, double discount, String startDate, String startTime, String endDate, String endTime) {
+        String subject = "Welcome to our event!";
+
+//        String sqlEvent = "SELECT eventName,discount, startDate, endDate, startTime, endTime FROM event";
+        String sqlCustomer = "SELECT name, email FROM customer";
+
+        try {
+            Connection con = JDBCConnect.getJDBCConnection();
+            Statement statement = Objects.requireNonNull(con).createStatement();
+
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date startDates = inputDateFormat.parse(startDate);
+            Date endDates = inputDateFormat.parse(endDate);
+            String formattedStartDate = outputDateFormat.format(startDates);
+            String formattedEndDate = outputDateFormat.format(endDates);
+
+            // Read the message template
+            String message = "<html>" +
+                    "<head>" +
+                    "    <style>" +
+                    "        .container {" +
+                    "            max-width: 600px;" +
+                    "            margin: 0 auto;" +
+                    "            padding: 20px;" +
+                    "            background-color: #ffffff;" +
+                    "            text-align: justify;" +
+                    "        }" +
+                    "        .header {" +
+                    "            background-color: #323232;" +
+                    "            color: #ffffff;" +
+                    "            padding: 2px 0;" +
+                    "            font-size: 35px;" +
+                    "            text-align: center;" +
+                    "            margin-bottom: 20px;" +
+                    "        }" +
+                    "    </style>" +
+                    "</head>" +
+                    "<body>" +
+                    "    <div class='container'>" +
+                    "        <div class='header'>" +
+                    "            <h1>You're invited!</h1>" +
+                    "        </div>" +
+                    "        <div class='content'>" +
+                    "            <b>Dear lovely customers,</b>" +
+                    "            <p>We hope this message finds you well. We are thrilled to extend a warm invitation to you for an exclusive " +
+                    "               event, <b>\"{{event_name}}\"</b>, dedicated to showcasing the latest in electronic components. As a " +
+                    "               valued member of our community, we would be honored to have you join us for an unforgettable experience " +
+                    "               that highlights cutting-edge electronic components and exciting discounts.</p>\n" +
+                    "            <p>The event promises a captivating display of electronic components, innovative technologies, and a " +
+                    "               unique opportunity to connect with fellow enthusiasts and experts in the field. From essential electronic " +
+                    "               parts to advanced components, from classic designs to the latest innovations, you'll witness a comprehensive " +
+                    "               spectrum of electronic excellence.</p>\n" +
+                    "            <p>Event Details: <br>" +
+                    "                Date: {{start_date}} (ends {{end_date}}) <br>" +
+                    "                Time: {{start_time}} - {{end_time}} <br>" +
+                    "            <p>Get a <b>{{discount}}% discount</b> on all purchases made on our website! Simply use the discount code provided " +
+                    "               in this email during the checkout process.</p>\n" +
+                    "            <p>Our goal is to offer an engaging and informative online platform where you can explore a wide range of " +
+                    "               electronic components, connect with industry experts, and stay updated on the latest trends shaping " +
+                    "               the electronics industry. Additionally, we have exclusive promotions and exciting giveaways as a token of " +
+                    "               our appreciation for your ongoing support.</p>\n" +
+                    "            <p>Please take a moment to browse our selection and make the most of this special discount. If you have any questions " +
+                    "               or require further assistance, please don't hesitate to reach out to our customer support team.</p>\n" +
+                    "            <p>Thank you for being a valuable part of our electronic components community. We look forward to serving your electronic " +
+                    "               needs on our website and hope to provide you with an exceptional online shopping experience.</p>\n" +
+                    "            <p>Best regards,</p>" +
+                    "            <p>ElectriLogiX</p>" +
+                    "        </div>" +
+                    "    </div>" +
+                    "</body>" +
+                    "</html>";
+            ResultSet customerResultSet = statement.executeQuery(sqlCustomer);
+            String customizedMessage = "";
+            List<String> mailList = new ArrayList<>();
+            while (customerResultSet.next()) {
+                mailList.add(customerResultSet.getString("email"));
+                // Replace placeholders with actual values
+                customizedMessage = message
+                        .replace("{{event_name}}", eventName)
+                        .replace("{{discount}}", String.valueOf(discount))
+                        .replace("{{start_date}}", formattedStartDate)
+                        .replace("{{end_date}}", formattedEndDate)
+                        .replace("{{start_time}}", startTime)
+                        .replace("{{end_time}}", endTime);
+            }
+
+            // Inside your sendMailEvent method
+            AlertMessages.handleSendMail(customizedMessage, subject, mailList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -96,13 +96,13 @@
       </columns>
    </TableView>
    <Pagination fx:id="customerPg" layoutX="30.0" layoutY="654.0" prefHeight="59.0" prefWidth="940.0" />
-   <TextField fx:id="searchCustomer" layoutX="815.0" layoutY="236.0" prefHeight="26.0" prefWidth="154.0" promptText="Search">
+   <TextField fx:id="searchCustomer" layoutX="770.0" layoutY="236.0" prefHeight="26.0" prefWidth="199.0" promptText="Search">
       <font>
          <Font name="Segoe UI" size="13.0" />
       </font>
    </TextField>
-   <FontAwesomeIconView glyphName="SEARCH" layoutX="786.0" layoutY="257.0" size="19" text="" />
-   <Label fx:id="totalItems" layoutX="653.0" layoutY="241.0" prefHeight="18.0" prefWidth="109.0" text="Total:">
+   <FontAwesomeIconView glyphName="SEARCH" layoutX="739.0" layoutY="256.0" size="19" text="" />
+   <Label fx:id="totalItems" layoutX="606.0" layoutY="240.0" prefHeight="18.0" prefWidth="109.0" text="Total:">
       <font>
          <Font name="Segoe UI Bold" size="14.0" />
       </font>

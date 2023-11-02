@@ -173,7 +173,7 @@ END;
 DELIMITER ;
 
 INSERT INTO pos.product_category (id, name, description) VALUES
-                                                             (1, 'Rectifier Diode', 'Linh kiện điện tửDiode'),
+                                                             (1, 'Rectifier Diode', 'Linh kiện điện tử Diode'),
                                                              (2, 'Capacitor', 'Linh kiện điện tử Capacitor'),
                                                              (3, 'Transistors', 'Linh kiện điện tử Transistors'),
                                                              (4, 'IC - Microchip', 'Linh kiện điện tử IC - Microchip'),
@@ -282,5 +282,5 @@ INSERT INTO `pos`.`event` (id, `eventName`, `discount`, `startDate`, `startTime`
                                                                                                                  (1, 'Back to School', 15.0, '2023-09-01', '10:00:00', '2023-09-30', '14:00:00'),
                                                                                                                  (2, 'Merry Christmas', 20.0, '2023-12-01', '15:30:00', '2023-12-31', '18:30:00'),
                                                                                                                  (3, 'Happy New Year', 12.5, '2023-01-01', '11:00:00', '2023-01-31', '16:00:00'),
-                                                                                                                 (4, 'Summers Time', 18.5, '2023-06-01', '09:00:00', '2023-06-30', '13:00:00'),
+                                                                                                                 (4, 'Summer\'s Time', 18.5, '2023-06-01', '09:00:00', '2023-06-30', '13:00:00'),
                                                                                                                  (5, 'Trick of Treat', 25.0, '2023-10-31', '00:00:00', '2023-10-31', '23:59:00');
