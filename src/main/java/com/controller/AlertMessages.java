@@ -43,25 +43,34 @@ public class AlertMessages {
     }
 
     public static void handleSendMail(String message, String subject, List<String> customerMails) {
+        final String username = "giap8547813@gmail.com";
+        final String password = "nrtj jopv vwsk ygzc";
         // variable for gmail
         String host = "smtp.gmail.com";
-        String from = "projecttest213@gmail.com";
+        String from = "giap8547813@gmail.com";
 
         // get the system properties
-        Properties properties = System.getProperties();
+//        Properties properties = System.getProperties();
+        Properties properties = new Properties();
 
         // setting important info to properties object
         // host set
         properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.port", "587");
+//        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.auth", "true");
 
         // step 1: to get the session object
+//        Session session = Session.getInstance(properties, new Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication("", "");
+//            }
+//        });
         Session session = Session.getInstance(properties, new Authenticator() {
-            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("projecttest213@gmail.com", "pnnzreerwjctwjmn");
+                return new PasswordAuthentication(username, password);
             }
         });
 
