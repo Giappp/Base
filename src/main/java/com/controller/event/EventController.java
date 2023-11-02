@@ -660,7 +660,7 @@ public class EventController {
                     "            text-align: justify;" +
                     "        }" +
                     "        .header {" +
-                    "            background-color: #323232;" +
+                    "            background-color:  #00a7d5;" +
                     "            color: #ffffff;" +
                     "            padding: 2px 0;" +
                     "            font-size: 35px;" +
