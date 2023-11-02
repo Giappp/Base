@@ -4,12 +4,11 @@ import com.controller.AlertMessages;
 import com.db.dao.JDBCConnect;
 import com.entities.Customer;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -85,8 +84,6 @@ public class CustomerController {
     @FXML
     private Pagination customerPg;
 
-    private final int currentPage = 1;
-
     ObservableList<Customer> customerObservableList = FXCollections.observableArrayList();
 
     private final int itemsPerPage = 12;
@@ -106,24 +103,14 @@ public class CustomerController {
             }
         });
 
-        cancelCustomerBtn.setOnAction(event -> {
-            tfAddCusname.clear();
-            tfAddAddress.clear();
-            tfAddPhone.clear();
-            tfAddEmail.clear();
-        });
+        cancelCustomerBtn.setOnAction(event -> resetForm());
 
-        addCustomerBtn.setOnAction(event -> {
-            addCustomerToDatabase();
-        });
+        addCustomerBtn.setOnAction(event -> addCustomerToDatabase());
 
-        updateCustomerBtn.setOnAction(event -> {
-            updateCustomerToDatabase();
-        });
+        updateCustomerBtn.setOnAction(event -> updateCustomerToDatabase());
 
-        deleteCustomerBtn.setOnAction(event -> {
-            deleteCustomerFromDatabase();
-        });
+        deleteCustomerBtn.setOnAction(event -> deleteCustomerFromDatabase());
+
     }
 
     private boolean isNumeric(String str) {
@@ -159,7 +146,7 @@ public class CustomerController {
         customerColEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         customerColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         customerColAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        customerColOrderNumber.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(customerTblv.getItems().indexOf(param.getValue()) + 1 + (currentPage - 1) * itemsPerPage));
+        customerColOrderNumber.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(customerTblv.getItems().indexOf(param.getValue()) + 1));
 
         totalItems.setText("Total: " + customerObservableList.size());
 
@@ -168,19 +155,19 @@ public class CustomerController {
 
         // listen to the changes in the search_customer to update table view
         searchCustomer.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredList.setPredicate((Predicate<? super Customer>) cust -> {
+            filteredList.setPredicate((Predicate<? super Customer>) customer -> {
                 if (newValue == null || newValue.trim().isEmpty()) {
                     totalItems.setText("Total: " + customerObservableList.size());
                     return true;
                 }
                 String toLowerCaseFilter = newValue.toLowerCase();
-                if (cust.getName().toLowerCase().contains(toLowerCaseFilter)) {
+                if (customer.getName().toLowerCase().contains(toLowerCaseFilter)) {
                     return true;
-                } else if (cust.getEmail().toLowerCase().contains(toLowerCaseFilter)) {
+                } else if (customer.getEmail().toLowerCase().contains(toLowerCaseFilter)) {
                     return true;
-                } else if (cust.getPhone().toLowerCase().contains(toLowerCaseFilter)) {
+                } else if (customer.getPhone().toLowerCase().contains(toLowerCaseFilter)) {
                     return true;
-                } else if (cust.getAddress().toLowerCase().contains(toLowerCaseFilter)) {
+                } else if (customer.getAddress().toLowerCase().contains(toLowerCaseFilter)) {
                     return true;
                 } else {
                     totalItems.setText("Total: " + filteredList.size());
@@ -199,9 +186,7 @@ public class CustomerController {
         int totalPages = (customerObservableList.size() / itemsPerPage) + (customerObservableList.size() % itemsPerPage > 0 ? 1 : 0);
         customerPg.setPageCount(totalPages); // set page count for pagination
 
-        customerPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
-            updateTableData(newValue.intValue());
-        });
+        customerPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updateTableData(newValue.intValue()));
     }
 
     private void updatePagination(FilteredList<Customer> filteredList) {
@@ -257,7 +242,7 @@ public class CustomerController {
         }
     }
 
-    private int setIdAdd() {
+    private void setIdAdd() {
         String sql = "SELECT id FROM customer ORDER BY id DESC LIMIT 1";
         try (Connection con = JDBCConnect.getJDBCConnection();
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
@@ -266,12 +251,10 @@ public class CustomerController {
             if (resultSet.next()) {
                 int id = resultSet.getInt(1) + 1;
                 idTextField.setText(String.valueOf(id));
-                return id;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1;
     }
 
     private void addCustomerToDatabase() {
@@ -280,13 +263,12 @@ public class CustomerController {
              PreparedStatement ps = Objects.requireNonNull(con).prepareStatement(sql)) {
 
             if (isFilledFields() && validateEmail() && validatePhoneNumber()) {
-                PreparedStatement preparedStatement = con.prepareStatement(sql);
-                preparedStatement.setString(1, tfAddEmail.getText());
-                preparedStatement.setString(2, tfAddAddress.getText());
-                preparedStatement.setString(3, tfAddPhone.getText());
-                preparedStatement.setString(4, tfAddEmail.getText());
+                ps.setString(1, tfAddEmail.getText());
+                ps.setString(2, tfAddAddress.getText());
+                ps.setString(3, tfAddPhone.getText());
+                ps.setString(4, tfAddEmail.getText());
 
-                preparedStatement.executeUpdate();
+                ps.executeUpdate();
 
                 alertMessages.successMessage("Added successfully!");
 
@@ -341,22 +323,19 @@ public class CustomerController {
     }
 
     private void selectedRecord() {
-        customerTblv.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Customer>() {
-            @Override
-            public void changed(ObservableValue<? extends Customer> observableValue, Customer oldValue, Customer newValue) {
-                if (newValue != null) {
-                    idTextField.setText(String.valueOf(newValue.getId()));
-                    tfAddCusname.setText(String.valueOf(newValue.getName()));
-                    tfAddPhone.setText(String.valueOf(newValue.getPhone()));
-                    tfAddAddress.setText(newValue.getAddress());
-                    tfAddEmail.setText(String.valueOf(newValue.getEmail()));
+        customerTblv.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null) {
+                idTextField.setText(String.valueOf(newValue.getId()));
+                tfAddCusname.setText(String.valueOf(newValue.getName()));
+                tfAddPhone.setText(String.valueOf(newValue.getPhone()));
+                tfAddAddress.setText(newValue.getAddress());
+                tfAddEmail.setText(String.valueOf(newValue.getEmail()));
 
-                    addCustomerBtn.setDisable(true);
-                    actionStatusLabel.setText("Updating Customer");
-                    updateCustomerBtn.setDisable(false);
-                } else {
-                    resetForm();
-                }
+                addCustomerBtn.setDisable(true);
+                actionStatusLabel.setText("Updating Customer");
+                updateCustomerBtn.setDisable(false);
+            } else {
+                resetForm();
             }
         });
     }

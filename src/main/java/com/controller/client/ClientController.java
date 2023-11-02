@@ -19,7 +19,7 @@ import java.util.Optional;
 public class ClientController {
 
     @FXML
-    private Button checkbtn;
+    private Button StatisticsBtn;
 
     @FXML
     private BorderPane fullBorderPane;
@@ -94,10 +94,10 @@ public class ClientController {
             setActiveButton(homeBtn);
         });
 
-//        checkbtn.setOnAction(event -> {
-//            loadPage("best-sellingOfMonth");
-//            setActiveButton(checkbtn);
-//        });
+        StatisticsBtn.setOnAction(event -> {
+            loadPage("best-sellingOfMonth");
+            setActiveButton(StatisticsBtn);
+        });
 
         accountBtn.setOnAction(event -> {
             loadPage("account_view");
