@@ -18,7 +18,7 @@
 
 <AnchorPane fx:id="dashboardOrder" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.order.OrderController">
    <children>
-      <Pane layoutX="11.0" layoutY="14.0" prefHeight="677.0" prefWidth="983.0">
+      <Pane layoutX="11.0" layoutY="13.0" prefHeight="677.0" prefWidth="983.0">
          <children>
             <Text fill="#00a7d5" layoutX="474.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order">
                <font>
@@ -61,7 +61,7 @@
             </TextField>
             <Button fx:id="orderClear_btn" layoutX="842.0" layoutY="67.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="94.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear Order">
                <font>
-                  <Font name="Segoe UI" size="14.0" />
+                  <Font name="Segoe UI" size="12.0" />
                </font>
             </Button>
             <Button fx:id="addProductToOrder" disable="true" layoutX="701.0" layoutY="581.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="106.0" style="-fx-background-color: #4681f4;" text="Add To Cart" textFill="WHITE">
@@ -95,7 +95,7 @@
             </TextField>
             <FontAwesomeIconView glyphName="SEARCH" layoutX="449.0" layoutY="291.0" size="14" />
             <FontAwesomeIconView glyphName="SEARCH" layoutX="573.0" layoutY="87.0" size="14" />
-            <Button fx:id="addCustomerBtn" layoutX="794.0" layoutY="211.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="160.0" style="-fx-background-color: #33b249;" text="Add new customer" textFill="WHITE">
+            <Button fx:id="addCustomerBtn" layoutX="836.0" layoutY="208.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: #33b249;" text="Add" textFill="WHITE">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>
@@ -103,24 +103,30 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="PLUS" selectionStart="0" size="16" />
                </graphic>
             </Button>
-            <Label layoutX="572.0" layoutY="109.0" text="Customer Name:">
+            <Label layoutX="573.0" layoutY="109.0" text="Customer Name:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="570.0" layoutY="142.0" text="Phone number:">
+            <Label layoutX="573.0" layoutY="143.0" text="Phone number:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="570.0" layoutY="175.0" text="Email:">
+            <Label layoutX="573.0" layoutY="176.0" text="Email:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="customerName" disable="true" layoutX="686.0" layoutY="107.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent;" />
-            <TextField fx:id="customerPhone" disable="true" layoutX="684.0" layoutY="140.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent;" />
-            <TextField fx:id="customerEmail" disable="true" layoutX="686.0" layoutY="172.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent;" />
+            <TextField fx:id="customerName" disable="true" layoutX="686.0" layoutY="102.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0 0 1 0;">
+               <font>
+                  <Font name="Segoe UI" size="12.0" />
+               </font></TextField>
+            <TextField fx:id="customerPhone" disable="true" layoutX="684.0" layoutY="132.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0 0 1 0;">
+               <font>
+                  <Font name="Segoe UI" size="12.0" />
+               </font></TextField>
+            <TextField fx:id="customerEmail" disable="true" layoutX="685.0" layoutY="163.0" prefHeight="25.0" prefWidth="254.0" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0 0 1 0;" />
             <Pane layoutX="730.0" layoutY="274.0" prefHeight="130.0" prefWidth="179.0">
                <children>
                   <ImageView fx:id="productImage" fitHeight="130.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true" />
@@ -154,7 +160,7 @@
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="clearCartButton" layoutX="848.0" layoutY="538.0" mnemonicParsing="false" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear Cart" />
+            <Button fx:id="clearCartButton" layoutX="848.0" layoutY="537.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: yellow; -fx-border-color: black;" text="Clear Cart" />
          </children>
       </Pane>
    </children>

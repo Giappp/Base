@@ -187,7 +187,7 @@ public class PreviewOrder implements Initializable {
         productTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         orderView.getColumns().clear();
         orderView.getColumns().addAll(productIdCol, productPriceCol, productSupplierCol, productQuantityCol, productColName, productTotalPrice);
-        TableColumn<ProductInOrder, Void> deleteButtonCol = new TableColumn<>("Delete");
+        TableColumn<ProductInOrder, Void> deleteButtonCol = new TableColumn<>("Action");
         deleteButtonCol.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 

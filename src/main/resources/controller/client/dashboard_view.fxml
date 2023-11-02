@@ -98,12 +98,12 @@
                <Font name="Segoe UI Bold" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="revenueLabel" layoutX="209.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
+         <Label fx:id="revenueLabel" layoutX="233.0" layoutY="23.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>
          </Label>
-         <Label fx:id="compareRevenueLabel" layoutX="209.0" layoutY="45.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
+         <Label fx:id="compareRevenueLabel" layoutX="233.0" layoutY="45.0" prefHeight="22.0" prefWidth="226.0" textAlignment="RIGHT">
             <font>
                <Font name="Segoe UI" size="17.0" />
             </font>
