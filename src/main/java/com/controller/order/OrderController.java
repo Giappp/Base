@@ -6,13 +6,10 @@ import com.controller.data;
 import com.entities.Customer;
 import com.entities.Product;
 import com.entities.ProductInOrder;
-import com.model.CustomerModel;
-import com.model.ProductModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,10 +33,6 @@ public class OrderController implements Initializable {
 
     @FXML
     private TextField customerEmail;
-
-    ProductModel productModel = new ProductModel();
-
-    CustomerModel customerModel = new CustomerModel();
 
     private final int itemPerPages = 12;
 
@@ -359,19 +352,19 @@ public class OrderController implements Initializable {
         });
     }
 
-    private void displayCartList(){
-        if(!cartList.isEmpty() && !productInOrderList.isEmpty()) {
-            for (Product product : cartList) {
-                System.out.println(product.getId());
-                System.out.println(product.getName());
-                System.out.println(product.getSalePrice());
-            }
-            for(ProductInOrder productInOrder : productInOrderList){
-                System.out.println(productInOrder.getProductId());
-                System.out.println(productInOrder.getQuantity());
-            }
-        }
-    }
+//    private void displayCartList(){
+//        if(!cartList.isEmpty() && !productInOrderList.isEmpty()) {
+//            for (Product product : cartList) {
+//                System.out.println(product.getId());
+//                System.out.println(product.getName());
+//                System.out.println(product.getSalePrice());
+//            }
+//            for(ProductInOrder productInOrder : productInOrderList){
+//                System.out.println(productInOrder.getProductId());
+//                System.out.println(productInOrder.getQuantity());
+//            }
+//        }
+//    }
 
     private void setUpTableOrder(){
         products = data.products;
@@ -481,16 +474,16 @@ public class OrderController implements Initializable {
         });
     }
 
-    private boolean isNodeInsideTableView(EventTarget target, TableView<?> tableView) {
-        // Check if the target node or any of its ancestors are the TableView
-        while (target != null && !(target instanceof Scene)) {
-            if (target.equals(tableView)) {
-                return true; // Node is inside the TableView
-            }
-            target = ((javafx.scene.Node) target).getParent();
-        }
-        return false; // Node is outside the TableView
-    }
+//    private boolean isNodeInsideTableView(EventTarget target, TableView<?> tableView) {
+//        // Check if the target node or any of its ancestors are the TableView
+//        while (target != null && !(target instanceof Scene)) {
+//            if (target.equals(tableView)) {
+//                return true; // Node is inside the TableView
+//            }
+//            target = ((javafx.scene.Node) target).getParent();
+//        }
+//        return false; // Node is outside the TableView
+//    }
 
     private void enterQuantity(){
         order_quantity_tf.addEventFilter(KeyEvent.KEY_TYPED,(event)->{

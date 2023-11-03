@@ -1,6 +1,5 @@
 package com.controller.logSign;
 
-import com.controller.dashboard.DashboardController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,11 +12,13 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class DBController {
+
     private static Parent root;
-    public static void changeScene(ActionEvent event, String fxmlFile){
-        try{
+
+    public static void changeScene(ActionEvent event, String fxmlFile) {
+        try {
             root = FXMLLoader.load(Objects.requireNonNull(DBController.class.getResource(fxmlFile)));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -32,11 +33,12 @@ public class DBController {
         stage.setScene(scene);
         stage.show();
     }
-    public static void showDashboardScene(ActionEvent event,String username){
-        try{
+
+    public static void showDashboardScene(ActionEvent event) {
+        try {
             FXMLLoader loader = new FXMLLoader(DBController.class.getResource("/controller/client/client.fxml"));
             root = loader.load();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -1,8 +1,5 @@
 package com.entities;
 
-import java.sql.Time;
-import java.util.Date;
-
 public class Event {
     private Integer id;
     private String eventName;

@@ -5,12 +5,12 @@ import java.sql.*;
 import com.db.dao.JDBCConnect;
 import com.entities.Invoice;
 import com.entities.Order;
-import com.entities.Product;
 import com.entities.ProductInOrder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderManage {
 
@@ -40,7 +40,7 @@ public class OrderManage {
                 JDBCConnect.closePreparedStatement(ps);
                 ps = conn.prepareStatement(sql);
                 rs = ps.executeQuery();
-                ArrayList<ProductInOrder> productList = new ArrayList<ProductInOrder>();
+                ArrayList<ProductInOrder> productList = new ArrayList<>();
                 ProductModel productModel = new ProductModel();
 
                 orderResult.setProductInOrder(productList);
@@ -57,9 +57,9 @@ public class OrderManage {
 
     public boolean addOrder(Order order, List<ProductInOrder> productInOrderList, Invoice invoice) {
         String sql = "INSERT INTO `order`(customerId,userId,dateRecorded,totalAmount,status) VALUES(?,?,?,?,?)";
-        int orderId = -1;
+        int orderId;
         try(Connection connection = JDBCConnect.getJDBCConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+            PreparedStatement preparedStatement = Objects.requireNonNull(connection).prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setInt(1,order.getCustomerId());
             preparedStatement.setInt(2,2);
             Date instantDate = Date.valueOf(LocalDate.now());
@@ -78,9 +78,8 @@ public class OrderManage {
                         productInOrderModel.addProductToOrder(productInOrderList, orderId);
                         return invoiceModel.addToDatabase(invoice);
 
-                    } else {
-                        // Handle if no generated keys found
-                    }
+                    }  // Handle if no generated keys found
+
                 }
             }
         } catch (SQLException e) {

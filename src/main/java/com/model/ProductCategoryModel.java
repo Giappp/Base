@@ -1,9 +1,6 @@
 package com.model;
 
 import com.db.dao.JDBCConnect;
-import com.entities.ProductCategory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;

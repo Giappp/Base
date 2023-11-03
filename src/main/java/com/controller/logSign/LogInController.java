@@ -55,7 +55,7 @@ public class LogInController implements Initializable {
                     String retrievedPass = rs.getString("password");
                     if (retrievedPass.equals(password)) {
                         alert.successMessage("Login Successfully!");
-                        DBController.showDashboardScene(event,username);
+                        DBController.showDashboardScene(event);
                     } else {
                         System.out.println("Password incorrect!");
                         alert.errorMessage("Provided credentials are incorrect!");

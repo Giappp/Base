@@ -12,7 +12,6 @@ public class data {
     public static String username;
     public static String email;
     public static String phone;
-    public static Double salePrice;
     public static Integer id;
 
     public static ProductModel productModel = new ProductModel();

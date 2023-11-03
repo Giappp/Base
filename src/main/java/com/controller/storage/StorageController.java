@@ -1,7 +1,5 @@
 package com.controller.storage;
 
-import com.db.dao.JDBCConnect;
-import com.entities.Customer;
 import com.entities.Product;
 import com.model.ProductModel;
 import javafx.beans.binding.Bindings;
@@ -15,17 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class StorageController implements Initializable {
@@ -157,7 +150,7 @@ public class StorageController implements Initializable {
             );
 
             return Bindings.createObjectBinding(
-                    () -> roundedTotalBinding.get(),
+                    roundedTotalBinding::get,
                     roundedTotalBinding
             );
         });

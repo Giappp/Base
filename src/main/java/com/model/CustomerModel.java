@@ -2,8 +2,6 @@ package com.model;
 
 import com.db.dao.JDBCConnect;
 import com.entities.Customer;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +34,7 @@ public class CustomerModel {
         String sql = "SELECT * from customer LIMIT ? OFFSET ?";
         List<Customer> customers = new ArrayList<>();
         try(Connection connection = JDBCConnect.getJDBCConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            PreparedStatement preparedStatement = Objects.requireNonNull(connection).prepareStatement(sql)){
             preparedStatement.setInt(1,limit);
             preparedStatement.setInt(2,offset);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -62,7 +60,7 @@ public class CustomerModel {
         String sql = "SELECT * from customer";
         List<Customer> customers = new ArrayList<>();
         try(Connection connection = JDBCConnect.getJDBCConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            PreparedStatement preparedStatement = Objects.requireNonNull(connection).prepareStatement(sql)){
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Customer customer = new Customer();

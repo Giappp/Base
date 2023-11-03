@@ -5,8 +5,6 @@ import com.entities.Customer;
 import com.model.CustomerModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -95,27 +93,24 @@ public class SelectCus implements Initializable {
             }
         });
 
-        acceptBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (validateFields()) {
-                    customer = new Customer();
-                    customer.setId(Integer.parseInt(customerIdTf.getText()));
-                    customer.setName(customerNameTf.getText());
-                    customer.setEmail(customerEmailTf.getText());
-                    customer.setPhone(customerPhoneTf.getText());
-                    customer.setAddress(customerAddressTa.getText());
-                    Stage stage = (Stage) acceptBtn.getScene().getWindow();
-                    stage.close();
-                } else {
-                    AlertMessages alertMessages = new AlertMessages();
-                    alertMessages.errorMessage("Please fill all the information");
-                }
+        acceptBtn.setOnAction(event -> {
+            if (validateFields()) {
+                customer = new Customer();
+                customer.setId(Integer.parseInt(customerIdTf.getText()));
+                customer.setName(customerNameTf.getText());
+                customer.setEmail(customerEmailTf.getText());
+                customer.setPhone(customerPhoneTf.getText());
+                customer.setAddress(customerAddressTa.getText());
+                Stage stage = (Stage) acceptBtn.getScene().getWindow();
+                stage.close();
+            } else {
+                AlertMessages alertMessages = new AlertMessages();
+                alertMessages.errorMessage("Please fill all the information");
             }
         });
     }
 
-    public void setDataTable(int offset, int limit, int pageIndex) {
+    public void setDataTable(int ignoredOffset, int ignoredLimit, int pageIndex) {
         ObservableList<Customer> customerObservableList = FXCollections.observableList(customerModel.getListCustomer(pageIndex * ITEMS_PER_PAGE, ITEMS_PER_PAGE));
         customerColId.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerColName.setCellValueFactory(new PropertyValueFactory<>("name"));

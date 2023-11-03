@@ -81,6 +81,7 @@ public class ClientController {
     }
 
     private double xOffset = 0;
+
     private double yOffSet = 0;
 
     public void initialize() {

@@ -1,6 +1,5 @@
 package com.controller.product;
 
-import com.controller.AlertMessages;
 import com.controller.data;
 import com.entities.Product;
 import com.model.ProductCategoryModel;
@@ -128,12 +127,12 @@ public class ProductController implements Initializable {
 
     @FXML
     private ImageView addproductImageView;
+
     @FXML
     private TextField searchTf;
 
     private String imageUrl;
 
-    AlertMessages alertMessages;
     ObservableList<Product> products;
 
     @Override
@@ -149,7 +148,7 @@ public class ProductController implements Initializable {
 
         addProductNewBrandBtn.setOnAction(event -> {
             try {
-                openModalWindow("/controller/client/newSupplier.fxml", "Supplier Management");
+                openModalWindow();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -172,7 +171,7 @@ public class ProductController implements Initializable {
         });
 
         addProductAddBtn.setOnAction(event -> {
-            String imageUrl = null;
+            String imageUrl;
             if (addproductImageView != null && addproductImageView.getImage() != null) {
                 imageUrl = addproductImageView.getImage().getUrl();
             } else {
@@ -196,7 +195,7 @@ public class ProductController implements Initializable {
                     alert.setContentText("Add " + name + " To Product lists?");
                     Optional<ButtonType> option = alert.showAndWait();
 
-                    if (option.get().equals(ButtonType.OK)) {
+                    if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                         Product product = new Product(name, brandId, typeId, 0, Double.parseDouble(price), Double.parseDouble(importedPrice), imageUrl, status);
                         DBAdd(product);
                         resetTable();
@@ -230,7 +229,7 @@ public class ProductController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Update " + name + " with id " + id);
                     Optional<ButtonType> option = alert.showAndWait();
-                    if (option.get().equals(ButtonType.OK)) {
+                    if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                         Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl, Double.parseDouble(importedPrice));
                         DBUpdate(product);
                         resetTable();
@@ -264,11 +263,11 @@ public class ProductController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Are you sure want to delete " + name + "\nId: " + id);
                     Optional<ButtonType> option = alert.showAndWait();
-                    if (option.get().equals(ButtonType.OK)) {
+                    if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                         Product product = new Product(id, name, brand, brandId, type, typeId, Double.parseDouble(price), status, imageUrl, Double.parseDouble(importedPrice));
                         DBDelete(product);
                         resetTable();
-                    } else return;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -388,9 +387,7 @@ public class ProductController implements Initializable {
         int totalItemCount = productModel.getNumberRecords();
         totalItems.setText("Total: " + totalItemCount);
 
-        productPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
-            updateProductData(newValue.intValue());
-        });
+        productPg.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updateProductData(newValue.intValue()));
     }
 
     private void updateProductData(int pageIndex){
@@ -424,9 +421,9 @@ public class ProductController implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<Product> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newValue.toLowerCase();
+        String searchKeyWord = Objects.requireNonNull(newValue).toLowerCase();
         updatedFilteredList.setPredicate(product -> {
-            if (newValue == null || newValue.trim().isBlank()) {
+            if (newValue.trim().isBlank()) {
                 return true;
             }
             return product.getProductType().toLowerCase().contains(searchKeyWord)
@@ -486,14 +483,14 @@ public class ProductController implements Initializable {
         }
     }
 
-    private void openModalWindow (String resource, String title) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
+    private void openModalWindow () throws IOException {
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/controller/client/newSupplier.fxml")));
         fxmlFile = new Scene(root);
         window = new Stage();
         window.setScene(fxmlFile);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setIconified(false);
-        window.setTitle(title);
+        window.setTitle("Supplier Management");
         window.showAndWait();
     }
 
@@ -504,11 +501,11 @@ public class ProductController implements Initializable {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 textField.clear();
-            } else if (node instanceof ComboBox) {
-                ComboBox<String> comboBox = (ComboBox<String>) node;
+            } else if (node instanceof ComboBox<?>) {
+                ComboBox<?> comboBox = (ComboBox<?>) node;
                 comboBox.getSelectionModel().clearSelection();
             } else if (node instanceof Parent) {
-                clearTextFields((Parent) node); // Recursively clear TextFields in child nodes
+                clearTextFields((Parent) node); // Đệ quy để xóa TextField trong các node con
             } else if (node instanceof ImageView) {
                 ImageView imageView = (ImageView) node;
                 imageView.setImage(null);
@@ -518,7 +515,7 @@ public class ProductController implements Initializable {
 
     @FXML
     public void addProductImportImage() {
-        Image image = null;
+        Image image;
         String currentPath = System.getProperty("user.dir");
         FileChooser open = new FileChooser();
         open.setTitle("Open image file");

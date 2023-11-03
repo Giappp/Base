@@ -2,7 +2,6 @@ package com.model;
 
 import com.db.dao.JDBCConnect;
 import com.entities.GoodsImport;
-import com.entities.Product;
 
 import java.sql.*;
 import java.util.ArrayList;

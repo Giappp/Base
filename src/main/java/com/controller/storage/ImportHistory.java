@@ -5,8 +5,6 @@ import com.entities.Product;
 import com.model.GoodsImportModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -27,8 +25,6 @@ import java.util.ResourceBundle;
 public class ImportHistory implements Initializable {
 
     Parent root;
-
-    FXMLLoader loader;
 
     @FXML
     private TableColumn<GoodsImport, Date> tvDate;
@@ -70,7 +66,7 @@ public class ImportHistory implements Initializable {
 
         selectDateBtn.setOnAction(event -> {
             try {
-                openModalWindow("/controller/client/selectDate.fxml","Date Filter");
+                openModalWindow();
                 Date selectedBeginDate = selectDate.getBeginDate();
                 Date selectedEndDate = selectDate.getEndDate();
 
@@ -92,10 +88,10 @@ public class ImportHistory implements Initializable {
         ObservableList<GoodsImport> goodsImports = FXCollections.observableList(new GoodsImportModel().getData());
         tvDate.setCellValueFactory(new PropertyValueFactory<>("dateImported"));
         tvId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tvProduct.setCellFactory(new Callback<TableColumn<GoodsImport, Product>, TableCell<GoodsImport, Product>>() {
+        tvProduct.setCellFactory(new Callback<>() {
             @Override
             public TableCell<GoodsImport, Product> call(TableColumn<GoodsImport, Product> param) {
-                return new TableCell<GoodsImport, Product>() {
+                return new TableCell<>() {
                     @Override
                     protected void updateItem(Product product, boolean empty) {
                         super.updateItem(product, empty);
@@ -119,17 +115,17 @@ public class ImportHistory implements Initializable {
     }
 
     public void showDataByDate(Date beginDate,Date endDate){
-        if(beginDate.after(endDate) || beginDate == null || endDate == null){
+        if(beginDate.after(endDate) || endDate == null){
             showData();
             return;
         }
         ObservableList<GoodsImport> goodsImports = FXCollections.observableList(new GoodsImportModel().getDataByDate(this.beginDate, this.endDate));
         tvDate.setCellValueFactory(new PropertyValueFactory<>("dateImported"));
         tvId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tvProduct.setCellFactory(new Callback<TableColumn<GoodsImport, Product>, TableCell<GoodsImport, Product>>() {
+        tvProduct.setCellFactory(new Callback<>() {
             @Override
             public TableCell<GoodsImport, Product> call(TableColumn<GoodsImport, Product> param) {
-                return new TableCell<GoodsImport, Product>() {
+                return new TableCell<>() {
                     @Override
                     protected void updateItem(Product product, boolean empty) {
                         super.updateItem(product, empty);
@@ -149,8 +145,8 @@ public class ImportHistory implements Initializable {
         tvUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         tvHistory.setItems(goodsImports);
     }
-    private void openModalWindow(String resource, String title) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(resource)); // Create a single instance of FXMLLoader
+    private void openModalWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/controller/client/selectDate.fxml")); // Create a single instance of FXMLLoader
 
         root = loader.load(); // Load the FXML and set the controller
         selectDate = loader.getController();
@@ -160,7 +156,7 @@ public class ImportHistory implements Initializable {
         window.setScene(fxmlFile);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setIconified(false);
-        window.setTitle(title);
+        window.setTitle("Date Filter");
         window.showAndWait();
     }
 }

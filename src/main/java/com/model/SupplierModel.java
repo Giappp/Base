@@ -1,9 +1,7 @@
 package com.model;
 
 import com.db.dao.JDBCConnect;
-import com.entities.ProductCategory;
 import com.entities.Supplier;
-import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

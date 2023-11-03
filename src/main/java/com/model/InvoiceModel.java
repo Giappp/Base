@@ -6,13 +6,14 @@ import com.entities.Invoice;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class InvoiceModel {
     public boolean addToDatabase(Invoice invoice){
         String sql = "INSERT INTO invoice(`orderId`,`customerId`,`userId`,`paymentType`,`totalPrice`,`totalPaid`,`dateRecorded`)" +
                 " VALUES(?,?,?,?,?,?,?)";
         try(Connection connection = JDBCConnect.getJDBCConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            PreparedStatement preparedStatement = Objects.requireNonNull(connection).prepareStatement(sql)){
             preparedStatement.setInt(1,invoice.getOrderId());
             preparedStatement.setInt(2,invoice.getCustomerId());
             preparedStatement.setInt(3,invoice.getUserId());

@@ -161,7 +161,7 @@ public class ImportProduct implements Initializable {
                     + " with total of " + totalPrice + "$");
                     Optional<ButtonType> option = alert.showAndWait();
 
-                    if (option.get().equals(ButtonType.OK)) {
+                    if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                         GoodsImport goodsImport = new GoodsImport(productId,product,amount,importedPrice,totalPrice,date,1);
                         boolean check = new GoodsImportModel().importGoods(goodsImport);
                         System.out.println(check);
@@ -195,7 +195,7 @@ public class ImportProduct implements Initializable {
 
         newSupplierBtn.setOnAction(event -> {
             try {
-                openModalWindow("/controller/client/newSupplier.fxml", "Supplier Management");
+                openModalWindow();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -204,14 +204,14 @@ public class ImportProduct implements Initializable {
         });
     }
 
-    private void openModalWindow (String resource, String title) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(resource)));
+    private void openModalWindow () throws IOException {
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/controller/client/newSupplier.fxml")));
         fxmlFile = new Scene(root);
         window = new Stage();
         window.setScene(fxmlFile);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setIconified(false);
-        window.setTitle(title);
+        window.setTitle("Supplier Management");
         window.showAndWait();
     }
 }

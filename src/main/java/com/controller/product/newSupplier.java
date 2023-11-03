@@ -4,8 +4,6 @@ import com.entities.Supplier;
 import com.model.SupplierModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -82,7 +80,7 @@ public class newSupplier implements Initializable {
                 alert.setContentText("Add " + name + " To Supplier lists?");
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.get().equals(ButtonType.OK)) {
+                if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                     Supplier supplier = new Supplier(name,address,phone,email);
                     DBAdd(supplier);
                     showTable();
@@ -100,7 +98,7 @@ public class newSupplier implements Initializable {
             String address = taSupplierAddress.getText().trim();
             String phone = tfSupplierPhone.getText().trim();
             String email = tfSupplierEmail.getText().trim();
-            Integer id = Integer.valueOf(tfSupplierId.getText());
+            int id = Integer.parseInt(tfSupplierId.getText());
 
             try {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -109,7 +107,7 @@ public class newSupplier implements Initializable {
                 alert.setContentText("Delete " + name);
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.get().equals(ButtonType.OK)) {
+                if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                     Supplier supplier = new Supplier(id,name,address,phone,email);
                     DBDelete(supplier);
                     showTable();
@@ -125,7 +123,7 @@ public class newSupplier implements Initializable {
             String address = taSupplierAddress.getText().trim();
             String phone = tfSupplierPhone.getText().trim();
             String email = tfSupplierEmail.getText().trim();
-            Integer id = Integer.valueOf(tfSupplierId.getText());
+            int id = Integer.parseInt(tfSupplierId.getText());
             if(!name.isBlank() && !address.isBlank() && !phone.isBlank() && !email.isBlank()){
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Message");
@@ -133,7 +131,7 @@ public class newSupplier implements Initializable {
                 alert.setContentText("Add " + name + " To Supplier lists?");
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.get().equals(ButtonType.OK)) {
+                if (option.isPresent() && option.get().equals(ButtonType.OK)) {
                     Supplier supplier = new Supplier(id,name,address,phone,email);
                     DBUpdate(supplier);
                     showTable();

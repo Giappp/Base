@@ -1,11 +1,7 @@
 package com.controller.client;
 
-import com.controller.AlertMessages;
-import com.controller.data;
 import com.controller.order.OrderController;
-import com.db.dao.JDBCConnect;
 import com.entities.*;
-import com.model.InvoiceModel;
 import com.model.OrderManage;
 import com.model.ProductModel;
 import javafx.collections.FXCollections;
@@ -14,23 +10,13 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.sql.Date;
-
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PreviewOrder implements Initializable {
 
@@ -100,6 +86,7 @@ public class PreviewOrder implements Initializable {
 
     @FXML
     private Button updateProductButton;
+
     @FXML
     private TextField searchProduct;
 
@@ -109,16 +96,23 @@ public class PreviewOrder implements Initializable {
     private List<Product> cartList = new ArrayList<>();
 
     private List<ProductInOrder> productInOrderList = new ArrayList<>();
+
     private Customer customer = new Customer();
+
     private ProductInOrder currentProductInOrder = new ProductInOrder();
 
     private ObservableList<Product> products;
 
-    private Order order = new Order();
-    private Invoice invoice = new Invoice();
-    private boolean isDeleteColumnAdded = false;
+    private final Order order = new Order();
+
+    private final Invoice invoice = new Invoice();
+
+    private final boolean isDeleteColumnAdded = false;
+
     private TableColumn<ProductInOrder, Void> deleteButtonCol;
+
     private OrderController orderController;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateButton();
@@ -130,7 +124,6 @@ public class PreviewOrder implements Initializable {
             stage.close();
         });
     }
-
 
     public void setData(OrderController orderController,List<Product> cartList, List<ProductInOrder> productInOrderList, Customer customer, ObservableList<Product> products) {
         this.orderController = orderController;
@@ -172,9 +165,7 @@ public class PreviewOrder implements Initializable {
     }
 
     private void setUpCreateOrderButton(){
-        createOrderButton.setOnAction(event -> {
-            addToDatabase();
-        });
+        createOrderButton.setOnAction(event -> addToDatabase());
     }
 
     public void setDataForTable(){
@@ -187,6 +178,12 @@ public class PreviewOrder implements Initializable {
         productTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         orderView.getColumns().clear();
         orderView.getColumns().addAll(productIdCol, productPriceCol, productSupplierCol, productQuantityCol, productColName, productTotalPrice);
+        TableColumn<ProductInOrder, Void> deleteButtonCol = getProductInOrderVoidTableColumn();
+
+        orderView.getColumns().add(deleteButtonCol);
+    }
+
+    private TableColumn<ProductInOrder, Void> getProductInOrderVoidTableColumn() {
         TableColumn<ProductInOrder, Void> deleteButtonCol = new TableColumn<>("Action");
         deleteButtonCol.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
@@ -206,8 +203,7 @@ public class PreviewOrder implements Initializable {
                 });
             }
         });
-
-        orderView.getColumns().add(deleteButtonCol);
+        return deleteButtonCol;
     }
 
     private void setUpSearch(){
@@ -228,7 +224,6 @@ public class PreviewOrder implements Initializable {
         // update pagination
         updateOrderPagination(filteredList,"");
     }
-
 
     private void deleteProduct(ProductInOrder product) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -255,9 +250,7 @@ public class PreviewOrder implements Initializable {
         if(orderView.getItems().isEmpty()){
             updateOrderTableData(0);
         }
-        orderPag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
-            updateOrderTableData(newValue.intValue());
-        });
+        orderPag.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updateOrderTableData(newValue.intValue()));
     }
 
     private void updateOrderTableData(int pageIndex) {
@@ -300,9 +293,9 @@ public class PreviewOrder implements Initializable {
 
         // Create a new FilteredList that filters the entire 'products' list
         FilteredList<ProductInOrder> updatedFilteredList = new FilteredList<>(products, b -> true);
-        String searchKeyWord = newValue.toLowerCase();
+        String searchKeyWord = Objects.requireNonNull(newValue).toLowerCase();
         updatedFilteredList.setPredicate(product -> {
-            if (newValue == null || newValue.trim().isBlank()) {
+            if (newValue.trim().isBlank()) {
                 return true;
             }
             return product.getName().toLowerCase().contains(searchKeyWord) || product.getSupplierName().toLowerCase().contains(searchKeyWord);
@@ -361,9 +354,11 @@ public class PreviewOrder implements Initializable {
             cusId.setText(String.valueOf(customer.getId()));
         }
     }
+
     public void setTotalItems(){
         totalItemsAll.setText(String.valueOf(productInOrderList.size()));
     }
+
     public void setPriceAll(){
         double total = 0;
         for(ProductInOrder productInOrder : productInOrderList){
@@ -372,6 +367,7 @@ public class PreviewOrder implements Initializable {
         total = Math.round(total * 100.00) / 100.00;
         totalPriceAll.setText(String.valueOf(total));
     }
+
     private void clearTextField(){
         currentProductInOrder = null;
         productName.clear();
@@ -381,6 +377,7 @@ public class PreviewOrder implements Initializable {
         updateProductButton.setDisable(true);
         cancelButton.setDisable(true);
     }
+
     private void addToDatabase(){
         if(productInOrderList.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -406,6 +403,7 @@ public class PreviewOrder implements Initializable {
             stage.close();
         }
     }
+
     private void enterQuantity(){
         productQuantity.addEventFilter(KeyEvent.KEY_TYPED,(event)->{
             if(!isNumeric(event.getCharacter())) {
@@ -426,6 +424,7 @@ public class PreviewOrder implements Initializable {
             }
         });
     }
+
     private boolean isValidInput(String input,Product product){
         if(isNumeric(input) && !input.trim().isEmpty() && product != null){
             try {

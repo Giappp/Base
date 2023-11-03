@@ -47,6 +47,7 @@ public class SignUpController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
+
         btnLogin.setOnAction(event -> DBController.changeScene(event, "/controller/logSign/log-in.fxml"));
 
         btnSignup.setOnAction(event -> {
@@ -56,7 +57,9 @@ public class SignUpController implements Initializable {
             String email = tfEmail.getText();
             String phone = tfPhone.getText();
 
-            if (!username.trim().isEmpty() && !password.trim().isEmpty() && !confirmPassword.trim().isEmpty() && !email.trim().isEmpty() && !phone.trim().isEmpty() && validatePasswords(password, confirmPassword)) {
+            if (!username.trim().isEmpty() && !password.trim().isEmpty()
+                    && !confirmPassword.trim().isEmpty() && !email.trim().isEmpty()
+                    && !phone.trim().isEmpty() && validatePasswords(password, confirmPassword)) {
                 if (validateEmail(email)) {
                     System.out.println("Email is invalid");
                     alert.errorMessage("Email is invalid. Please try again.");
@@ -73,8 +76,11 @@ public class SignUpController implements Initializable {
         });
 
         // Add listeners to validate passwords
-        pfConfirmPassword.focusedProperty().addListener((observable, oldValue, newValue) -> validatePasswords(pfPassword.getText(), pfConfirmPassword.getText()));
-        pfPassword.focusedProperty().addListener((observable, oldValue, newValue) -> validatePasswords(pfPassword.getText(), pfConfirmPassword.getText()));
+        pfConfirmPassword.focusedProperty().addListener((observable, oldValue, newValue)
+                -> validatePasswords(pfPassword.getText(), pfConfirmPassword.getText()));
+
+        pfPassword.focusedProperty().addListener((observable, oldValue, newValue)
+                -> validatePasswords(pfPassword.getText(), pfConfirmPassword.getText()));
     }
 
     private boolean validatePasswords(String password, String confirmPassword) {
